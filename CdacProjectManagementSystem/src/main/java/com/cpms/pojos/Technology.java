@@ -38,7 +38,7 @@ import lombok.Setter;
 public class Technology {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name= "technology_id", updatable=true)
+	@Column(name= "technology_id")
 	private Integer id;
 	
 	@Enumerated(EnumType.STRING)
@@ -54,7 +54,7 @@ public class Technology {
 	
 	@Override
 	public String toString() {
-		return "Technology [technologyId=" + id + ", technologyName=" + technologyName + "]";
+		return "Technology [Technology Id=" + id + ", Technology Name=" + technologyName + "]";
 	}
 
 }

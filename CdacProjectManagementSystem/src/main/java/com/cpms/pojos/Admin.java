@@ -1,5 +1,6 @@
 package com.cpms.pojos;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -7,9 +8,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
@@ -20,12 +23,18 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 @Entity
 @Table(name="admin_table")
 public class Admin{
 	@Id
 	@GeneratedValue(strategy  = GenerationType.IDENTITY)
 	private Integer id;
+	
+	@Column(length = 10)
+	@Size(min = 2)
+	private int projectMinSize; 
+	
 	@OneToOne
 	@JoinColumn(name="user_id")
 	private UserAccount userAccount;

@@ -39,4 +39,5 @@ public class EmailConfiguration {
 	private boolean authentication;
 	@Value("{spring.mail.properties.mail.smtp.starttls.enable}")
 	private String tlsEnable;
+	
 }

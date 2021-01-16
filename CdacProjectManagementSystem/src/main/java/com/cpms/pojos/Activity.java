@@ -43,7 +43,7 @@ public class Activity {
 	@Column(length = 300)
 	private String activityDesription;
 	private HashMap<Status, ArrayList<String>> list=new HashMap<Status,ArrayList<String>>();
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="project_id")
 	private Project projectId;
 	
