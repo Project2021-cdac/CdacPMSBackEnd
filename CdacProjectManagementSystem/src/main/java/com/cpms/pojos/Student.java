@@ -11,6 +11,7 @@ import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
@@ -21,6 +22,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
 @Entity
 @Table(name = "student_table")
 public class Student {
@@ -32,7 +34,7 @@ public class Student {
 	@JoinColumn(name = "user_id")
 	private UserAccount user;
 	
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "project_id")
 	private Project project;
 

@@ -45,8 +45,8 @@ import lombok.Setter;
 public class Project {
 	@Id
 	@GeneratedValue(strategy =GenerationType.IDENTITY)
-	@Column(name= "project_id", updatable=true, unique=true, nullable=false)
-	private Integer projectId;
+	@Column(name= "project_id")
+	private Integer id;
 	
 	@NotBlank(message = "Project Title can't be blank")
 	@Size(max = 100, message = "Project Title must be less than 100 characters")
@@ -71,17 +71,9 @@ public class Project {
 	@JoinColumn(name = "teamlead_prn")
 	private Student teamLead;
 	
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "guide_id")
 	private Guide guide;
-	
-//	@OneToMany(mappedBy = "technologyId", orphanRemoval = true)
-//	@JoinColumn(name = "technology_id")
-//	private List<Technology> technologies;
-	
-//	@OneToMany(mappedBy = "milestoneId", orphanRemoval = true)
-//	@JoinColumn(name = "milestone_id")
-//	private List<Milestone> milestones;
 
 	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
 	@JoinTable(name = "project_technology_table", 
@@ -95,7 +87,7 @@ public class Project {
 	 */
 	@Override
 	public String toString() {
-		return "Project [projectId=" + projectId + ", projectTitle=" + projectTitle + ", projectDescription="
+		return "Project [Project Id=" + id + ", projectTitle=" + projectTitle + ", projectDescription="
 				+ projectDescription + ", startDate=" + startDate + ", endDate=" + endDate + ", guide=" + guide + "]";
 	}
 	

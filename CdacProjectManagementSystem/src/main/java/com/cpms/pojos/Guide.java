@@ -57,14 +57,4 @@ public class Guide {
 		return "Guide [id= " + id + ", inSession= " + inSession + ", user= " + user + "]";
 	}
 	
-	
-//	@OneToMany
-//	@JoinColumn(name = "technology_id")
-//	private List<Technology> technologies;
-	
-//	@OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, orphanRemoval = true)
-//	@JoinColumn(name = "project_id")
-//	private List<Project> project;
-	
-	
 }
