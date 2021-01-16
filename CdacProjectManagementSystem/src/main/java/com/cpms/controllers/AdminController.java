@@ -26,51 +26,51 @@ import com.cpms.services.UserAccountService;
 @RequestMapping(value = "/admin")
 public class AdminController {
 
-	@Autowired
-	private IAdminServices adminService;
-
-	@Autowired
-	private UserAccountService userAcctService;
-
-	@Autowired
-	private IExcelFileHelperService excelFileHelperService;
-
-	@Autowired
-	private IEmailService emailService;
-
-	@GetMapping("/students")
-	public ResponseEntity<?> getStudentList() {
-		List<Student> studentListOrderedByPrn = adminService.getStudentListOrderedByPrn();
-		if (studentListOrderedByPrn.isEmpty())
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		return new ResponseEntity<>(studentListOrderedByPrn, HttpStatus.OK);
-	}
-
-	@PostMapping("/students/register")
-	public ResponseEntity<ResponseMessage> registerStudent(@RequestParam(name = "file") MultipartFile file) {
-		String message = null;
-		if (ExcelFileParser.hasExcelFormat(file)) {
-			try {
-				excelFileHelperService.save(file);
-				List<UserAccount> studetUserAccounts = userAcctService.getStudentUserAccountforRegisteration();
-				emailService.sendEmail(studetUserAccounts);
-				message = "Uploaded the file successfully: " + file.getOriginalFilename();
-//		        return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
-			} catch (Exception e) {
-//		    	e.printStackTrace();
-//		        message = "Could not upload the file: " + file.getOriginalFilename() + "!";
-//		        return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
-			}
-		}
-//		    message = "Please upload an excel file!";
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(message));
-	}
-	
-	@GetMapping("/guides")
-	public ResponseEntity<?> getGuideList(){
-		List<Guide> guideList = adminService.getGuideList();
-		if (guideList.isEmpty())
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		return new ResponseEntity<>(guideList, HttpStatus.OK);
-	}
+//	@Autowired
+//	private IAdminServices adminService;
+//
+//	@Autowired
+//	private UserAccountService userAcctService;
+//
+//	@Autowired
+//	private IExcelFileHelperService excelFileHelperService;
+//
+//	@Autowired
+//	private IEmailService emailService;
+//
+//	@GetMapping("/students")
+//	public ResponseEntity<?> getStudentList() {
+//		List<Student> studentListOrderedByPrn = adminService.getStudentListOrderedByPrn();
+//		if (studentListOrderedByPrn.isEmpty())
+//			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//		return new ResponseEntity<>(studentListOrderedByPrn, HttpStatus.OK);
+//	}
+//
+//	@PostMapping("/students/register")
+//	public ResponseEntity<ResponseMessage> registerStudent(@RequestParam(name = "file") MultipartFile file) {
+//		String message = null;
+//		if (ExcelFileParser.hasExcelFormat(file)) {
+//			try {
+//				excelFileHelperService.save(file);
+//				List<UserAccount> studetUserAccounts = userAcctService.getStudentUserAccountforRegisteration();
+//				emailService.sendEmail(studetUserAccounts);
+//				message = "Uploaded the file successfully: " + file.getOriginalFilename();
+////		        return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+//			} catch (Exception e) {
+////		    	e.printStackTrace();
+////		        message = "Could not upload the file: " + file.getOriginalFilename() + "!";
+////		        return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
+//			}
+//		}
+////		    message = "Please upload an excel file!";
+//		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(message));
+//	}
+//	
+//	@GetMapping("/guides")
+//	public ResponseEntity<?> getGuideList(){
+//		List<Guide> guideList = adminService.getGuideList();
+//		if (guideList.isEmpty())
+//			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//		return new ResponseEntity<>(guideList, HttpStatus.OK);
+//	}
 }

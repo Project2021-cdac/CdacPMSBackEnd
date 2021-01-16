@@ -66,6 +66,10 @@ public class UserAccount {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate dateOfBirth;
 	
+	public UserAccount(Integer id) {
+		this.id = id;
+	}
+	
 	public UserAccount(String email, String password) {
 		this.email = email;
 		this.password = password;

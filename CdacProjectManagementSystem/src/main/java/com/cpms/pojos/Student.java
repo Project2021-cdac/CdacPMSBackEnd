@@ -32,7 +32,7 @@ public class Student {
 	
 	@OneToOne
 	@JoinColumn(name = "user_id")
-	private UserAccount user;
+	private UserAccount userAccount;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "project_id")

@@ -41,9 +41,12 @@ public class Technology {
 	@Column(name= "technology_id")
 	private Integer id;
 	
-	@Enumerated(EnumType.STRING)
-	private TechnologyName technologyName;
+	@Column(length=50)
+	private String name;
 	
+//	@Enumerated(EnumType.STRING)
+//	private TechnologyName technologyName;
+//	
 	@ManyToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST}, mappedBy = "technologies")
 	@JsonIgnoreProperties("technologies")
 	private Set<Guide> guides;
@@ -54,7 +57,7 @@ public class Technology {
 	
 	@Override
 	public String toString() {
-		return "Technology [Technology Id=" + id + ", Technology Name=" + technologyName + "]";
+		return "Technology [Technology Id=" + id + ", Name=" + name + "]";
 	}
 
 }
