@@ -36,12 +36,6 @@ public class UserAccount {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Enumerated(EnumType.STRING)
-	private Role role;
-	
-	@Enumerated(EnumType.STRING)
-	private Course courseName;
-	
 	@Column(length=50)
 	@Pattern(regexp = "^[a-zA-Z]{1,50}$" , message = "First name must be alphabetic and should be between 1 and 50 characters long!!!")
 	private String firstName;
@@ -65,6 +59,13 @@ public class UserAccount {
 	@JsonFormat(pattern="yyyy-MM-dd")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate dateOfBirth;
+	
+	@Enumerated(EnumType.STRING)
+	private Role role;
+	
+	@Enumerated(EnumType.STRING)
+	private Course courseName;
+	
 	
 	public UserAccount(String email, String password) {
 		this.email = email;

@@ -17,4 +17,8 @@ public class UserAccountService implements IUserAccountService {
 		return repository.getStudentUserAccountforRegisteration();
 	}
 
+	@Override
+	public UserAccount registerUser(UserAccount user) {
+		return repository.save(user);
+	}
 }
