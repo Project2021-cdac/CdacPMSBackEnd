@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cpms.dto.ProjectDTO;
+import com.cpms.pojos.Project;
 import com.cpms.pojos.Student;
 import com.cpms.pojos.UserAccount;
 import com.cpms.services.IStudentService;
@@ -36,8 +37,11 @@ public class StudentController {
 	
 	@PostMapping("/createproject")
 	public ResponseEntity<?> createProject(@RequestBody ProjectDTO projectDTO) {
-		System.out.println(projectDTO);
-		return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+		 System.out.println(projectDTO);
+		 Project project = service.registerProject(projectDTO);
+		 if(project == null)
+			 return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+		 return new ResponseEntity<>(project, HttpStatus.CREATED);
 	}	
 	
 	@GetMapping("/noproject")

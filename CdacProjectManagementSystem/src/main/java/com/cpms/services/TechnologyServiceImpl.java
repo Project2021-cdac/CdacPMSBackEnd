@@ -19,5 +19,11 @@ public class TechnologyServiceImpl implements ITechnologyService {
 		System.out.println(repo.findAll());
 		return repo.findAll();
 	}
+	
+	@Override
+	public List<Technology> findTechnologiesById(List<Integer> technologyIds) {
+		List<Technology> technologies = repo.findAllById(technologyIds);
+		return technologies;
+	}
 
 }
