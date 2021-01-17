@@ -24,21 +24,21 @@ public class ExcelFileHelperService implements IExcelFileHelperService {
 	private UserAccountRepository useraccountrepositiory;
 	
 	@Override
-	public String save(MultipartFile file) throws IOException{
-		String successMessage = "";
+	public List<UserAccount> saveToDatabase(MultipartFile file) throws IOException{
+//		String successMessage = "";
 		UserAccountStudentWrapper wrapper=ExcelFileParser.excelToUsersandStudents(file.getInputStream());
 		List<UserAccount> accountList = wrapper.getUserAccountList();
 		List<Student> studentlist = wrapper.getStudentList();
-		accountList = useraccountrepositiory.saveAll(accountList);
+//		accountList = useraccountrepositiory.saveAll(accountList);
 		int length = studentlist.size();
 		for(int i=0;i<length;++i) {
 			Student s = studentlist.get(i);
 			s.setUser(accountList.get(i));
 		}
-		useraccountrepositiory.saveAll(accountList);
+		accountList= useraccountrepositiory.saveAll(accountList);
 		studentrepository.saveAll(studentlist);
-		successMessage = "Database save completed";
-		return successMessage;
+//		successMessage = "Database save completed";
+		return accountList;
 	}
 
 }

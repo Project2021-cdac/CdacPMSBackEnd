@@ -5,6 +5,7 @@ import java.util.List;
 import com.cpms.pojos.UserAccount;
 
 public interface IUserAccountService {
-	List<UserAccount> getStudentUserAccountforRegisteration();
+	List<UserAccount> getStudentUserAccountforRegistration();
 	UserAccount registerUser(UserAccount user);
+	
 }

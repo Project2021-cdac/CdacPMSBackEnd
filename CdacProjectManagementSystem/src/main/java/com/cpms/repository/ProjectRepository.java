@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.cpms.pojos.Student;
+import com.cpms.pojos.Project;
 
 @Repository
-public interface StudentRepository extends JpaRepository<Student, Long> {
+public interface ProjectRepository extends JpaRepository<Project, Integer> {
 
-	public List<Student> findAllByOrderByPrn();
+	List<Project> findAllByOrderById();
 }

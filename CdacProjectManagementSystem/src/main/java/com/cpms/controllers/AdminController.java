@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,14 +16,17 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.cpms.dto.ResponseMessage;
 import com.cpms.fileutils.excelfilehelper.ExcelFileParser;
+import com.cpms.pojos.Admin;
 import com.cpms.pojos.Guide;
+import com.cpms.pojos.Project;
 import com.cpms.pojos.Student;
 import com.cpms.pojos.Technology;
 import com.cpms.pojos.UserAccount;
-import com.cpms.services.IAdminServices;
+import com.cpms.services.IAdminService;
 import com.cpms.services.IEmailService;
 import com.cpms.services.IExcelFileHelperService;
 import com.cpms.services.IGuideService;
+import com.cpms.services.IProjectService;
 import com.cpms.services.ITechnologyService;
 import com.cpms.services.IUserAccountService;
 
@@ -33,7 +37,7 @@ public class AdminController {
 //	private static List<Technology> technologylist;
 	
 	@Autowired
-	private IAdminServices adminService;
+	private IAdminService adminService;
 
 	@Autowired
 	private IUserAccountService userAcctService;
@@ -50,6 +54,9 @@ public class AdminController {
 	@Autowired 
 	private ITechnologyService technologyService;
 	
+	@Autowired
+	private IProjectService projectService;
+	
 	
 	@GetMapping("/students")
 	public ResponseEntity<?> getStudentList() {
@@ -60,23 +67,18 @@ public class AdminController {
 	}
 
 	@PostMapping("/students/register")
-	public ResponseEntity<?> registerStudent(@RequestParam(name = "file") MultipartFile file) {
+	public ResponseEntity<?> registerStudent(@RequestParam(name = "file") MultipartFile file) throws Exception {
 		String message = null;
 		if (ExcelFileParser.hasExcelFormat(file)) {
-			try {
-				excelFileHelperService.save(file);
-				List<UserAccount> studetUserAccounts = userAcctService.getStudentUserAccountforRegisteration();
-				emailService.sendEmail(studetUserAccounts);
-				message = "Uploaded the file successfully: " + file.getOriginalFilename();
-//		        return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
-			} catch (Exception e) {
-//		    	e.printStackTrace();
-//		        message = "Could not upload the file: " + file.getOriginalFilename() + "!";
-//		        return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
-			}
+				List<UserAccount> studentUserAccounts = excelFileHelperService.saveToDatabase(file);
+//				List<UserAccount> studentUserAccounts = userAcctService.getStudentUserAccountforRegistration();
+				emailService.sendEmail(studentUserAccounts);
+				message = "Email Send successfully";
+		}else {
+			message = "Please upload an excel file!";
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(message));
 		}
-//		    message = "Please upload an excel file!";
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(message));
+		return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
 	}
 	
 	@GetMapping("/guides")
@@ -88,14 +90,15 @@ public class AdminController {
 	}
 	
 	@PostMapping("/guides/register") 
-	ResponseEntity<?> registerGuides(@RequestBody UserAccount guideuser, 
-			@RequestBody List<String> technologies){
-		UserAccount registerUser = userAcctService.registerUser(guideuser);
+	ResponseEntity<?> registerGuides(@RequestBody UserAccount guideUser, 
+			@RequestBody List<String> technologies // TODO Once again confirm if the request body will contain this
+			){
+		UserAccount registerUser = userAcctService.registerUser(guideUser);
 		Guide guide = new Guide();
 		List<Technology> technologyDbList = technologyService.getAllTechnology(); 
 		guide.setUser(registerUser);
 		for(String technology: technologies) {
-				//uppercase?
+			// TODO uppercase confirm upper case of string from front end
 			for(Technology tobj:technologyDbList) {
 				if(technology.equals( tobj.getTechnologyName().name()) ) {
 					guide.getTechnologies().add(tobj);
@@ -104,8 +107,32 @@ public class AdminController {
 				}		
 			}
 		}	
-		guideService.registerGuide(guide);
-		ResponseMessage response = new ResponseMessage("Guide Registered Successfully");
+		guide = guideService.registerGuide(guide);
+		ResponseMessage response = new ResponseMessage("Guide "+guide.getUser().getFirstName()+" registered Successfully");
 		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+	
+	@GetMapping("/projects/list")
+	public ResponseEntity<?> getProjectList(){
+		List<Project> projectList = projectService.getAllProjectList();
+		if (projectList.isEmpty())
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		return new ResponseEntity<>(projectList, HttpStatus.OK);
+	}
+	
+	@GetMapping("/{userid}/teamsize")
+	public ResponseEntity<?> getTeamsize(@PathVariable Integer userid) {
+		Admin adminAccount = adminService.findByUserAccount(new UserAccount(userid));
+		return new ResponseEntity<> (adminAccount.getProjectMinSize(), HttpStatus.OK);
+	}
+	
+	@PostMapping("/{userid}/setsize") //TODO convey the request parameter name
+	public ResponseEntity<?> setTeamSize(@PathVariable Integer userid, @RequestParam(name = "size") int projectMinSize){
+		Admin adminAccount = adminService.findByUserAccount(new UserAccount(userid));
+		if(adminAccount.getProjectMinSize() != projectMinSize) {
+			adminAccount.setProjectMinSize(projectMinSize);
+			return new ResponseEntity<> (adminService.save(adminAccount), HttpStatus.OK);
+		}
+		return new ResponseEntity<> (adminAccount, HttpStatus.CONFLICT);
 	}
 }

@@ -8,7 +8,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,7 +31,6 @@ public class Admin{
 	private Integer id;
 	
 	@Column(length = 10)
-	@Size(min = 2)
 	private int projectMinSize; 
 	
 	@OneToOne

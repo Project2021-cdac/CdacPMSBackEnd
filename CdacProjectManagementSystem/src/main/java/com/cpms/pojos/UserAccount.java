@@ -52,7 +52,7 @@ public class UserAccount {
 	@Size(min=4 , max=16 , message="Password must be 4-16 characters long")
 	private String password;
 	
-	@Column(length=15)
+	@Column(length=15, unique = true)
 	@Pattern(regexp = "^[0-9]{10, 15}$" , message = "Mobile number be between 10 to 15 digits!!!")
 	private String phoneNumber;
 	
@@ -70,6 +70,10 @@ public class UserAccount {
 	public UserAccount(String email, String password) {
 		this.email = email;
 		this.password = password;
+	}
+	
+	public UserAccount(Integer id) {
+		this.id=id;
 	}
 	
 	@Override

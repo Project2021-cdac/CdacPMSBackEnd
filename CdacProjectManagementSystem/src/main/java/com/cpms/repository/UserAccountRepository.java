@@ -12,8 +12,9 @@ import com.cpms.pojos.UserAccount;
 @Repository
 public interface UserAccountRepository extends JpaRepository<UserAccount, Integer> {
 	
+	// TODO check if this query is required
 	@Query("SELECT new com.cpms.pojos.UserAccount(email,password) FROM UserAccount u JOIN Student s ON s.user.id=u.id")
-	List<UserAccount> getStudentUserAccountforRegisteration();
+	List<UserAccount> getStudentUserAccountforRegistration();
 		
 	@Query("SELECT new com.cpms.pojos.UserAccount(firstName, lastName, role, email, phoneNumber, dateOfBirth, courseName) "
 	+ "from UserAccount u JOIN Guide g ON g.user.id=u.id")
