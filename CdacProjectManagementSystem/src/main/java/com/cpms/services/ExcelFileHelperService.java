@@ -25,7 +25,7 @@ public class ExcelFileHelperService implements IExcelFileHelperService {
 	
 	@Override
 	public List<UserAccount> saveToDatabase(MultipartFile file) throws IOException{
-//		String successMessage = "";
+		String successMessage = "";
 		UserAccountStudentWrapper wrapper=ExcelFileParser.excelToUsersandStudents(file.getInputStream());
 		List<UserAccount> accountList = wrapper.getUserAccountList();
 		List<Student> studentlist = wrapper.getStudentList();

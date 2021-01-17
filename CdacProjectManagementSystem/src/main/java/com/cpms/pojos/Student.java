@@ -34,7 +34,7 @@ public class Student {
 	private UserAccount userAccount;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "project_id")
+	@JoinColumn(columnDefinition="integer", name = "project_id")
 	private Project project;
 
 	public Student(Long prn) {

@@ -67,7 +67,7 @@ public class AdminController {
 	}
 
 	@PostMapping("/students/register")
-	public ResponseEntity<?> registerStudent(@RequestParam(name = "file") MultipartFile file) throws Exception {
+	public ResponseEntity<?> registerStudent(@RequestParam MultipartFile file) throws Exception {
 		String message = null;
 		if (ExcelFileParser.hasExcelFormat(file)) {
 				List<UserAccount> studentUserAccounts = excelFileHelperService.saveToDatabase(file);
@@ -100,9 +100,10 @@ public class AdminController {
 		for(String technology: technologies) {
 			// TODO uppercase confirm upper case of string from front end
 			for(Technology tobj:technologyDbList) {
-				if(technology.equals( tobj.getName()) ) {
+				if(technology.equals(tobj.getName()) ) {
 					guide.getTechnologies().add(tobj);
 					tobj.getGuides().add(guide);
+					technologyService.saveTechnology(tobj);
 					break;
 				}		
 			}

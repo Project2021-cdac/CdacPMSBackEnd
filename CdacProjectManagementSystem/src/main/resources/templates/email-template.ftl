@@ -21,13 +21,12 @@
 									<br>
 									Welcome to Cdac Project Management System, 	
 									<br><br> 
-									Your credentials, 
-										<b>UserName : ${username}</b>
-										<b>Password : ${password}</b>
-									<br>1234<br>
+									Your credentials,<br> 
+										<b>UserName : ${username}</b><br>
+										<b>Password : ${password}</b><br>
 								</div>
 								<div>
-									<br>"Sharing the knowledge is biggest learning" <br> <br>
+									<br>"Sharing the knowledge is biggest learning" <br><br>
 									<br>
 								</div>
 							</td>

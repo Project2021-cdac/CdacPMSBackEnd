@@ -31,4 +31,9 @@ public class TechnologyService implements ITechnologyService {
 		return technologies;
 	}
 
+	@Override
+	public Technology saveTechnology(Technology technology) {
+		return techRepository.save(technology);
+	}
+
 }

@@ -1,5 +1,6 @@
 package com.cpms.pojos;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -50,7 +51,7 @@ public class Guide {
 	joinColumns = @JoinColumn(name = "guide_id"),
 	inverseJoinColumns = @JoinColumn(name = "technology_id"))
 	@JsonIgnoreProperties("guides")
-	private Set<Technology> technologies;
+	private Set<Technology> technologies = new HashSet<>();
 
 	@Override
 	public String toString() {

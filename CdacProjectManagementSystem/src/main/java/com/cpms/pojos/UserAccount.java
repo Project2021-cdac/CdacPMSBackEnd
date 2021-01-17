@@ -53,7 +53,7 @@ public class UserAccount {
 	private String password;
 	
 	@Column(length=15, unique = true)
-	@Pattern(regexp = "^[0-9]{10, 15}$" , message = "Mobile number be between 10 to 15 digits!!!")
+	@Pattern(regexp = "^[0-9]{10,15}$" , message = "Mobile number be between 10 to 15 digits!!!")
 	private String phoneNumber;
 	
 	@JsonFormat(pattern="yyyy-MM-dd")
@@ -65,13 +65,6 @@ public class UserAccount {
 	
 	@Enumerated(EnumType.STRING)
 	private Course courseName;
-	
-	
-	public UserAccount(String email, String password) {
-		this.email = email;
-		this.password = password;
-	}
-	
 	
 	public UserAccount(Integer id) {
 		this.id=id;

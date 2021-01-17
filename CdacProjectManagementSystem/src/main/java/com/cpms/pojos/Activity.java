@@ -44,7 +44,7 @@ public class Activity {
 	private String activityDesription;
 	private HashMap<Status, ArrayList<String>> list=new HashMap<Status,ArrayList<String>>();
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="project_id")
+	@JoinColumn(columnDefinition="integer", name="project_id")
 	private Project projectId;
 	
 	@Override

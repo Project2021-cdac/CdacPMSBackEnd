@@ -1,6 +1,7 @@
 package com.cpms.pojos;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -45,7 +46,7 @@ import lombok.Setter;
 public class Project {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "project_id")
+	@Column(columnDefinition="serial", name = "project_id")
 	private Integer id;
 
 	@NotBlank(message = "Project Title can't be blank")
@@ -78,7 +79,7 @@ public class Project {
 	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
 	@JoinTable(name = "project_technology_table", joinColumns = @JoinColumn(name = "project_id"), inverseJoinColumns = @JoinColumn(name = "technology_id"))
 	@JsonIgnoreProperties("projects")
-	private Set<Technology> technologies;
+	private Set<Technology> technologies = new HashSet<>();
 
 	public Project(
 			@NotBlank(message = "Project Title can't be blank") @Size(max = 100, message = "Project Title must be less than 100 characters") String projectTitle,

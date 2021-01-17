@@ -49,7 +49,7 @@ public class Milestone {
 	private MilestoneCheckpoints milestoneCheckpoints;
 	
 	@ManyToOne
-	 @JoinColumn(name="project_id")
+	@JoinColumn(columnDefinition="integer", name="project_id")
 	private Project projectId;
 	
 	@Override

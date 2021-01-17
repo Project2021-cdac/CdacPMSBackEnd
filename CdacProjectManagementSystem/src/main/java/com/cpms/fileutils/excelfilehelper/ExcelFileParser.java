@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -35,15 +36,16 @@ public class ExcelFileParser {
 			return false;
 		return true;
 	}
-
+	//TODO figure out how to skip blank cells
 	public static UserAccountStudentWrapper excelToUsersandStudents(InputStream istream) throws IOException {
 		try (
 				Workbook workbook = new XSSFWorkbook(istream);
 			){
 			Sheet sheet = workbook.getSheet(SHEET);	
-			Iterator<Row> rows = sheet.iterator();
 			List<UserAccount> userAccountList = new ArrayList<UserAccount>();
 			List<Student> studentList = new ArrayList<Student>();				
+			Iterator<Row> rows = sheet.iterator();
+			boolean dataReadFromCell;
 			int rowNumber = 0;
 			while (rows.hasNext()) {
 				Row currentRow = rows.next();
@@ -52,44 +54,78 @@ public class ExcelFileParser {
 					rowNumber++;
 					continue;
 				}				
+				dataReadFromCell = false;
 				Iterator<Cell> cellsInRow = currentRow.iterator();
+				System.out.println("Row started");
 				UserAccount userAccount= new UserAccount();
 				Student student = new Student();
 				int cellIdx = 0;
 				while (cellsInRow.hasNext()) {
 					Cell currentCell = cellsInRow.next();
-					switch (cellIdx) {
-					case 0://PRN
-						student.setPrn( Long.parseUnsignedLong(currentCell.getStringCellValue()) );
-						break;
-					case 1://FirstName
-						userAccount.setFirstName(currentCell.getStringCellValue());
-						break;
-					case 2://LastName 
-						userAccount.setLastName(currentCell.getStringCellValue());
-						break;
-					case 3://Email
-						userAccount.setEmail(currentCell.getStringCellValue());
-						break;
-					case 4://ContactNo
-						userAccount.setPhoneNumber(currentCell.getStringCellValue());
-					case 5://Date_Of_Birth
-						userAccount.setDateOfBirth(LocalDate.parse(currentCell.getStringCellValue(), 
-								DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-						break;
-					case 6://Course
-						userAccount.setCourseName( Course.valueOf(currentCell.getStringCellValue()) );
-						break;
-					default:
-						break;
+					if(CellType.BLANK != currentCell.getCellType()) {
+//						System.out.println("Entered Cell");
+						dataReadFromCell=true;
+						switch (cellIdx) {
+							case 0://PRN
+								long longValue = ((Double)currentCell.getNumericCellValue()).longValue();
+								System.out.println("PRN: "+rowNumber+ " : " +longValue);
+								student.setPrn( longValue );
+								break;
+							case 1://FirstName
+								String firstName = currentCell.getStringCellValue();
+		//						if()
+								System.out.println("First Name: "+rowNumber+ " : "+firstName);
+								userAccount.setFirstName(firstName);
+								break;
+							case 2://LastName 
+								System.out.println(currentCell.getCellType());
+								String lastName = currentCell.getStringCellValue();
+								System.out.println("Last Name: "+rowNumber+ " : " +lastName);
+								if(!lastName.equals("")) {
+//									System.out.println("Blank Last Name");
+									userAccount.setLastName(lastName);
+								}
+								break;
+							case 3://Email
+								String email = currentCell.getStringCellValue();
+								System.out.println("Email: "+rowNumber+" : "+email);
+								userAccount.setEmail(email);
+								break;
+							case 4://ContactNo
+		//						System.out.println(currentCell.getCellType());
+								long ContactNo = ((Double)currentCell.getNumericCellValue()).longValue();
+								System.out.println("Contact No: "+rowNumber+" : "+ContactNo);
+								userAccount.setPhoneNumber(ContactNo+"");
+								break;
+							case 5://Date_Of_Birth
+//								System.out.println(currentCell.getCellType());
+								String dob = currentCell.getStringCellValue();
+								System.out.println("Date of birth: "+rowNumber+" : "+dob);
+		//						userAccount.setDateOfBirth(dob.);
+								userAccount.setDateOfBirth(LocalDate.parse(dob.toString(), 
+										DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+								break;
+							case 6://Course
+								String course = currentCell.getStringCellValue().toUpperCase();
+								System.out.println("Course "+rowNumber + " : "+course);
+								userAccount.setCourseName( Course.valueOf(course) );
+								break;
+							default:
+								break;
+						}		
 					}
-
 					cellIdx++;
 				}
-				userAccount.setRole(Role.STUDENT);
-				userAccount.setPassword( ( (Long)(student.getPrn()%10000) ).toString() ); //last 4 digits as password
-				userAccountList.add(userAccount);
-				studentList.add(student);
+				if(dataReadFromCell) {
+					userAccount.setRole(Role.STUDENT);
+					//TODO PRN Length
+					String password = student.getPrn().toString().substring(8);
+					System.out.println("Password : "+password);
+					userAccount.setPassword(password); //last 4 digits as password
+					userAccountList.add(userAccount);
+					studentList.add(student);
+				}
+				rowNumber++;
 			}
 			UserAccountStudentWrapper wrapper = new UserAccountStudentWrapper();
 			wrapper.setUserAccountList(userAccountList);
