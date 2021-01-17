@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import com.cpms.emailconfig.EmailConfiguration;
+import com.cpms.pojos.Student;
 import com.cpms.pojos.UserAccount;
 
 import freemarker.template.Template;

@@ -30,7 +30,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/**
+/*
  * @author dev2000
  *	 Project Class having basic details regarding individual Project Team
  *	 Multiple technologies can be used in one Project.
@@ -44,54 +44,63 @@ import lombok.Setter;
 @Table(name = "project_table")
 public class Project {
 	@Id
-	@GeneratedValue(strategy =GenerationType.IDENTITY)
-	@Column(name= "project_id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "project_id")
 	private Integer id;
-	
+
 	@NotBlank(message = "Project Title can't be blank")
 	@Size(max = 100, message = "Project Title must be less than 100 characters")
 	@Column(length = 100)
 	private String projectTitle;
-	
+
 	@NotBlank(message = "Project Description can't be blank")
 	@Size(min = 30, max = 300, message = "Project Description must be between 10 and 300 characters")
 	@Column(length = 300)
 	private String projectDescription;
-	
+
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd")
-	private LocalDate startDate;		
-	
+	private LocalDate startDate;
+
 	@Future(message = "Project End Date must be in future")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate endDate;
-	
+
 	@OneToOne
 	@JoinColumn(name = "teamlead_prn")
 	private Student teamLead;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "guide_id")
 	private Guide guide;
 
 	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
-	@JoinTable(name = "project_technology_table", 
-	joinColumns = @JoinColumn(name = "project_id"),
-	inverseJoinColumns = @JoinColumn(name = "technology_id"))
+	@JoinTable(name = "project_technology_table", joinColumns = @JoinColumn(name = "project_id"), inverseJoinColumns = @JoinColumn(name = "technology_id"))
 	@JsonIgnoreProperties("projects")
 	private Set<Technology> technologies;
 
-	/**
-	 *	Method to display each class field according to our requirement 
-	 */
+	public Project(
+			@NotBlank(message = "Project Title can't be blank") @Size(max = 100, message = "Project Title must be less than 100 characters") String projectTitle,
+			@NotBlank(message = "Project Description can't be blank") @Size(min = 30, max = 300, message = "Project Description must be between 10 and 300 characters") String projectDescription,
+			LocalDate startDate, @Future(message = "Project End Date must be in future") LocalDate endDate,
+			Student teamLead) {
+		this.projectTitle = projectTitle;
+		this.projectDescription = projectDescription;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.teamLead = teamLead;
+	}
+	
 	@Override
 	public String toString() {
 		return "Project [Project Id=" + id + ", projectTitle=" + projectTitle + ", projectDescription="
 				+ projectDescription + ", startDate=" + startDate + ", endDate=" + endDate + ", guide=" + guide + "]";
 	}
 	
-
+	//helper method
+		public void addTechnology(Technology technology) {
+			this.technologies.add(technology);
+			technology.addProject(this);
+		}
 }
-
-

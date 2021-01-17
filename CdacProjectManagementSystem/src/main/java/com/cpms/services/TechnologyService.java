@@ -18,5 +18,17 @@ public class TechnologyService implements ITechnologyService {
 	public List<Technology> getAllTechnology() {
 		return techRepository.findAllByOrderByTechnologyName();
 	}
+	
+	@Override
+	public List<Technology> listTechnologies() {
+		System.out.println(techRepository.findAll());
+		return techRepository.findAll();
+	}
+	
+	@Override
+	public List<Technology> findTechnologiesById(List<Integer> technologyIds) {
+		List<Technology> technologies = techRepository.findAllById(technologyIds);
+		return technologies;
+	}
 
 }

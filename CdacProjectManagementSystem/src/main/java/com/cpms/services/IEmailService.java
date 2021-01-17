@@ -13,5 +13,5 @@ import freemarker.template.TemplateException;
 
 public interface IEmailService {
 	
-	public void sendEmail(List<UserAccount> studentusers) throws MessagingException, IOException, TemplateException, MailSendException;
+	void sendEmail(List<UserAccount> studentusers) throws MessagingException, IOException, TemplateException, MailSendException;
 }

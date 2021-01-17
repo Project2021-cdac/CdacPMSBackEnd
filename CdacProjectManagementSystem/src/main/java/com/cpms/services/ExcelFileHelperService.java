@@ -33,7 +33,7 @@ public class ExcelFileHelperService implements IExcelFileHelperService {
 		int length = studentlist.size();
 		for(int i=0;i<length;++i) {
 			Student s = studentlist.get(i);
-			s.setUser(accountList.get(i));
+			s.setUserAccount(accountList.get(i));
 		}
 		accountList= useraccountrepositiory.saveAll(accountList);
 		studentrepository.saveAll(studentlist);

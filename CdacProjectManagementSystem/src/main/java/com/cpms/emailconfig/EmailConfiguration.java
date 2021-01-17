@@ -6,17 +6,6 @@ import org.springframework.stereotype.Component;
 import lombok.Getter;
 import lombok.Setter;
 
-/*
- * spring.mail.default-encoding=UTF-8
-spring.mail.host=smtp.gmail.com
-spring.mail.username=cdacgroup10.project@gmail.com
-spring.mail.password=edugenic10
-spring.mail.port=587
-spring.mail.protocol=smtp
-spring.mail.test-connection=false
-spring.mail.properties.mail.smtp.auth=true
-spring.mail.properties.mail.smtp.starttls.enable=true
- */
 
 @Component
 @Getter

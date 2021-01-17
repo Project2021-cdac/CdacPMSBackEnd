@@ -100,7 +100,7 @@ public class AdminController {
 		for(String technology: technologies) {
 			// TODO uppercase confirm upper case of string from front end
 			for(Technology tobj:technologyDbList) {
-				if(technology.equals( tobj.getTechnologyName().name()) ) {
+				if(technology.equals( tobj.getName()) ) {
 					guide.getTechnologies().add(tobj);
 					tobj.getGuides().add(guide);
 					break;
