@@ -6,8 +6,6 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,7 +15,6 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,11 +26,10 @@ import lombok.Setter;
  *	Many To Many relation with Student and Guide Class
  */
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "technology_table")
 public class Technology {
@@ -58,9 +54,9 @@ public class Technology {
 		return "Technology [Technology Id=" + id + ", Name=" + name + "]";
 	}
 	
-	//helper method
-	public void addProject(Project project) {
-		this.projects.add(project);	
-	}
+//	//helper method
+//	public void addProject(Project project) {
+//		this.projects.add(project);	
+//	}
 
 }

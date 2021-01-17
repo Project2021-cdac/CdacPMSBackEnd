@@ -16,7 +16,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,11 +27,11 @@ import lombok.Setter;
  *	Activities like Task Creation, Task Completion, Task updation, Guide session start, Guide session end etc.
  *	
  */
+
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode
-@AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "activity_table")
 public class Activity {
@@ -41,7 +40,8 @@ public class Activity {
 	private int id;
 	private Timestamp createdOn;
 	@Column(length = 300)
-	private String activityDesription;
+	private String description;
+	//what is this ???
 	private HashMap<Status, ArrayList<String>> list=new HashMap<Status,ArrayList<String>>();
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(columnDefinition="integer", name="project_id")
@@ -50,6 +50,6 @@ public class Activity {
 	@Override
 	public String toString() {
 		return "Activity [activityId=" + id + ", createdOn=" + createdOn + ", activityDesription="
-				+ activityDesription + ", list=" + list + "]";
+				+ description + ", list=" + list + "]";
 	}
 }

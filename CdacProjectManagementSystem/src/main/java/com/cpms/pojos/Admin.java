@@ -10,19 +10,20 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * @author dev2000
  *	Admin has highest access rights.
  *	Admin only can generate Student and Guide Login Credentials for first time.(Registration)
  */
-@Data
+
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
+@Getter
+@Setter
 @Entity
 @Table(name="admin_table")
 public class Admin{
@@ -32,9 +33,7 @@ public class Admin{
 	
 	@Column(length = 10)
 	private int projectMinSize; 
-	
 	@OneToOne
 	@JoinColumn(name="user_id")
-	private UserAccount userAccount;
-	
+	private UserAccount userAccount;	
 }

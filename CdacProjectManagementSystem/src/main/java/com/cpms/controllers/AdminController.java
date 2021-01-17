@@ -96,7 +96,7 @@ public class AdminController {
 		UserAccount registerUser = userAcctService.registerUser(guideUser);
 		Guide guide = new Guide();
 		List<Technology> technologyDbList = technologyService.getAllTechnology(); 
-		guide.setUser(registerUser);
+		guide.setUserAccount(registerUser);
 		for(String technology: technologies) {
 			// TODO uppercase confirm upper case of string from front end
 			for(Technology tobj:technologyDbList) {
@@ -109,7 +109,7 @@ public class AdminController {
 			}
 		}	
 		guide = guideService.registerGuide(guide);
-		ResponseMessage response = new ResponseMessage("Guide "+guide.getUser().getFirstName()+" registered Successfully");
+		ResponseMessage response = new ResponseMessage("Guide "+guide.getUserAccount().getFirstName()+" registered Successfully");
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
