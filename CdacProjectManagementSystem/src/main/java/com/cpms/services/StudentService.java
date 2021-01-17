@@ -20,25 +20,25 @@ import com.cpms.repository.StudentRepository;
 @Transactional
 public class StudentService implements IStudentService {
 	@Autowired
-	StudentRepository repo;
+	StudentRepository studentRepository;
 	@Autowired
-	ProjectRepository projectRepo;
+	ProjectRepository projectRepository;
 	@Autowired
 	ITechnologyService technologyService;
 	
 	@Override
 	public Student getStudentByUserAccount(UserAccount userAccount) {
-		return repo.findByUserAccount(userAccount);
+		return studentRepository.findByUserAccount(userAccount);
 	}
 
 	@Override
 	public List<Student> getStudentsWithoutProject() {
-		return repo.findByProjectIsNull();
+		return studentRepository.findByProjectIsNull();
 	}
 	
 	@Override
 	public Project registerProject(ProjectDTO projectDTO) {
-		Optional<Student>optional = repo.findById(projectDTO.getTeamLead());
+		Optional<Student>optional = studentRepository.findById(projectDTO.getTeamLead());
 		Student teamLead = null;
 		if(optional.isPresent()) {
 			teamLead = optional.get();
@@ -47,7 +47,7 @@ public class StudentService implements IStudentService {
 		}
 		 
 		Project project = projectDTO.getProject();
-		projectRepo.save(project);
+		projectRepository.save(project);
 		
 		List<Technology> technologies = technologyService.findTechnologiesById(projectDTO.getTechnologies());
 		for (Technology technology : technologies) {
@@ -55,11 +55,16 @@ public class StudentService implements IStudentService {
 		}
 		
 		teamLead.setProject(project);
-		List<Student> students = repo.findAllById(projectDTO.getStudentPrns());
+		List<Student> students = studentRepository.findAllById(projectDTO.getStudentPrns());
 		for (Student student : students) {
 			student.setProject(project);
 		}
 		
 		return project;
 	}
+	
+	public List<Student> getAllStudents(){
+		return studentRepository.findAll();
+	}
+	
 }

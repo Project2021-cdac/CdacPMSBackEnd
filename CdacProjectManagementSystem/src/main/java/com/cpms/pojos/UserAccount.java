@@ -72,6 +72,7 @@ public class UserAccount {
 		this.password = password;
 	}
 	
+	
 	public UserAccount(Integer id) {
 		this.id=id;
 	}
@@ -82,5 +83,18 @@ public class UserAccount {
 				+ ", email=" + email + ", password=" + password + ", phoneNumber=" + phoneNumber + ", dateOfBirth="
 				+ dateOfBirth + ", courseName=" + courseName + "]";
 	}
+
+
+	public UserAccount( String firstName, String lastName, String email, String phoneNumber, LocalDate dateOfBirth, Course courseName) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.phoneNumber = phoneNumber;
+		this.dateOfBirth = dateOfBirth;
+		this.courseName = courseName;
+	}
+	
+	
 	
 }

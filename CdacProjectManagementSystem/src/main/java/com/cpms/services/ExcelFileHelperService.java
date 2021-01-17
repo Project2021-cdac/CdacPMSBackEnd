@@ -21,7 +21,7 @@ public class ExcelFileHelperService implements IExcelFileHelperService {
 	private StudentRepository studentrepository;
 	
 	@Autowired
-	private UserAccountRepository useraccountrepositiory;
+	private UserAccountRepository userAcctRepositiory;
 	
 	@Override
 	public List<UserAccount> saveToDatabase(MultipartFile file) throws IOException{
@@ -35,7 +35,7 @@ public class ExcelFileHelperService implements IExcelFileHelperService {
 			Student s = studentlist.get(i);
 			s.setUserAccount(accountList.get(i));
 		}
-		accountList= useraccountrepositiory.saveAll(accountList);
+		accountList= userAcctRepositiory.saveAll(accountList);
 		studentrepository.saveAll(studentlist);
 //		successMessage = "Database save completed";
 		return accountList;

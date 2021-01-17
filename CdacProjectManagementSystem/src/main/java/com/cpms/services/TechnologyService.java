@@ -16,7 +16,7 @@ public class TechnologyService implements ITechnologyService {
 	
 	@Override
 	public List<Technology> getAllTechnology() {
-		return techRepository.findAllByOrderByTechnologyName();
+		return techRepository.findAllByOrderByName();
 	}
 	
 	@Override

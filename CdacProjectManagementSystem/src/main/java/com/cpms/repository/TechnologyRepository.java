@@ -10,5 +10,5 @@ import com.cpms.pojos.Technology;
 @Repository
 public interface TechnologyRepository extends JpaRepository<Technology, Integer> {
 
-	List<Technology> findAllByOrderByTechnologyName();
+	List<Technology> findAllByOrderByName();
 }
