@@ -8,7 +8,7 @@ import com.cpms.pojos.UserAccount;
 import com.cpms.repository.LoginRepository;
 
 @Service
-public class LoginServiceImpl implements ILoginService{
+public class LoginService implements ILoginService{
 	@Autowired
 	private LoginRepository loginRepo;
 

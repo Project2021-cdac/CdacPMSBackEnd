@@ -26,7 +26,8 @@ public class ExcelFileParser {
 		TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 	}
 	public static String TYPE ;
-	public static String[] HEADERS = {"PRN", "First_name", "Last_name", "Email", "ContactNo", "Date_Of_Birth", "Course"};
+	//do we need this?
+	public static String[] HEADERS = {"PRN", "First_Name", "Last_Name", "Email", "Contact_No", "Date_Of_Birth", "Course"};
 	static String SHEET = "Sheet1";
 
 	public static boolean hasExcelFormat(MultipartFile file) {

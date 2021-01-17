@@ -36,12 +36,6 @@ public class UserAccount {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Enumerated(EnumType.STRING)
-	private Role role;
-	
-	@Enumerated(EnumType.STRING)
-	private Course courseName;
-	
 	@Column(length=50)
 	@Pattern(regexp = "^[a-zA-Z]{1,50}$" , message = "First name must be alphabetic and should be between 1 and 50 characters long!!!")
 	private String firstName;
@@ -58,7 +52,7 @@ public class UserAccount {
 	@Size(min=4 , max=16 , message="Password must be 4-16 characters long")
 	private String password;
 	
-	@Column(length=15)
+	@Column(length=15, unique = true)
 	@Pattern(regexp = "^[0-9]{10, 15}$" , message = "Mobile number be between 10 to 15 digits!!!")
 	private String phoneNumber;
 	
@@ -66,13 +60,21 @@ public class UserAccount {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate dateOfBirth;
 	
-	public UserAccount(Integer id) {
-		this.id = id;
-	}
+	@Enumerated(EnumType.STRING)
+	private Role role;
+	
+	@Enumerated(EnumType.STRING)
+	private Course courseName;
+	
 	
 	public UserAccount(String email, String password) {
 		this.email = email;
 		this.password = password;
+	}
+	
+	
+	public UserAccount(Integer id) {
+		this.id=id;
 	}
 	
 	@Override
@@ -81,5 +83,18 @@ public class UserAccount {
 				+ ", email=" + email + ", password=" + password + ", phoneNumber=" + phoneNumber + ", dateOfBirth="
 				+ dateOfBirth + ", courseName=" + courseName + "]";
 	}
+
+
+	public UserAccount( String firstName, String lastName, String email, String phoneNumber, LocalDate dateOfBirth, Course courseName) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.phoneNumber = phoneNumber;
+		this.dateOfBirth = dateOfBirth;
+		this.courseName = courseName;
+	}
+	
+	
 	
 }

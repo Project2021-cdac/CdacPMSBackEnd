@@ -8,7 +8,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,10 +31,8 @@ public class Admin{
 	@GeneratedValue(strategy  = GenerationType.IDENTITY)
 	private Integer id;
 	
-	private int minimumProjectTeamSize;
-	
-	private int maximumProjectTeamSize;
-	
+	@Column(length = 10)
+	private int projectMinSize; 
 	@OneToOne
 	@JoinColumn(name="user_id")
 	private UserAccount userAccount;	

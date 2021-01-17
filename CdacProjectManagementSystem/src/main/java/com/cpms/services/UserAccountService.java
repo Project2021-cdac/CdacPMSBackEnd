@@ -1,20 +1,19 @@
 package com.cpms.services;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.cpms.pojos.UserAccount;
 import com.cpms.repository.UserAccountRepository;
 
+@Service
 public class UserAccountService implements IUserAccountService {
 
 	@Autowired 
-	private UserAccountRepository repository;
-	
-	@Override
-	public List<UserAccount> getStudentUserAccountforRegisteration() {
-		return repository.getStudentUserAccountforRegisteration();
-	}
+	private UserAccountRepository userAcctRepository;
 
+	@Override
+	public UserAccount registerUser(UserAccount user) {
+		return userAcctRepository.save(user);
+	}
 }

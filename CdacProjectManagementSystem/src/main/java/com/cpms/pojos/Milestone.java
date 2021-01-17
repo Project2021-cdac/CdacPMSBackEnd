@@ -45,7 +45,8 @@ public class Milestone {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate endDate;
-	private MilestoneCheckpoints milestoneCheckpoints;
+	
+	private MilestoneCheckpoint milestoneCheckpoint;
 	
 	@ManyToOne
 	 @JoinColumn(name="project_id")
@@ -54,6 +55,6 @@ public class Milestone {
 	@Override
 	public String toString() {
 		return "Milestone [milestoneId=" + id + ", startDate=" + startDate + ", endDate=" + endDate
-				+ ", mileStoneCheckPoints=" + milestoneCheckpoints + "]";
+				+ ", mileStoneCheckPoint=" + milestoneCheckpoint + "]";
 	}
 }
