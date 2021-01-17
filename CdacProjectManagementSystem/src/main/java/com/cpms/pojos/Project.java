@@ -25,7 +25,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import lombok.EqualsAndHashCode;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -36,10 +36,10 @@ import lombok.Setter;
  *	 Multiple technologies can be used in one Project.
  */
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
-@EqualsAndHashCode
 @Entity
 @Table(name = "project_table")
 public class Project {
@@ -51,12 +51,12 @@ public class Project {
 	@NotBlank(message = "Project Title can't be blank")
 	@Size(max = 100, message = "Project Title must be less than 100 characters")
 	@Column(length = 100)
-	private String projectTitle;
+	private String title;
 
 	@NotBlank(message = "Project Description can't be blank")
 	@Size(min = 30, max = 300, message = "Project Description must be between 10 and 300 characters")
 	@Column(length = 300)
-	private String projectDescription;
+	private String description;
 
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd")
@@ -81,26 +81,27 @@ public class Project {
 	private Set<Technology> technologies;
 
 	public Project(
-			@NotBlank(message = "Project Title can't be blank") @Size(max = 100, message = "Project Title must be less than 100 characters") String projectTitle,
-			@NotBlank(message = "Project Description can't be blank") @Size(min = 30, max = 300, message = "Project Description must be between 10 and 300 characters") String projectDescription,
+			@NotBlank(message = "Project Title can't be blank") @Size(max = 100, message = "Project Title must be less than 100 characters") String title,
+			@NotBlank(message = "Project Description can't be blank") @Size(min = 30, max = 300, message = "Project Description must be between 10 and 300 characters") String description,
 			LocalDate startDate, @Future(message = "Project End Date must be in future") LocalDate endDate,
 			Student teamLead) {
-		this.projectTitle = projectTitle;
-		this.projectDescription = projectDescription;
+		this.title = title;
+		this.description = description;
 		this.startDate = startDate;
 		this.endDate = endDate;
 		this.teamLead = teamLead;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "Project [Project Id=" + id + ", projectTitle=" + projectTitle + ", projectDescription="
-				+ projectDescription + ", startDate=" + startDate + ", endDate=" + endDate + ", guide=" + guide + "]";
+		return "Project [Project Id=" + id + ", title=" + title + ", description=" + description + ", startDate="
+				+ startDate + ", endDate=" + endDate + ", guide=" + guide + "]";
 	}
-	
-	//helper method
-		public void addTechnology(Technology technology) {
-			this.technologies.add(technology);
-			technology.addProject(this);
-		}
+
+	// helper method
+	public void addTechnology(Technology technology) {
+		this.technologies.add(technology);
+		/* technology.addProject(this); */
+		technology.getProjects().add(this);
+	}
 }

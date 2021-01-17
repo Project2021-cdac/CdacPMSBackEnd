@@ -12,8 +12,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * @author dev2000
@@ -25,12 +26,13 @@ import lombok.NoArgsConstructor;
  * Now Guide can access any one project from the given list of projects.
  */
 
-@Data
-@AllArgsConstructor
+
 @NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "session_table")
-@SuppressWarnings("unused")
 public class Session {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

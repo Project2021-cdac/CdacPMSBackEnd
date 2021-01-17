@@ -60,9 +60,9 @@ public class Technology {
 		return "Technology [Technology Id=" + id + ", Name=" + name + "]";
 	}
 	
-	//helper method
-	public void addProject(Project project) {
-		this.projects.add(project);	
-	}
+//	//helper method
+//	public void addProject(Project project) {
+//		this.projects.add(project);	
+//	}
 
 }

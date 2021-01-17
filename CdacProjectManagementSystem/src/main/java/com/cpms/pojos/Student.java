@@ -23,6 +23,7 @@ import lombok.Setter;
  *         group for one project
  */
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "student_table")

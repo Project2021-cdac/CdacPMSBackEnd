@@ -28,22 +28,22 @@ import lombok.Setter;
  * Multiple technologies can be professed by Many Guide.
  */
 
-@Getter
-@Setter
-@EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "guide_table")
 public class Guide {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	
 	private boolean inSession;
 	
 	@OneToOne
 	@JoinColumn(name = "user_id")
-	private UserAccount user;
+	private UserAccount userAccount;
 	
 	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
 	@JoinTable(name = "guide_technology_table", 
@@ -54,7 +54,7 @@ public class Guide {
 
 	@Override
 	public String toString() {
-		return "Guide [id= " + id + ", inSession= " + inSession + ", user= " + user + "]";
+		return "Guide [id= " + id + ", inSession= " + inSession + ", user= " + userAccount + "]";
 	}
 	
 }
