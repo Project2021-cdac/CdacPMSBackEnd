@@ -2,6 +2,8 @@ package com.cpms.services;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +11,7 @@ import com.cpms.pojos.Technology;
 import com.cpms.repository.TechnologyRepository;
 
 @Service
+@Transactional
 public class TechnologyService implements ITechnologyService {
 
 	@Autowired 

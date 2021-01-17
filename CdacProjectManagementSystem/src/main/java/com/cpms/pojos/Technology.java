@@ -1,5 +1,6 @@
 package com.cpms.pojos;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -42,11 +43,11 @@ public class Technology {
 
 	@ManyToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST}, mappedBy = "technologies")
 	@JsonIgnoreProperties("technologies")
-	private Set<Guide> guides;
+	private Set<Guide> guides = new HashSet<>();
 	
 	@ManyToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST}, mappedBy = "technologies")
 	@JsonIgnoreProperties("technologies")
-	private Set<Project> projects;
+	private Set<Project> projects = new HashSet<>();
 	
 	@Override
 	public String toString() {
