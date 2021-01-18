@@ -19,6 +19,7 @@ import com.cpms.fileutils.excelfilehelper.ExcelFileParser;
 import com.cpms.pojos.Admin;
 import com.cpms.pojos.Guide;
 import com.cpms.pojos.Project;
+import com.cpms.pojos.Role;
 import com.cpms.pojos.Student;
 import com.cpms.pojos.Technology;
 import com.cpms.pojos.UserAccount;
@@ -29,6 +30,7 @@ import com.cpms.services.IGuideService;
 import com.cpms.services.IProjectService;
 import com.cpms.services.ITechnologyService;
 import com.cpms.services.IUserAccountService;
+import com.cpms.wrapperclasses.RegisterGuideWrapper;
 
 @RestController
 @RequestMapping(value = "/admin")
@@ -89,27 +91,35 @@ public class AdminController {
 		return new ResponseEntity<>(guideList, HttpStatus.OK);
 	}
 	
+	//TODO Convey to front end this info
 	@PostMapping("/guides/register") 
-	ResponseEntity<?> registerGuides(@RequestBody UserAccount guideUser, 
-			@RequestBody List<String> technologies // TODO Once again confirm if the request body will contain this
-			){
-		UserAccount registerUser = userAcctService.registerUser(guideUser);
-		Guide guide = new Guide();
-		List<Technology> technologyDbList = technologyService.getAllTechnology(); 
-		guide.setUserAccount(registerUser);
-		for(String technology: technologies) {
-			// TODO uppercase confirm upper case of string from front end
-			for(Technology tobj:technologyDbList) {
-				if(technology.equals(tobj.getName()) ) {
-					guide.getTechnologies().add(tobj);
-					tobj.getGuides().add(guide);
-					technologyService.saveTechnology(tobj);
-					break;
-				}		
-			}
-		}	
+	ResponseEntity<?> registerGuides(@RequestBody RegisterGuideWrapper guideUser){
+		ResponseMessage response = null;
+		try {
+			System.out.println(guideUser);
+			guideUser.getGuidedata().setRole(Role.GUIDE);
+			UserAccount registeredGuideAcct = userAcctService.registerUser(guideUser.getGuidedata());
+			List<String> technologies = guideUser.getTechnologylist();
+			List<Technology> technologyDbList = technologyService.getAllTechnology(); 
+			Guide guide = new Guide();
+			guide.setInSession(false);
+			guide.setUserAccount(registeredGuideAcct);
+			for(String technology: technologies) {
+				// TODO uppercase confirm upper case of string from front end
+				for(Technology tobj:technologyDbList) {
+					if(technology.equals(tobj.getName()) ) {
+						guide.getTechnologies().add(tobj);
+						tobj.getGuides().add(guide);
+						technologyService.saveTechnology(tobj);
+						break;
+					}		
+				}
+			}	
+		response = new ResponseMessage("Guide "+guide.getUserAccount().getFirstName()+" registered Successfully");
 		guide = guideService.registerGuide(guide);
-		ResponseMessage response = new ResponseMessage("Guide "+guide.getUserAccount().getFirstName()+" registered Successfully");
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	

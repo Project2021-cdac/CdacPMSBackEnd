@@ -46,6 +46,6 @@ public class Session {
 	private Guide guide;
 	
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(columnDefinition="integer", name = "project_id")
+	@JoinColumn( name = "project_id")
 	private Project project;	
 }

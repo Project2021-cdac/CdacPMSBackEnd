@@ -67,49 +67,63 @@ public class ExcelFileParser {
 						dataReadFromCell=true;
 						switch (cellIdx) {
 							case 0://PRN
-								long longValue = ((Double)currentCell.getNumericCellValue()).longValue();
-								System.out.println("PRN: "+rowNumber+ " : " +longValue);
-								student.setPrn( longValue );
-								break;
-							case 1://FirstName
-								String firstName = currentCell.getStringCellValue();
-		//						if()
-								System.out.println("First Name: "+rowNumber+ " : "+firstName);
-								userAccount.setFirstName(firstName);
-								break;
-							case 2://LastName 
-								System.out.println(currentCell.getCellType());
-								String lastName = currentCell.getStringCellValue();
-								System.out.println("Last Name: "+rowNumber+ " : " +lastName);
-								if(!lastName.equals("")) {
-//									System.out.println("Blank Last Name");
-									userAccount.setLastName(lastName);
+								{
+									long longValue = ((Double)currentCell.getNumericCellValue()).longValue();
+	//								System.out.println("PRN: "+rowNumber+ " : " +longValue);
+									student.setPrn( longValue );
+									break;
 								}
-								break;
+							case 1://FirstName
+								{
+									String firstName = currentCell.getStringCellValue();
+			//						if()
+	//								System.out.println("First Name: "+rowNumber+ " : "+firstName);
+									userAccount.setFirstName(firstName);
+									break;
+								}
+							case 2://LastName 
+								{
+	//								System.out.println(currentCell.getCellType());
+									String lastName = currentCell.getStringCellValue();
+	//								System.out.println("Last Name: "+rowNumber+ " : " +lastName);
+									if(!lastName.equals("")) {
+	//									System.out.println("Blank Last Name");
+										userAccount.setLastName(lastName);
+									}
+									break;
+								}
 							case 3://Email
-								String email = currentCell.getStringCellValue();
-								System.out.println("Email: "+rowNumber+" : "+email);
-								userAccount.setEmail(email);
-								break;
+								{
+									String email = currentCell.getStringCellValue();
+	//								System.out.println("Email: "+rowNumber+" : "+email);
+									userAccount.setEmail(email);
+									break;
+								}
 							case 4://ContactNo
-		//						System.out.println(currentCell.getCellType());
-								long ContactNo = ((Double)currentCell.getNumericCellValue()).longValue();
-								System.out.println("Contact No: "+rowNumber+" : "+ContactNo);
-								userAccount.setPhoneNumber(ContactNo+"");
-								break;
+								{
+			//						System.out.println(currentCell.getCellType());
+									long ContactNo = ((Double)currentCell.getNumericCellValue()).longValue();
+	//								System.out.println("Contact No: "+rowNumber+" : "+ContactNo);
+									userAccount.setPhoneNumber(ContactNo+"");
+									break;
+								}
 							case 5://Date_Of_Birth
-//								System.out.println(currentCell.getCellType());
-								String dob = currentCell.getStringCellValue();
-								System.out.println("Date of birth: "+rowNumber+" : "+dob);
-		//						userAccount.setDateOfBirth(dob.);
-								userAccount.setDateOfBirth(LocalDate.parse(dob.toString(), 
-										DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-								break;
+								{
+	//								System.out.println(currentCell.getCellType());
+									String dob = currentCell.getStringCellValue();
+	//								System.out.println("Date of birth: "+rowNumber+" : "+dob);
+			//						userAccount.setDateOfBirth(dob.);
+									userAccount.setDateOfBirth(LocalDate.parse(dob.toString(), 
+											DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+									break;
+								}
 							case 6://Course
-								String course = currentCell.getStringCellValue().toUpperCase();
-								System.out.println("Course "+rowNumber + " : "+course);
-								userAccount.setCourseName( Course.valueOf(course) );
-								break;
+								{
+									String course = currentCell.getStringCellValue().toUpperCase();
+		//								System.out.println("Course "+rowNumber + " : "+course);
+									userAccount.setCourseName( Course.valueOf(course) );
+									break;
+								}
 							default:
 								break;
 						}		

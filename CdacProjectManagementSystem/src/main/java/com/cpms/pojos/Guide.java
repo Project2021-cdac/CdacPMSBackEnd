@@ -41,7 +41,7 @@ public class Guide {
 	
 	private boolean inSession;
 	
-	@OneToOne
+	@OneToOne(orphanRemoval = true)
 	@JoinColumn(name = "user_id")
 	private UserAccount userAccount;
 	

@@ -46,7 +46,7 @@ import lombok.Setter;
 public class Project {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(columnDefinition="serial", name = "project_id")
+	@Column(name = "project_id")
 	private Integer id;
 
 	@NotBlank(message = "Project Title can't be blank")
