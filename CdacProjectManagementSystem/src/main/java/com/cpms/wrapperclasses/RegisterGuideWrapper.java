@@ -11,6 +11,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
+//TODO Rename the file may be?
 public class RegisterGuideWrapper {
 	private UserAccount guidedata;
 	private List<String> technologylist;

@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * @author dev2000
@@ -24,16 +25,23 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 @Entity
 @Table(name="admin_table")
 public class Admin{
 	@Id
 	@GeneratedValue(strategy  = GenerationType.IDENTITY)
+	@Column(updatable = true)
 	private Integer id;
 	
 	@Column(length = 10)
-	private int projectMinSize; 
-	@OneToOne
+	private int projectMinSize;
+	
+	@OneToOne(orphanRemoval = true)
 	@JoinColumn(name="user_id")
 	private UserAccount userAccount;	
+	
+	public Admin(Integer id) {
+		this.id = id;
+	}
 }

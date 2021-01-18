@@ -1,12 +1,12 @@
 package com.cpms.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cpms.pojos.Admin;
-import com.cpms.pojos.Guide;
 import com.cpms.pojos.Student;
 import com.cpms.pojos.UserAccount;
 import com.cpms.repository.AdminRepository;
@@ -22,6 +22,7 @@ public class AdminService implements IAdminService {
 	@Autowired
 	private UserAccountRepository userAcctRepository;
 	
+	@Autowired
 	private AdminRepository adminRepository;
 	
 	@Override
@@ -30,14 +31,8 @@ public class AdminService implements IAdminService {
 	}
 
 	@Override
-	public String registerStudent() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Guide> getGuideList() {
-		return userAcctRepository.getUserAccountofGuides();
+	public List<UserAccount> getGuideList() {
+		return  userAcctRepository.getUserAccountofGuides();
 	}
 
 	@Override
@@ -51,8 +46,8 @@ public class AdminService implements IAdminService {
 	}
 
 	@Override
-	public Admin findByUserAccount(UserAccount account) {
-		return adminRepository.findByUserAccount(account);
+	public Optional<Admin> getAdminByUserAccount(UserAccount userAccount) {
+		return adminRepository.findByUserAccount(userAccount);
 	}
 	
 	

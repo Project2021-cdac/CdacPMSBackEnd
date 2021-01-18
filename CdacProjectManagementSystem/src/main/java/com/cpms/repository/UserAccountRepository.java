@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import com.cpms.pojos.Guide;
 import com.cpms.pojos.UserAccount;
 
 @Repository
@@ -18,6 +17,6 @@ public interface UserAccountRepository extends JpaRepository<UserAccount, Intege
 		
 	@Query("select new com.cpms.pojos.UserAccount(firstName, lastName, email, phoneNumber, dateOfBirth, courseName) "
 	+ "from UserAccount u where role='GUIDE'")
-	List<Guide> getUserAccountofGuides();
+	List<UserAccount> getUserAccountofGuides();
 
 }

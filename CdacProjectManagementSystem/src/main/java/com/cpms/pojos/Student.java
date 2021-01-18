@@ -32,7 +32,7 @@ public class Student {
 	@Column(name = "prn", updatable = true)
 	private Long prn;
 
-	@OneToOne
+	@OneToOne(orphanRemoval = true)
 	@JoinColumn(name = "user_id")
 	private UserAccount userAccount;
 
@@ -45,7 +45,7 @@ public class Student {
 	}
 
 	// to avoid recursion during serialization
-	@JsonIgnore
+	@JsonIgnore //TODO why here?
 	public Project getProject() {
 		return project;
 	}
