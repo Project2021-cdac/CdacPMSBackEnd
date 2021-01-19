@@ -30,6 +30,7 @@ public class StudentService implements IStudentService {
 
 	@Override
 	public Student getStudentByUserAccount(UserAccount userAccount) {
+		System.out.println(userAccount);
 		return studentRepository.findByUserAccount(userAccount);
 	}
 

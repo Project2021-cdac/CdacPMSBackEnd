@@ -14,14 +14,14 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -43,6 +43,7 @@ import lombok.Setter;
 public class UserAccount {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonInclude(value = Include.NON_ABSENT)
 	private Integer id;
 	
 	@Column(length=50)
@@ -59,7 +60,7 @@ public class UserAccount {
 	
 	@Column(length=50)
 	@Size(min=4 , max=16 , message="Password must be 4-16 characters long")
-	@JsonIgnore
+	@JsonInclude(value = Include.NON_ABSENT)
 	private String password;
 	
 	@Column(length=15, unique = true)
@@ -71,6 +72,7 @@ public class UserAccount {
 	private LocalDate dateOfBirth;
 	
 	@Enumerated(EnumType.STRING)
+	@JsonInclude(value = Include.NON_ABSENT)
 	private Role role;
 	
 	@Enumerated(EnumType.STRING)
@@ -80,7 +82,6 @@ public class UserAccount {
 		this.id=id;
 	}
 	
-
 	public UserAccount( String firstName, String lastName, String email, String phoneNumber, LocalDate dateOfBirth, Course courseName) {
 		super();
 		this.firstName = firstName;

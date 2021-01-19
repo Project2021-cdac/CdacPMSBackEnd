@@ -1,18 +1,17 @@
 package com.cpms.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.cpms.pojos.Admin;
-import com.cpms.pojos.Guide;
 import com.cpms.pojos.Student;
 import com.cpms.pojos.UserAccount;
 
 public interface IAdminService {
 
 	List<Student> getStudentListOrderedByPrn();
-	String registerStudent();
-	List<Guide> getGuideList();
+	List<UserAccount> getGuideList();
 	Integer getProjectMinSize();
-	Admin findByUserAccount(UserAccount account);
+	Optional<Admin> getAdminByUserAccount(UserAccount account);
 	public Admin save(Admin admin);
 }

@@ -1,6 +1,7 @@
 package com.cpms.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -68,24 +70,24 @@ public class AdminController {
 		return new ResponseEntity<>(studentListOrderedByPrn, HttpStatus.OK);
 	}
 
+	//TODO how to avoid multiple registeration. FrontEnd Perhaps?
 	@PostMapping("/students/register")
 	public ResponseEntity<?> registerStudent(@RequestParam MultipartFile file) throws Exception {
-		String message = null;
 		if (ExcelFileParser.hasExcelFormat(file)) {
 				List<UserAccount> studentUserAccounts = excelFileHelperService.saveToDatabase(file);
-//				List<UserAccount> studentUserAccounts = userAcctService.getStudentUserAccountforRegistration();
-				emailService.sendEmail(studentUserAccounts);
-				message = "Email Send successfully";
+//				emailService.sendEmail(studentUserAccounts);
 		}else {
-			message = "Please upload an excel file!";
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseMessage(message));
+			
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Upload an ExcelFile!!");
 		}
-		return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+		return ResponseEntity.status(HttpStatus.CREATED).body("All Students registered successfully");
 	}
 	
+	// TODO Complete List of data
+	// TODO remaining to test
 	@GetMapping("/guides")
 	public ResponseEntity<?> getGuideList(){
-		List<Guide> guideList = adminService.getGuideList();
+		List<UserAccount> guideList = adminService.getGuideList();
 		if (guideList.isEmpty())
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		return new ResponseEntity<>(guideList, HttpStatus.OK);
@@ -94,35 +96,30 @@ public class AdminController {
 	//TODO Convey to front end this info
 	@PostMapping("/guides/register") 
 	ResponseEntity<?> registerGuides(@RequestBody RegisterGuideWrapper guideUser){
-		ResponseMessage response = null;
-		try {
-			System.out.println(guideUser);
-			guideUser.getGuidedata().setRole(Role.GUIDE);
-			UserAccount registeredGuideAcct = userAcctService.registerUser(guideUser.getGuidedata());
-			List<String> technologies = guideUser.getTechnologylist();
-			List<Technology> technologyDbList = technologyService.getAllTechnology(); 
-			Guide guide = new Guide();
-			guide.setInSession(false);
-			guide.setUserAccount(registeredGuideAcct);
-			for(String technology: technologies) {
-				// TODO uppercase confirm upper case of string from front end
-				for(Technology tobj:technologyDbList) {
-					if(technology.equals(tobj.getName()) ) {
-						guide.getTechnologies().add(tobj);
-						tobj.getGuides().add(guide);
-						technologyService.saveTechnology(tobj);
-						break;
-					}		
-				}
-			}	
-		response = new ResponseMessage("Guide "+guide.getUserAccount().getFirstName()+" registered Successfully");
+//		System.out.println(guideUser);
+		guideUser.getGuidedata().setRole(Role.GUIDE);
+		UserAccount registeredGuideAcct = userAcctService.registerUser(guideUser.getGuidedata());
+		List<String> technologies = guideUser.getTechnologylist();
+		List<Technology> technologyDbList = technologyService.getAllTechnology(); 
+		Guide guide = new Guide();
+		guide.setInSession(false);
+		guide.setUserAccount(registeredGuideAcct);
+		for(String technology: technologies) {
+			// TODO uppercase confirm upper case of string from front end
+			//Make it Id, not string
+			for(Technology tobj:technologyDbList) {
+				if(technology.equals(tobj.getName()) ) {
+					guide.getTechnologies().add(tobj);
+					tobj.getGuides().add(guide);
+					technologyService.saveTechnology(tobj);
+					break;
+				}		
+			}
+		}	
 		guide = guideService.registerGuide(guide);
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
-		return new ResponseEntity<>(response, HttpStatus.OK);
-	}
-	
+		return new ResponseEntity<>(new ResponseMessage("Guide "+guide.getUserAccount().getFirstName()+" "+guide.getUserAccount().getFirstName()+" registered successfully"), HttpStatus.CREATED);
+}
+	//TODO remaining to test
 	@GetMapping("/projects/list")
 	public ResponseEntity<?> getProjectList(){
 		List<Project> projectList = projectService.getAllProjectList();
@@ -132,18 +129,26 @@ public class AdminController {
 	}
 	
 	@GetMapping("/{userid}/teamsize")
-	public ResponseEntity<?> getTeamsize(@PathVariable Integer userid) {
-		Admin adminAccount = adminService.findByUserAccount(new UserAccount(userid));
-		return new ResponseEntity<> (adminAccount.getProjectMinSize(), HttpStatus.OK);
+	public ResponseEntity<?> getTeamsize(@PathVariable int userid) {
+		Optional<Admin> adminAcct = adminService.getAdminByUserAccount(new UserAccount(userid));
+		if(adminAcct.isPresent()) {
+			return new ResponseEntity<> (adminAcct.get().getProjectMinSize(), HttpStatus.OK);
+		}
+		return new ResponseEntity<> (HttpStatus.NO_CONTENT);
+
 	}
 	
-	@PostMapping("/{userid}/setsize") //TODO convey the request parameter name
+	@PutMapping("/{userid}/setsize") //TODO convey the request parameter name
 	public ResponseEntity<?> setTeamSize(@PathVariable Integer userid, @RequestParam(name = "size") int projectMinSize){
-		Admin adminAccount = adminService.findByUserAccount(new UserAccount(userid));
-		if(adminAccount.getProjectMinSize() != projectMinSize) {
-			adminAccount.setProjectMinSize(projectMinSize);
-			return new ResponseEntity<> (adminService.save(adminAccount), HttpStatus.OK);
+		Optional<Admin> adminAcct = adminService.getAdminByUserAccount(new UserAccount(userid));
+		if(adminAcct.isPresent()){
+			Admin admin = adminAcct.get();
+			if(admin.getProjectMinSize() != projectMinSize) {
+				admin.setProjectMinSize(projectMinSize);
+				return new ResponseEntity<> (adminService.save(admin).getProjectMinSize(), HttpStatus.OK);
+			}
+			return new ResponseEntity<> (adminAcct, HttpStatus.CONFLICT);
 		}
-		return new ResponseEntity<> (adminAccount, HttpStatus.CONFLICT);
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 }
