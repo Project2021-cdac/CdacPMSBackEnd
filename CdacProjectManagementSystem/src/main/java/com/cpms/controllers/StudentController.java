@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cpms.dto.ProjectDTO;
+import com.cpms.dto.ProjectStatusDTO;
 import com.cpms.pojos.Project;
 import com.cpms.pojos.Student;
+import com.cpms.pojos.Task;
 import com.cpms.pojos.UserAccount;
 import com.cpms.services.IStudentService;
 
@@ -52,5 +54,19 @@ public class StudentController {
 		} else {
 			return new ResponseEntity<>(students, HttpStatus.OK);
 		}
+	}
+	
+	@PostMapping("/createtask/{projectid}")
+	public ResponseEntity<?> createTask(@RequestBody Task newtask){
+		Task createdTask = service.createTask(newtask);
+		return new ResponseEntity<>(HttpStatus.CREATED);
+	}
+	
+	@GetMapping("/milestones/:projectid")
+	public ResponseEntity<?> getProjectMilstonesAndTaskdetails(@PathVariable Integer projectId){
+		List<ProjectStatusDTO> projectStatus = service.getProjectMilstonesAndTaskdetails(projectId);
+		if(!projectStatus.isEmpty())
+			return new ResponseEntity<>(projectStatus, HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);		
 	}
 }

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.cpms.dto.RegisterGuideDTO;
 import com.cpms.dto.ResponseMessage;
 import com.cpms.fileutils.excelfilehelper.ExcelFileParser;
 import com.cpms.pojos.Admin;
@@ -23,6 +24,7 @@ import com.cpms.pojos.Guide;
 import com.cpms.pojos.Project;
 import com.cpms.pojos.Role;
 import com.cpms.pojos.Student;
+import com.cpms.pojos.Task;
 import com.cpms.pojos.Technology;
 import com.cpms.pojos.UserAccount;
 import com.cpms.services.IAdminService;
@@ -32,7 +34,7 @@ import com.cpms.services.IGuideService;
 import com.cpms.services.IProjectService;
 import com.cpms.services.ITechnologyService;
 import com.cpms.services.IUserAccountService;
-import com.cpms.wrapperclasses.RegisterGuideWrapper;
+import com.cpms.services.StudentService;
 
 @RestController
 @RequestMapping(value = "/admin")
@@ -75,7 +77,7 @@ public class AdminController {
 	public ResponseEntity<?> registerStudent(@RequestParam MultipartFile file) throws Exception {
 		if (ExcelFileParser.hasExcelFormat(file)) {
 				List<UserAccount> studentUserAccounts = excelFileHelperService.saveToDatabase(file);
-//				emailService.sendEmail(studentUserAccounts);
+				emailService.sendEmail(studentUserAccounts);
 		}else {
 			
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Upload an ExcelFile!!");
@@ -95,7 +97,7 @@ public class AdminController {
 	
 	//TODO Convey to front end this info
 	@PostMapping("/guides/register") 
-	ResponseEntity<?> registerGuides(@RequestBody RegisterGuideWrapper guideUser){
+	ResponseEntity<?> registerGuides(@RequestBody RegisterGuideDTO guideUser){
 //		System.out.println(guideUser);
 		guideUser.getGuidedata().setRole(Role.GUIDE);
 		UserAccount registeredGuideAcct = userAcctService.registerUser(guideUser.getGuidedata());
@@ -138,7 +140,7 @@ public class AdminController {
 
 	}
 	
-	@PutMapping("/{userid}/setsize") //TODO convey the request parameter name
+	@PutMapping("/{userid}/setsize") 
 	public ResponseEntity<?> setTeamSize(@PathVariable Integer userid, @RequestParam(name = "size") int projectMinSize){
 		Optional<Admin> adminAcct = adminService.getAdminByUserAccount(new UserAccount(userid));
 		if(adminAcct.isPresent()){
@@ -151,4 +153,5 @@ public class AdminController {
 		}
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
+
 }

@@ -1,5 +1,6 @@
 package com.cpms.services;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,7 +28,11 @@ public class AdminService implements IAdminService {
 	
 	@Override
 	public List<Student> getStudentListOrderedByPrn() {
-		return studentRepository.findAllByOrderByPrn();		
+		 List<Student> findAllByOrderByPrn = studentRepository.findAllByOrderByPrn();		
+		 for (Student student : findAllByOrderByPrn) {
+			System.out.println(student);
+		}
+		return findAllByOrderByPrn;
 	}
 
 	@Override
