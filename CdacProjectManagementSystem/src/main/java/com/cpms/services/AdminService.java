@@ -40,11 +40,7 @@ public class AdminService implements IAdminService {
 		return  userAcctRepository.getUserAccountofGuides();
 	}
 
-	@Override
-	public Integer getProjectMinSize() {
-		return null;
-	}
-
+	
 	@Override
 	public Admin save(Admin admin) {
 		return adminRepository.save(admin);
