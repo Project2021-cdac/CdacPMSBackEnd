@@ -17,11 +17,12 @@ public class ErrorResponse {
 	public ErrorResponse(String message, String details) {
 		this.message = message;
 		this .detailedMessage = details;
+		this.dateTime = LocalDateTime.now();
 	}
 
 	@Override
 	public String toString() {
-		return "ErrorResponse [Message =" + message + ", \ndetailedMessage =" + detailedMessage + ", \nDate_Time =" + dateTime
+		return "ErrorResponse [Message =" + message + ", \nDetailed Message =" + detailedMessage + ", \nDate_Time =" + dateTime
 				+ "]";
 	}
 

@@ -14,9 +14,14 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -30,7 +35,11 @@ import lombok.Setter;
 @AllArgsConstructor
 @EqualsAndHashCode
 @Entity
-@Table(name="user_table")
+@Table(name = "user_table"/*										TODO Uncomment to add unique constraint to email
+							 * , uniqueConstraints = {
+							 * 
+							 * @UniqueConstraint(columnNames = "email") }
+							 */)
 public class UserAccount {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,6 +59,7 @@ public class UserAccount {
 	
 	@Column(length=50)
 	@Size(min=4 , max=16 , message="Password must be 4-16 characters long")
+	@JsonIgnore
 	private String password;
 	
 	@Column(length=15, unique = true)
@@ -70,13 +80,6 @@ public class UserAccount {
 		this.id=id;
 	}
 	
-	@Override
-	public String toString() {
-		return "UserAccount [id=" + id + ", role=" + role + ", firstName=" + firstName + ", lastName=" + lastName
-				+ ", email=" + email + ", password=" + password + ", phoneNumber=" + phoneNumber + ", dateOfBirth="
-				+ dateOfBirth + ", courseName=" + courseName + "]";
-	}
-
 
 	public UserAccount( String firstName, String lastName, String email, String phoneNumber, LocalDate dateOfBirth, Course courseName) {
 		super();
@@ -88,6 +91,31 @@ public class UserAccount {
 		this.courseName = courseName;
 	}
 	
+	public void setFirstName(String firstName) {
+		this.firstName = firstName.toUpperCase();
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName.toUpperCase();
+	}
+	
+	// TODO setPassword with BCrypt encoded one. 
+	public void setPassword(String password) {
+		this.password = passwordEncoder().encode(password);
+	}
+	
+	@Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+	
+	@Override
+	public String toString() {
+		return "UserAccount [id=" + id + ", role=" + role + ", firstName=" + firstName + ", lastName=" + lastName
+				+ ", email=" + email + ", password=" + password + ", phoneNumber=" + phoneNumber + ", dateOfBirth="
+				+ dateOfBirth + ", courseName=" + courseName + "]";
+	}
+
 	
 	
 }

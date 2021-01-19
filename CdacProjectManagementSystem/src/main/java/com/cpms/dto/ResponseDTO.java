@@ -2,34 +2,21 @@ package com.cpms.dto;
 
 import java.time.LocalDateTime;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
 public class ResponseDTO {
-	private String mesg;
+	private String message;
 	private LocalDateTime ts;
 
-	public ResponseDTO() {
-		
-	}
-
-	public ResponseDTO(String mesg) {
+	public ResponseDTO(String message) {
 		super();
-		this.mesg = mesg;
+		this.message = message;
 		this.ts = LocalDateTime.now();
-	}
-
-	public String getMesg() {
-		return mesg;
-	}
-
-	public void setMesg(String mesg) {
-		this.mesg = mesg;
-	}
-
-	public LocalDateTime getTs() {
-		return ts;
-	}
-
-	public void setTs(LocalDateTime ts) {
-		this.ts = ts;
 	}
 
 }

@@ -18,6 +18,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Future;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -67,6 +69,10 @@ public class Project {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate endDate;
+	
+	@Min(0)							// TODO - Method to calculate project progress acc to tasks -  
+	@Max(100)						//		Math.floor((total tasks/ total compleated task)*100)
+	private int progress;
 
 	@OneToOne
 	@JoinColumn(name = "teamlead_prn")
