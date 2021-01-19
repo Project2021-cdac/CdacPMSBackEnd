@@ -97,7 +97,7 @@ public class AdminController {
 	@PostMapping("/guides/register") 
 	ResponseEntity<?> registerGuides(@RequestBody RegisterGuideWrapper guideUser){
 //		System.out.println(guideUser);
-		guideUser.getGuidedata().setRole(Role.GUIDE);
+		guideUser.getGuidedata().setRole(Role.ROLE_GUIDE);
 		UserAccount registeredGuideAcct = userAcctService.registerUser(guideUser.getGuidedata());
 		List<String> technologies = guideUser.getTechnologylist();
 		List<Technology> technologyDbList = technologyService.getAllTechnology(); 

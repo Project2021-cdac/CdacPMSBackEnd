@@ -1,13 +1,14 @@
 package com.cpms.security.jwt;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-
-import com.cpms.services.UserDetailsImpl;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -30,62 +31,72 @@ public class JwtUtils {
 	 * JWT Secret (like salt) to encrypt Password - final result store in DB will be encoded Password (Password+jwtSecrete)
 	 */
 	//@Value("${cpms.jwtSecret}")
-	private String jwtSecret;
+	private String JWT_SECRET_CODE = "CdacPMSSecretKey";					//Salt -- Keep salt as strong as possible for more security
 
 	/**
 	 * Token Expiration time in Milliseconds
 	 */
 	//@Value("${cpms.jwtExpirationMs}")
-	private int jwtExpirationMs;
+	private int JWT_EXPIRATION_MS = 360000;		//4Days
 	
-	public JwtUtils() {
-		super();
-		this.jwtSecret = "CdacPMSSecretKey";				//Salt -- Keep salt as strong as possible for more security
-		this.jwtExpirationMs = 360000;								//4Days Approx
-	}
-
 	/**
 	 * @param authentication	-This Object contains our Credentials as input and Principal as output
 	 * @return
 	 */
-	public String generateJwtToken(Authentication authentication) {
-		UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
-		return createToken(authentication, userPrincipal);		
-	}
-	
-	private String createToken(Authentication authentication, UserDetailsImpl userPrincipal) {
-		Claims claims = Jwts.claims().setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs));
-		return Jwts.builder().setSubject((userPrincipal.getUsername())).setIssuedAt(new Date()).setClaims(claims)
-				.signWith(SignatureAlgorithm.HS512, jwtSecret).compact();		// OR SignatureAlgorithm.HS256
-	}
-	
-//	Claims claims = Jwts.claims().setExpiration(new Date(System.currentTimeMillis() + 3600000));
-//    * String jwt = Jwts.builder().setClaims(claims).compact();
 
-	public String getEmailFromJwtToken(String token) {
-		return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
-	}
+	public String generateToken(UserDetails userDetails) {
+        Map<String, Object> claims = new HashMap<>();
+        return createToken(claims, userDetails.getUsername());
+    }
 
-	public boolean validateJwtToken(String authToken) {
-		try {
-			Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
-			return true;		
-//			final String username = extractUsername(authToken);
-//	        return (username.equals(userDetails.getUsername()) && !isTokenExpired(authToken));
-		}  catch (ExpiredJwtException e) {
-			logger.error("JWT token is expired: ", e.getMessage());
-		} catch (UnsupportedJwtException e) {
-			logger.error("JWT token is unsupported: ", e.getMessage());
-		}catch (MalformedJwtException e) {
-			logger.error("JWT token Invalid: ", e.getMessage());
-		} catch (SignatureException e) { 
-			logger.error("Invalid JWT signature: ",  e.getMessage()); 
-		}catch (IllegalArgumentException e) {
-			logger.error("JWT claims string is empty: ", e.getMessage());
-		}catch(JwtException e) {
-			logger.error("JWT  related runtime exception: ", e.getMessage());
-		}
-		
-		return false;
-	}
+    private String createToken(Map<String, Object> claims, String subject) {
+
+        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + JWT_EXPIRATION_MS))
+                .signWith(SignatureAlgorithm.HS512, JWT_SECRET_CODE).compact();
+    }
+	 public String extractUsername(String token) {
+	        return extractClaim(token, Claims::getSubject);
+	    }
+
+	    public Date extractExpiration(String token) {
+	        return extractClaim(token, Claims::getExpiration);
+	    }
+	    
+	    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+	        final Claims claims = extractAllClaims(token);
+	        return claimsResolver.apply(claims);
+	    }
+	    
+	    private Claims extractAllClaims(String token) {
+	        return Jwts.parser().setSigningKey(JWT_SECRET_CODE).parseClaimsJws(token).getBody();
+	    }
+
+	
+	private Boolean isTokenExpired(String token) {
+        return extractExpiration(token).before(new Date());
+    }
+	
+	 public Boolean validateToken(String token, UserDetails userDetails) {
+		 try {
+			 final String username = extractUsername(token);
+		        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));	
+//				final String username = extractUsername(authToken);
+//		        return (username.equals(userDetails.getUsername()) && !isTokenExpired(authToken));
+			}  catch (ExpiredJwtException e) {
+				logger.error("JWT token is expired: ", e.getMessage());
+			} catch (UnsupportedJwtException e) {
+				logger.error("JWT token is unsupported: ", e.getMessage());
+			}catch (MalformedJwtException e) {
+				logger.error("JWT token Invalid: ", e.getMessage());
+			} catch (SignatureException e) { 
+				logger.error("Invalid JWT signature: ",  e.getMessage()); 
+			}catch (IllegalArgumentException e) {
+				logger.error("JWT claims string is empty: ", e.getMessage());
+			}catch(JwtException e) {
+				logger.error("JWT  related runtime exception: ", e.getMessage());
+			}
+			
+			return false;
+	    }
 }

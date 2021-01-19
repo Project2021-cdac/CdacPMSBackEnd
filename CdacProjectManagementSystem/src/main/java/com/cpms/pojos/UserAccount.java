@@ -12,7 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -20,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -58,9 +58,9 @@ public class UserAccount {
 	@Email
 	private String email;
 	
-	@Column(length=50)
-	@Size(min=4 , max=16 , message="Password must be 4-16 characters long")
-	@JsonInclude(value = Include.NON_ABSENT)
+	//@Column(length=50)
+	//@Size(min=4 , max=16 , message="Password must be 4-16 characters long")
+	@JsonIgnore
 	private String password;
 	
 	@Column(length=15, unique = true)
@@ -82,7 +82,8 @@ public class UserAccount {
 		this.id=id;
 	}
 	
-	public UserAccount( String firstName, String lastName, String email, String phoneNumber, LocalDate dateOfBirth, Course courseName) {
+	public UserAccount( String firstName, String lastName, String email, String phoneNumber, 
+			LocalDate dateOfBirth, Course courseName) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -106,7 +107,7 @@ public class UserAccount {
 	}
 	
 	@Bean
-    PasswordEncoder passwordEncoder() {
+    private PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 	
@@ -116,7 +117,5 @@ public class UserAccount {
 				+ ", email=" + email + ", password=" + password + ", phoneNumber=" + phoneNumber + ", dateOfBirth="
 				+ dateOfBirth + ", courseName=" + courseName + "]";
 	}
-
-	
 	
 }

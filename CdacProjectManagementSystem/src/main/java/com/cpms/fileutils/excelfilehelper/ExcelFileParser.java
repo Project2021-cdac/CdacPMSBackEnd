@@ -131,7 +131,7 @@ public class ExcelFileParser {
 					cellIdx++;
 				}
 				if(dataReadFromCell) {
-					userAccount.setRole(Role.STUDENT);
+					userAccount.setRole(Role.ROLE_STUDENT);
 					//TODO PRN Length
 					String password = student.getPrn().toString().substring(8);
 					System.out.println("Password : "+password);
