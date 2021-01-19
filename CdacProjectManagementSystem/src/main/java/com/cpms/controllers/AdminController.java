@@ -119,7 +119,7 @@ public class AdminController {
 			}
 		}	
 		guide = guideService.registerGuide(guide);
-		return new ResponseEntity<>(new ResponseMessage("Guide "+guide.getUserAccount().getFirstName()+" "+guide.getUserAccount().getFirstName()+" registered successfully"), HttpStatus.CREATED);
+		return new ResponseEntity<>(new ResponseMessage("Guide "+guide.getUserAccount().getFirstName()+" "+guide.getUserAccount().getLastName()+" registered successfully"), HttpStatus.CREATED);
 }
 	//TODO remaining to test
 	@GetMapping("/projects/list")

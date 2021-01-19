@@ -4,7 +4,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,6 +16,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
@@ -45,16 +48,25 @@ public class Guide {
 	@JoinColumn(name = "user_id")
 	private UserAccount userAccount;
 	
-	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.LAZY)
 	@JoinTable(name = "guide_technology_table", 
 	joinColumns = @JoinColumn(name = "guide_id"),
 	inverseJoinColumns = @JoinColumn(name = "technology_id"))
 	@JsonIgnoreProperties("guides")
 	private Set<Technology> technologies = new HashSet<>();
 
+	public Guide(Integer id) {
+		this.id = id;
+	}
+	
 	@Override
 	public String toString() {
 		return "Guide [id= " + id + ", inSession= " + inSession + ", user= " + userAccount + "]";
+	}
+	
+	@JsonIgnore
+	public Set<Technology> getTechnologies() {
+		return this.technologies;
 	}
 	
 }

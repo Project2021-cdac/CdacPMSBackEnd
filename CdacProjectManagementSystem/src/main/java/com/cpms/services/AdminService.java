@@ -29,9 +29,9 @@ public class AdminService implements IAdminService {
 	@Override
 	public List<Student> getStudentListOrderedByPrn() {
 		 List<Student> findAllByOrderByPrn = studentRepository.findAllByOrderByPrn();		
-		 for (Student student : findAllByOrderByPrn) {
-			System.out.println(student);
-		}
+//		 for (Student student : findAllByOrderByPrn) {
+//			System.out.println(student);
+//		}
 		return findAllByOrderByPrn;
 	}
 

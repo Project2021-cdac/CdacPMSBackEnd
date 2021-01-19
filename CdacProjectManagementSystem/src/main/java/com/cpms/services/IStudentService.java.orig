@@ -1,0 +1,27 @@
+package com.cpms.services;
+
+import java.util.List;
+
+import com.cpms.dto.ProjectDTO;
+<<<<<<< HEAD
+import com.cpms.dto.ProjectStatusDTO;
+import com.cpms.pojos.Milestone;
+=======
+import com.cpms.pojos.Activity;
+>>>>>>> e15aa64576054acb85fc7eecee2cdd93f1688cd7
+import com.cpms.pojos.Project;
+import com.cpms.pojos.Student;
+import com.cpms.pojos.Task;
+import com.cpms.pojos.UserAccount;
+
+public interface IStudentService {
+	Student getStudentByUserAccount(UserAccount userAccount);
+	List<Student> getStudentsWithoutProject();
+	Project registerProject(ProjectDTO projectDTO);
+<<<<<<< HEAD
+	Task createTask(Task newtask);
+	List<ProjectStatusDTO> getProjectMilstonesAndTaskdetails(Integer projId);
+=======
+	Activity saveProjectCreationActivity(Project project);
+>>>>>>> e15aa64576054acb85fc7eecee2cdd93f1688cd7
+}

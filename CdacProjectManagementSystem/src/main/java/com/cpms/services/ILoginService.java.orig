@@ -7,7 +7,12 @@ import com.cpms.dto.UserAccountDto;
 import com.cpms.pojos.UserAccount;
 
 public interface ILoginService {
+<<<<<<< HEAD
+	 UserAccount login(LoginRequest loginCredentials);
+	 UserAccount changePassword(String updatePassword, int userId);
+=======
 	 public ResponseEntity<?> login(LoginRequest loginCredentials);
 	 public ResponseEntity<?> changePassword(String headerAuth, String updatePassword, int userId);
 	 public UserAccount registerUser(UserAccountDto user);
+>>>>>>> e15aa64576054acb85fc7eecee2cdd93f1688cd7
 }

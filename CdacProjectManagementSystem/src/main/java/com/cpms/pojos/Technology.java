@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
@@ -42,11 +43,11 @@ public class Technology {
 	private String name;
 
 	@ManyToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST}, mappedBy = "technologies")
-	@JsonIgnoreProperties("technologies")
+	@JsonIgnore
 	private Set<Guide> guides = new HashSet<>();
 	
 	@ManyToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST}, mappedBy = "technologies")
-	@JsonIgnoreProperties("technologies")
+	@JsonIgnore
 	private Set<Project> projects = new HashSet<>();
 	
 	@Override

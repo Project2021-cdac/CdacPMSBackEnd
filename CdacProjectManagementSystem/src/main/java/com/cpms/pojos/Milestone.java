@@ -13,6 +13,7 @@ import javax.persistence.Table;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -56,5 +57,10 @@ public class Milestone {
 	public String toString() {
 		return "Milestone [milestoneId=" + id + ", startDate=" + startDate + ", endDate=" + endDate
 				+ ", mileStoneCheckPoint=" + milestoneCheckpoint + "]";
+	}
+	
+	@JsonIgnore
+	public Project getProjectId() {
+		return this.projectId;
 	}
 }
