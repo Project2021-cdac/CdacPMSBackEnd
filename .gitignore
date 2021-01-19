@@ -8,4 +8,5 @@
 *.png
 *.bmp
 
-
+# No .orig file #
+*.orig
