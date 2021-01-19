@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cpms.dto.ProjectDTO;
+import com.cpms.pojos.Activity;
 import com.cpms.pojos.Project;
 import com.cpms.pojos.Student;
 import com.cpms.pojos.Technology;
@@ -27,6 +28,8 @@ public class StudentService implements IStudentService {
 	IProjectService projectService;
 	@Autowired
 	ITechnologyService technologyService;
+	@Autowired
+	IActivityService activityService;
 
 	@Override
 	public Student getStudentByUserAccount(UserAccount userAccount) {
@@ -68,6 +71,21 @@ public class StudentService implements IStudentService {
 
 	public List<Student> getAllStudents() {
 		return studentRepository.findAll();
+	}
+
+	@Override
+	public Activity saveProjectCreationActivity(Project project) {
+
+		String activityDescription = "Project " + project.getId() + ". " + project.getTitle()
+				+ " created with group members ";
+
+		List<Student> students = studentRepository.findByProject(project);
+
+		for (Student eachStudent : students) {
+			activityDescription += eachStudent.getPrn() + " ";
+		}
+
+		return activityService.createActivity(activityDescription, project.getId());
 	}
 
 }

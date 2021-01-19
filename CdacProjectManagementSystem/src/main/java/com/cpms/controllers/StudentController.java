@@ -23,30 +23,32 @@ import com.cpms.services.IStudentService;
 public class StudentController {
 
 	@Autowired
-	IStudentService service;
+	IStudentService studentService;
 
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getStudentById(@PathVariable Integer id) {
-		Student student = service.getStudentByUserAccount(new UserAccount(id));
+		Student student = studentService.getStudentByUserAccount(new UserAccount(id));
 		if (student == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} else {
 			return new ResponseEntity<>(student, HttpStatus.OK);
 		}
 	}
-	
+
 	@PostMapping("/createproject")
 	public ResponseEntity<?> createProject(@RequestBody ProjectDTO projectDTO) {
-		 System.out.println(projectDTO);
-		 Project project = service.registerProject(projectDTO);
-		 if(project == null)
-			 return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
-		 return new ResponseEntity<>(project, HttpStatus.CREATED);
-	}	
-	
+		System.out.println(projectDTO);
+		Project project = studentService.registerProject(projectDTO);
+		if (project == null)
+			return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+
+		studentService.saveProjectCreationActivity(project);
+		return new ResponseEntity<>(project, HttpStatus.CREATED);
+	}
+
 	@GetMapping("/noproject")
 	public ResponseEntity<?> getStudentsWithoutProject() {
-		List<Student> students = service.getStudentsWithoutProject();
+		List<Student> students = studentService.getStudentsWithoutProject();
 		if (students.isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} else {

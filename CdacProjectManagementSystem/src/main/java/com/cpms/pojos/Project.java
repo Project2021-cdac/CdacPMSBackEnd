@@ -2,6 +2,7 @@ package com.cpms.pojos;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -26,6 +27,7 @@ import javax.validation.constraints.Size;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
@@ -74,15 +76,16 @@ public class Project {
 	@Max(100)						//		Math.floor((total tasks/ total compleated task)*100)
 	private int progress;
 
+	@JsonIgnore
 	@OneToOne
 	@JoinColumn(name = "teamlead_prn")
 	private Student teamLead;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne()
 	@JoinColumn(name = "guide_id")
 	private Guide guide;
 
-	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.LAZY)
 	@JoinTable(name = "project_technology_table", joinColumns = @JoinColumn(name = "project_id"), inverseJoinColumns = @JoinColumn(name = "technology_id"))
 	@JsonIgnoreProperties("projects")
 	private Set<Technology> technologies = new HashSet<>();
@@ -110,5 +113,11 @@ public class Project {
 		this.technologies.add(technology);
 		/* technology.addProject(this); */
 		technology.getProjects().add(this);
+	}
+	
+	
+	@JsonIgnore
+	public Set<Technology> getTechnologies() {
+		return this.technologies;
 	}
 }
