@@ -1,6 +1,5 @@
 package com.cpms.controllers;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cpms.dto.RegisterGuideDTO;
-import com.cpms.dto.ResponseMessage;
 import com.cpms.fileutils.excelfilehelper.ExcelFileParser;
 import com.cpms.pojos.Admin;
 import com.cpms.pojos.Guide;
@@ -110,7 +108,7 @@ public class AdminController {
 		guide.setUserAccount(registeredGuideAcct);
 		guide.getTechnologies().addAll(technologyDbList);
 		guide = guideService.registerGuide(guide);
-		return new ResponseEntity<>(new ResponseMessage("Guide "+guide.getUserAccount().getFirstName()+" "+guide.getUserAccount().getLastName()+" registered successfully"), HttpStatus.CREATED);
+		return new ResponseEntity<>(guide, HttpStatus.CREATED);
 }
 	//TODO remaining to test
 	@GetMapping(value = "/projects/list")
