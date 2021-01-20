@@ -12,4 +12,5 @@ public interface IGuideService {
 	Guide assignProject(Integer guideId, Integer projectId);
 	List<Project> getProjectsAssignedToGuide(Integer guideId);
 	GuideProjectDTO getProjectDetails(Integer projectId);
+	List<Guide> getGuideList();
 }

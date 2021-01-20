@@ -18,6 +18,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -52,7 +53,8 @@ public class Guide {
 	@JoinTable(name = "guide_technology_table", 
 	joinColumns = @JoinColumn(name = "guide_id"),
 	inverseJoinColumns = @JoinColumn(name = "technology_id"))
-	@JsonIgnoreProperties("guides")
+//	@JsonIgnoreProperties("guides")
+	@JsonSerialize(as=HashSet.class)
 	private Set<Technology> technologies = new HashSet<>();
 
 	public Guide(Integer id) {

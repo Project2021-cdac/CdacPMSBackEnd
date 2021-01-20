@@ -14,5 +14,5 @@ import lombok.ToString;
 //TODO Rename the file may be?
 public class RegisterGuideDTO {
 	private UserAccount guidedata;
-	private List<String> technologylist;
+	private List<Integer> technologylist;
 }

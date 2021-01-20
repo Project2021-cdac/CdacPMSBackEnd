@@ -16,7 +16,7 @@ public interface UserAccountRepository extends JpaRepository<UserAccount, Intege
 //	List<Student> getStudentUserAccountforRegistration();
 		
 	@Query("select new com.cpms.pojos.UserAccount(firstName, lastName, email, phoneNumber, dateOfBirth, courseName) "
-	+ "from UserAccount u where role='GUIDE'")
+	+ "from UserAccount u where role='ROLE_GUIDE'")
 	List<UserAccount> getUserAccountofGuides();
 
 }

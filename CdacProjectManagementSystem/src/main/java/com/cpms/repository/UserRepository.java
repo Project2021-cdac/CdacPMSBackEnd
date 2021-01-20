@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.cpms.pojos.UserAccount;
 
 @Repository
-public interface LoginRepository extends JpaRepository<UserAccount, Integer>{
+public interface UserRepository extends JpaRepository<UserAccount, Integer>{
 	UserAccount findByEmailAndPassword(String email, String password);
 	
 	Optional<UserAccount> findByEmail(String email);
