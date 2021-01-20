@@ -15,6 +15,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -41,8 +43,7 @@ public class Activity {
 	private Timestamp createdOn;
 	@Column(length = 300)
 	private String description;
-	//what is this ???
-	private HashMap<Status, ArrayList<String>> list=new HashMap<Status,ArrayList<String>>();
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn( name="project_id")
 	private Project projectId;
@@ -50,6 +51,17 @@ public class Activity {
 	@Override
 	public String toString() {
 		return "Activity [activityId=" + id + ", createdOn=" + createdOn + ", activityDesription="
-				+ description + ", list=" + list + "]";
+				+ description;
+	}
+
+	public Activity(Timestamp createdOn, String description, Project project) {
+		this.createdOn = createdOn;
+		this.description = description;
+		this.projectId = project;
+	}
+	
+	@JsonIgnore
+	public Project getProjectId() {
+		return this.projectId;
 	}
 }

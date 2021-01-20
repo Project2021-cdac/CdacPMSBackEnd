@@ -15,6 +15,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * @author dev2000 Student Class stores basic details of student. Many Students
@@ -36,7 +37,7 @@ public class Student {
 	@JoinColumn(name = "user_id")
 	private UserAccount userAccount;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne()
 	@JoinColumn( name = "project_id")
 	private Project project;
 
@@ -44,8 +45,6 @@ public class Student {
 		this.prn = prn;
 	}
 
-	// to avoid recursion during serialization
-	@JsonIgnore //TODO why here?
 	public Project getProject() {
 		return project;
 	}

@@ -47,7 +47,8 @@ public class Task {
 	 * 	PRN of Student who created the Task.
 	 */
 	@OneToOne
-	private Student createdBy;				
+	private Student createdBy;
+	
 	@NotBlank(message = "Task Description can't be blank")
 	@Size(min = 5, max = 150, message = "Task Description must be between 5 and 150 characters")
 	@Column(length = 150)

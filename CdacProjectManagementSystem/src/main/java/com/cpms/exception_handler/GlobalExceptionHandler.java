@@ -89,6 +89,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<>(new ResponseDTO(ex.getMessage()), HttpStatus.BAD_REQUEST);
 	}
 
+
+	@Override
+	protected ResponseEntity<Object> handleMissingPathVariable(MissingPathVariableException ex, HttpHeaders headers,
+			HttpStatus status, WebRequest request) {
+
+		return new ResponseEntity<>(new ResponseDTO(ex.getMessage()), status);
+	}
+	
 	/**
 	 * This method handles all sort of exception raised if a specific exception is not handled by above methods.
 	 * @param ex - This Exception Object stores raised exception details.
@@ -102,13 +110,5 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
 	}
-
-	@Override
-	protected ResponseEntity<Object> handleMissingPathVariable(MissingPathVariableException ex, HttpHeaders headers,
-			HttpStatus status, WebRequest request) {
-
-		return new ResponseEntity<>(new ResponseDTO(ex.getMessage()), status);
-	}
-
 
 }

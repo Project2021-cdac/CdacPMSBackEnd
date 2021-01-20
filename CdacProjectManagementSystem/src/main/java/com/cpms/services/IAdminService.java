@@ -11,7 +11,6 @@ public interface IAdminService {
 
 	List<Student> getStudentListOrderedByPrn();
 	List<UserAccount> getGuideList();
-	Integer getProjectMinSize();
 	Optional<Admin> getAdminByUserAccount(UserAccount account);
-	public Admin save(Admin admin);
+	Admin save(Admin admin);
 }

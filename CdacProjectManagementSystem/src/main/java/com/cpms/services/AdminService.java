@@ -1,5 +1,6 @@
 package com.cpms.services;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,7 +28,11 @@ public class AdminService implements IAdminService {
 	
 	@Override
 	public List<Student> getStudentListOrderedByPrn() {
-		return studentRepository.findAllByOrderByPrn();		
+		 List<Student> findAllByOrderByPrn = studentRepository.findAllByOrderByPrn();		
+//		 for (Student student : findAllByOrderByPrn) {
+//			System.out.println(student);
+//		}
+		return findAllByOrderByPrn;
 	}
 
 	@Override
@@ -35,11 +40,7 @@ public class AdminService implements IAdminService {
 		return  userAcctRepository.getUserAccountofGuides();
 	}
 
-	@Override
-	public Integer getProjectMinSize() {
-		return null;
-	}
-
+	
 	@Override
 	public Admin save(Admin admin) {
 		return adminRepository.save(admin);

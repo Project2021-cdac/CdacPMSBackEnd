@@ -27,4 +27,9 @@ public class ProjectService implements IProjectService {
 		return repository.findAllByOrderById();
 	}
 
+	@Override
+	public List<Project> getProjectsWithNoGuide() {
+		return repository.findAllByGuideIsNull();
+	}
+
 }

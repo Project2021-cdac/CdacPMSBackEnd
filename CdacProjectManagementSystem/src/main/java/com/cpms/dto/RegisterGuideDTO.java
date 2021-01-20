@@ -1,4 +1,4 @@
-package com.cpms.wrapperclasses;
+package com.cpms.dto;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import lombok.ToString;
 @Setter
 @ToString
 //TODO Rename the file may be?
-public class RegisterGuideWrapper {
+public class RegisterGuideDTO {
 	private UserAccount guidedata;
 	private List<String> technologylist;
 }
