@@ -53,19 +53,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		return new BCryptPasswordEncoder();
 	}
 
+	//TODO Check each endpoint and its assigned role to secure every api endpoints 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.cors().and().csrf().disable()
 			.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-			.authorizeRequests()/*.*antMatchers("/admin/**").hasRole("ADMIN")
-			.antMatchers("/user/register").hasRole("ADMIN")
-			.antMatchers("/guide/**").hasAnyRole("GUIDE", "ADMIN")
+			.authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN")
+//			.antMatchers("/user/register").hasRole("ADMIN")
+			.antMatchers("/guide/**").hasAnyRole("GUIDE")
 	        .antMatchers("/student/**").hasRole("STUDENT")
-	        .antMatchers("role/**").permitAll()
-	        .antMatchers("/user/**").permitAll()*/
-			.antMatchers("/**").permitAll()
-			.anyRequest().authenticated();
+	        .antMatchers("/user/**").permitAll()
+	        .antMatchers("/").permitAll();
 //			.and()
 //			.formLogin().loginPage("/user/login").permitAll();
 

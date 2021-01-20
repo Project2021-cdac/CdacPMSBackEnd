@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -59,8 +60,6 @@ public class UserAccount {
 	@Email
 	private String email;
 
-	@Column(length = 200)
-//	@Size(min = 4, max = 16, message = "Password must be 4-16 characters long")
 	@JsonIgnore
 	private String password;
 

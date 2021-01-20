@@ -11,12 +11,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class UserAccountDto {
-	
-	private Role role;
-
-	private Course courseName;
 	
 	private String firstName;
 	
@@ -26,9 +21,27 @@ public class UserAccountDto {
 	
 	private String password;
 	
-	private String phoneNumber;
+	private Course courseName;
+	
+	private Role role;
 
 	private LocalDate dateOfBirth;
+	
+	private String phoneNumber;
+
+	public UserAccountDto(String firstName, String lastName, String email, String password, Course courseName,
+			Role role, LocalDate dateOfBirth, String phoneNumber) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.password = password;
+		this.courseName = courseName;
+		this.role = role;
+		this.dateOfBirth = dateOfBirth;
+		this.phoneNumber = phoneNumber;
+	}
+
 
 }
 

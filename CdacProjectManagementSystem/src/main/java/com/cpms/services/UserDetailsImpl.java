@@ -12,16 +12,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.cpms.pojos.Role;
 import com.cpms.pojos.UserAccount;
 
-@SuppressWarnings("unused")
+//@SuppressWarnings("unused")
 public class UserDetailsImpl  implements UserDetails {
 	private static final long serialVersionUID = 1L;
 
 	UserAccount userAccount;
 	private Collection<? extends GrantedAuthority> authorities;
-
-	public UserDetailsImpl() {
-		// TODO Auto-generated constructor stub
-	}
 	
 	public UserDetailsImpl(UserAccount userAccount, Collection<? extends GrantedAuthority> authorities) {
 		this.userAccount = userAccount;
@@ -32,6 +28,7 @@ public class UserDetailsImpl  implements UserDetails {
 		System.out.println("UserDetailsImpl: build");
 		System.out.println(user);
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+		//List<Role> rl =  Arrays.asList(user.getRole());
 		List<Role> roles = Arrays.asList(user.getRole());
 //		Role role = user.getRole();
 //		 authorities.add(new SimpleGrantedAuthority(role.toString()));
@@ -45,8 +42,6 @@ public class UserDetailsImpl  implements UserDetails {
 	    return new UserDetailsImpl(user, authorities);
 	}
 
-	
-	
 	public UserAccount getUserAccount() {
 		return userAccount;
 	}

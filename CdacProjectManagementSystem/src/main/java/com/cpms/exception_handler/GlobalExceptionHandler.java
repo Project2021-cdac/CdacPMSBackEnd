@@ -11,6 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -20,21 +21,46 @@ import com.cpms.dto.ErrorResponse;
 import com.cpms.dto.ResponseDTO;
 
 @ControllerAdvice
-public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
-	
+public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+
+	@ExceptionHandler(ResourceAlreadyExists.class)
+	public ResponseEntity<ErrorResponse> resourceAlreadyExists(ResourceAlreadyExists ex) {
+		String details = ex.getMessage();
+		ErrorResponse exception = new ErrorResponse("Conflict", details);
+		
+		return ResponseEntity.status(HttpStatus.CONFLICT).body(exception);  
+	}
+
+	@ExceptionHandler(CustomException.class)
+	public ResponseEntity<ErrorResponse> customException(CustomException ex) {
+		String details = ex.getMessage();
+		ErrorResponse exception = new ErrorResponse("Bad Request", details);
+
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception);
+	}
+
+	@ExceptionHandler(UnauthorizedException.class)
+	public ResponseEntity<ErrorResponse> unauthorizedException(UnauthorizedException ex) {
+		String details = ex.getMessage();
+		ErrorResponse exception = new ErrorResponse("Unauthorized", details);
+
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(exception);
+	}
+
+
 	/**
 	 * @param ex - If User is not found then this method handles the raised Exception
 	 * @param request
 	 * @return - Returns Response Entity with error message along with Status code set to 404 ie., Not Found to FrontEnd Angular.
 	 */
 	@ExceptionHandler(RecordNotFoundException.class)
-    public final ResponseEntity<ErrorResponse> handleUserNotFoundException(RecordNotFoundException ex,
-                                                WebRequest request) {
-        String details = ex.getMessage();
-        ErrorResponse error = new ErrorResponse("RecordNotFound", details);
-        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
-    }
-	
+	public final ResponseEntity<ErrorResponse> handleUserNotFoundException(RecordNotFoundException ex,
+			WebRequest request) {
+		String details = ex.getMessage();
+		ErrorResponse exception = new ErrorResponse("RecordNotFound", details);
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception);
+	}
+
 	/**
 	 *	This Method is called for @Valid since it throws
 	 *	MethodArgumentNotValidException
@@ -42,14 +68,15 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
-		
+
 		LinkedHashMap<String, Object> body = new LinkedHashMap<>();
 		body.put("timestamp", LocalDateTime.now());
-		body.put("status", status.value());
-		List<String> errs = ex.getBindingResult().getFieldErrors().stream()
+		int httpStatus = status.value();
+		List<String> exceptions = ex.getBindingResult().getFieldErrors().stream()
 				.map(fieldErr -> fieldErr.getDefaultMessage()).collect(Collectors.toList());
-		body.put("errors", errs);
-		return new ResponseEntity<Object>(body, headers, status);
+		body.put("Exceptions", exceptions);
+		return ResponseEntity.status(httpStatus).body(body);
+		//return new ResponseEntity<Object>(body, headers, status);
 	}
 
 	/**
@@ -62,6 +89,14 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<>(new ResponseDTO(ex.getMessage()), HttpStatus.BAD_REQUEST);
 	}
 
+
+	@Override
+	protected ResponseEntity<Object> handleMissingPathVariable(MissingPathVariableException ex, HttpHeaders headers,
+			HttpStatus status, WebRequest request) {
+
+		return new ResponseEntity<>(new ResponseDTO(ex.getMessage()), status);
+	}
+	
 	/**
 	 * This method handles all sort of exception raised if a specific exception is not handled by above methods.
 	 * @param ex - This Exception Object stores raised exception details.
@@ -69,19 +104,11 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 	 * @return - Returns Response Entity with error message along with Status code set to 500 ie., Internal Server Error to FrontEnd Angular.
 	 */
 	@ExceptionHandler(Exception.class)
-    public final ResponseEntity<ErrorResponse> handleAllExceptions(Exception ex, WebRequest request) {
-        String details = ex.getMessage();
-        ErrorResponse error = new ErrorResponse("ServerError", details);
-        //return ResponseEntity.status(HttpStatus.OK).body("Login Success!!");
-        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-	
-//	@Override
-//	protected ResponseEntity<Object> handleMissingPathVariable(MissingPathVariableException ex, HttpHeaders headers,
-//			HttpStatus status, WebRequest request) {
-//		
-//		return new ResponseEntity<>(new ResponseDTO(ex.getMessage()), status);
-//	}
-	
+	public final ResponseEntity<ErrorResponse> handleAllExceptions(Exception ex, WebRequest request) {
+		String details = ex.getMessage();
+		ErrorResponse error = new ErrorResponse("ServerError", details);
+		
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+	}
 
 }

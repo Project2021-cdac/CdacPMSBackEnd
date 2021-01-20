@@ -25,6 +25,7 @@ import com.cpms.pojos.Guide;
 import com.cpms.pojos.Project;
 import com.cpms.pojos.Role;
 import com.cpms.pojos.Student;
+import com.cpms.pojos.Task;
 import com.cpms.pojos.Technology;
 import com.cpms.pojos.UserAccount;
 import com.cpms.services.IAdminService;
@@ -34,6 +35,7 @@ import com.cpms.services.IGuideService;
 import com.cpms.services.IProjectService;
 import com.cpms.services.ITechnologyService;
 import com.cpms.services.IUserAccountService;
+import com.cpms.services.StudentService;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -99,7 +101,7 @@ public class AdminController {
 	//TODO Convey to front end this info
 	@PostMapping(value = "/guides/register") 
 	ResponseEntity<?> registerGuides(@RequestBody RegisterGuideDTO guideUser){
-		System.out.println(guideUser);
+//		System.out.println(guideUser);
 		guideUser.getGuidedata().setRole(Role.GUIDE);
 		UserAccount registeredGuideAcct = userAcctService.registerUser(guideUser.getGuidedata());
 		List<String> technologies = guideUser.getTechnologylist();
@@ -113,6 +115,8 @@ public class AdminController {
 			for(Technology tobj:technologyDbList) {
 				if(technology.equals(tobj.getName()) ) {
 					guide.getTechnologies().add(tobj);
+					tobj.getGuides().add(guide);
+					technologyService.saveTechnology(tobj);
 					break;
 				}		
 			}
