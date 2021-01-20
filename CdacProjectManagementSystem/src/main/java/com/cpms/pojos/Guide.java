@@ -53,7 +53,7 @@ public class Guide {
 	@JoinTable(name = "guide_technology_table", 
 	joinColumns = @JoinColumn(name = "guide_id"),
 	inverseJoinColumns = @JoinColumn(name = "technology_id"))
-	@JsonIgnoreProperties("guides")
+//	@JsonIgnoreProperties("guides")
 	@JsonSerialize(as=HashSet.class)
 	private Set<Technology> technologies = new HashSet<>();
 

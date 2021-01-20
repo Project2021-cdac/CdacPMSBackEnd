@@ -60,7 +60,7 @@ public class StudentService implements IStudentService {
 
 		Project project = projectDTO.getProject();
 		projectService.registerProject(project);
-
+		//why not addAll?
 		List<Technology> technologies = technologyService.findTechnologiesById(projectDTO.getTechnologies());
 		for (Technology technology : technologies) {
 			project.addTechnology(technology);

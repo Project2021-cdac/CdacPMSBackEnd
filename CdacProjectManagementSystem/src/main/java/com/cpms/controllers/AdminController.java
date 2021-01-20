@@ -1,5 +1,6 @@
 package com.cpms.controllers;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +26,6 @@ import com.cpms.pojos.Guide;
 import com.cpms.pojos.Project;
 import com.cpms.pojos.Role;
 import com.cpms.pojos.Student;
-import com.cpms.pojos.Task;
 import com.cpms.pojos.Technology;
 import com.cpms.pojos.UserAccount;
 import com.cpms.services.IAdminService;
@@ -35,7 +35,6 @@ import com.cpms.services.IGuideService;
 import com.cpms.services.IProjectService;
 import com.cpms.services.ITechnologyService;
 import com.cpms.services.IUserAccountService;
-import com.cpms.services.StudentService;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -102,25 +101,14 @@ public class AdminController {
 	@PostMapping(value = "/guides/register") 
 	ResponseEntity<?> registerGuides(@RequestBody RegisterGuideDTO guideUser){
 //		System.out.println(guideUser);
-		guideUser.getGuidedata().setRole(Role.GUIDE);
+		guideUser.getGuidedata().setRole(Role.ROLE_GUIDE);
 		UserAccount registeredGuideAcct = userAcctService.registerUser(guideUser.getGuidedata());
-		List<String> technologies = guideUser.getTechnologylist();
-		List<Technology> technologyDbList = technologyService.getAllTechnology(); 
+		List<Integer> technologies = guideUser.getTechnologylist();
+		List<Technology> technologyDbList = technologyService.findTechnologiesById(technologies); 
 		Guide guide = new Guide();
 		guide.setInSession(false);
 		guide.setUserAccount(registeredGuideAcct);
-		for(String technology: technologies) {
-			// TODO uppercase confirm upper case of string from front end
-			//Make it Id, not string
-			for(Technology tobj:technologyDbList) {
-				if(technology.equals(tobj.getName()) ) {
-					guide.getTechnologies().add(tobj);
-					tobj.getGuides().add(guide);
-					technologyService.saveTechnology(tobj);
-					break;
-				}		
-			}
-		}	
+		guide.getTechnologies().addAll(technologyDbList);
 		guide = guideService.registerGuide(guide);
 		return new ResponseEntity<>(new ResponseMessage("Guide "+guide.getUserAccount().getFirstName()+" "+guide.getUserAccount().getLastName()+" registered successfully"), HttpStatus.CREATED);
 }

@@ -1,5 +1,6 @@
 package com.cpms.services;
 
+import java.util.HashSet;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -16,11 +17,6 @@ public class TechnologyService implements ITechnologyService {
 
 	@Autowired 
 	TechnologyRepository techRepository;
-	
-	@Override
-	public List<Technology> getAllTechnology() {
-		return techRepository.findAllByOrderByName();
-	}
 	
 	@Override
 	public List<Technology> listTechnologies() {
