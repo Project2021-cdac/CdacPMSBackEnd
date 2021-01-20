@@ -8,12 +8,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.cpms.pojos.UserAccount;
-import com.cpms.repository.LoginRepository;
+import com.cpms.repository.UserRepository;
 
 @Service
 public class UserService implements IUserService{
 	@Autowired
-	private LoginRepository userRepo;
+	private UserRepository userRepo;
 
 	@Autowired
 	private PasswordEncoder encoder;
