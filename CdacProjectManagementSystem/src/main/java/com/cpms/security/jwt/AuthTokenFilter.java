@@ -35,15 +35,15 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 		
 		try {
 			String jwt = parseJwt(request);
-			String email = jwtUtils.extractUsername(jwt);
+			String email = jwtUtils.extractEmail(jwt);
 			
-			System.out.println("UserDetailsServiceImpl:::doFilterInternal::: JWT - " + jwt);
-			System.out.println("Email From Token: " + email);
+//			System.out.println("UserDetailsServiceImpl:::doFilterInternal::: JWT - " + jwt);
+//			System.out.println("Email From Token: " + email);
 			
 			if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
 				UserDetails userDetails = this.userDetailsService.loadUserByUsername(email);
-				System.out.println("USERDETAILS:: " + userDetails);
+				//System.out.println("USERDETAILS:: " + userDetails);
 				if (jwtUtils.validateToken(jwt, userDetails)) {
 					UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = 
 							new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
@@ -52,7 +52,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 				}
 			}
 		} catch (Exception e) {
-			System.out.printf("Cannot set user authentication: {}", e.getMessage());
+			e.getMessage();
 			logger.error("Cannot set user authentication: {}", e);
 		}
 

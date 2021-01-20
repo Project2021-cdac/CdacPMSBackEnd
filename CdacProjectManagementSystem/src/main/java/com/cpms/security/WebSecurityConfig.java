@@ -23,10 +23,10 @@ import com.cpms.services.UserDetailsServiceImpl;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
-	UserDetailsServiceImpl userDetailsService;
+	private UserDetailsServiceImpl userDetailsService;
 	
 	@Autowired
-	AuthTokenFilter authTokenFilter;
+	private AuthTokenFilter authTokenFilter;
 
 	@Autowired
 	private AuthEntryPointJwt unauthorizedHandler;
@@ -48,7 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		return super.authenticationManagerBean();
 	}
 
-	@Bean
+	@Bean					//Default BCrypt is used for password encoding.
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
@@ -60,7 +60,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 			.authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN")
-//			.antMatchers("/user/register").hasRole("ADMIN")
 			.antMatchers("/guide/**").hasAnyRole("GUIDE")
 	        .antMatchers("/student/**").hasRole("STUDENT")
 	        .antMatchers("/user/**").permitAll()

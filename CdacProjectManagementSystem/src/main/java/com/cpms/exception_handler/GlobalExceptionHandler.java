@@ -23,7 +23,7 @@ import com.cpms.dto.ResponseDTO;
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-	@ExceptionHandler(ResourceAlreadyExists.class)
+	@ExceptionHandler(ResourceAlreadyExists.class)					// 409
 	public ResponseEntity<ErrorResponse> resourceAlreadyExists(ResourceAlreadyExists ex) {
 		String details = ex.getMessage();
 		ErrorResponse exception = new ErrorResponse("Conflict", details);
@@ -31,7 +31,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		return ResponseEntity.status(HttpStatus.CONFLICT).body(exception);  
 	}
 
-	@ExceptionHandler(CustomException.class)
+	@ExceptionHandler(CustomException.class)								//400
 	public ResponseEntity<ErrorResponse> customException(CustomException ex) {
 		String details = ex.getMessage();
 		ErrorResponse exception = new ErrorResponse("Bad Request", details);
@@ -39,7 +39,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception);
 	}
 
-	@ExceptionHandler(UnauthorizedException.class)
+	@ExceptionHandler(UnauthorizedException.class)						//401
 	public ResponseEntity<ErrorResponse> unauthorizedException(UnauthorizedException ex) {
 		String details = ex.getMessage();
 		ErrorResponse exception = new ErrorResponse("Unauthorized", details);
@@ -53,7 +53,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	 * @param request
 	 * @return - Returns Response Entity with error message along with Status code set to 404 ie., Not Found to FrontEnd Angular.
 	 */
-	@ExceptionHandler(RecordNotFoundException.class)
+	@ExceptionHandler(RecordNotFoundException.class)					//404
 	public final ResponseEntity<ErrorResponse> handleUserNotFoundException(RecordNotFoundException ex,
 			WebRequest request) {
 		String details = ex.getMessage();
