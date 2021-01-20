@@ -89,4 +89,8 @@ public class GuideService implements IGuideService {
 		}
 		return null;
 	}
+	
+	public List<Guide> getGuideList() {
+		return guideRepository.findAll();
+	}
 }

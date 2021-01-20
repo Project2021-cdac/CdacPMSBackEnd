@@ -2,7 +2,6 @@ package com.cpms.pojos;
 
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -73,7 +72,7 @@ public class Project {
 	private LocalDate endDate;
 	
 	@Min(0)							// TODO - Method to calculate project progress acc to tasks -  
-	@Max(100)						//		Math.floor((total tasks/ total compleated task)*100)
+	@Max(100)						//		Math.floor((total tasks/ total completed task)*100)
 	private int progress;
 
 	@JsonIgnore

@@ -90,7 +90,7 @@ public class StudentService implements IStudentService {
 		for (Student eachStudent : students) {
 			activityDescription += eachStudent.getPrn() + " ";
 		}
-
+		
 		return activityService.createActivity(activityDescription, project.getId());
 	}
 	

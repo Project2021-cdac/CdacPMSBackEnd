@@ -12,7 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -20,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -54,13 +54,14 @@ public class UserAccount {
 	@Pattern(regexp = "^[a-zA-Z]{1,50}$", message = "Last name must be alphabetic and should be between 1 and 50 characters long!!!")
 	private String lastName;
 
+	//TODO Add unique constraint once everything is final
 	@Column(length = 100)
 	@Email
 	private String email;
 
 	@Column(length = 200)
-	@Size(min = 4, max = 16, message = "Password must be 4-16 characters long")
-	@JsonInclude(value = Include.NON_ABSENT)
+//	@Size(min = 4, max = 16, message = "Password must be 4-16 characters long")
+	@JsonIgnore
 	private String password;
 
 	@Column(length = 15, unique = true)

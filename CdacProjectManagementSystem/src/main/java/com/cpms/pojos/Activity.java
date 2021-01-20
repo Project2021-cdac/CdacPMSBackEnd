@@ -2,8 +2,6 @@ package com.cpms.pojos;
 
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

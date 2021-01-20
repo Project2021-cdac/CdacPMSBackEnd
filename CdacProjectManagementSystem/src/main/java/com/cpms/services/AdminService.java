@@ -1,6 +1,5 @@
 package com.cpms.services;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,10 +34,10 @@ public class AdminService implements IAdminService {
 		return findAllByOrderByPrn;
 	}
 
-	@Override
-	public List<UserAccount> getGuideList() {
-		return  userAcctRepository.getUserAccountofGuides();
-	}
+//	@Override
+//	public List<UserAccount> getGuideList() {
+//		return  userAcctRepository.getUserAccountofGuides();
+//	}
 
 	
 	@Override

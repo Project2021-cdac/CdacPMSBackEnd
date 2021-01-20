@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +25,6 @@ import com.cpms.pojos.Guide;
 import com.cpms.pojos.Project;
 import com.cpms.pojos.Role;
 import com.cpms.pojos.Student;
-import com.cpms.pojos.Task;
 import com.cpms.pojos.Technology;
 import com.cpms.pojos.UserAccount;
 import com.cpms.services.IAdminService;
@@ -34,8 +34,8 @@ import com.cpms.services.IGuideService;
 import com.cpms.services.IProjectService;
 import com.cpms.services.ITechnologyService;
 import com.cpms.services.IUserAccountService;
-import com.cpms.services.StudentService;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(value = "/admin")
 public class AdminController {
@@ -64,7 +64,7 @@ public class AdminController {
 	private IProjectService projectService;
 	
 	
-	@GetMapping("/students")
+	@GetMapping(value = "/students")
 	public ResponseEntity<?> getStudentList() {
 		List<Student> studentListOrderedByPrn = adminService.getStudentListOrderedByPrn();
 		if (studentListOrderedByPrn.isEmpty())
@@ -73,11 +73,12 @@ public class AdminController {
 	}
 
 	//TODO how to avoid multiple registeration. FrontEnd Perhaps?
-	@PostMapping("/students/register")
-	public ResponseEntity<?> registerStudent(@RequestParam MultipartFile file) throws Exception {
+	@PostMapping(value = "/students/register")
+	public ResponseEntity<?> registerStudent(@RequestBody MultipartFile file) throws Exception {
+		System.out.println(file.isEmpty());
 		if (ExcelFileParser.hasExcelFormat(file)) {
 				List<UserAccount> studentUserAccounts = excelFileHelperService.saveToDatabase(file);
-				emailService.sendEmail(studentUserAccounts);
+//				emailService.sendEmail(studentUserAccounts);
 		}else {
 			
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Upload an ExcelFile!!");
@@ -87,18 +88,18 @@ public class AdminController {
 	
 	// TODO Complete List of data
 	// TODO remaining to test
-	@GetMapping("/guides")
+	@GetMapping(value = "/guides")
 	public ResponseEntity<?> getGuideList(){
-		List<UserAccount> guideList = adminService.getGuideList();
+		List<Guide> guideList = guideService.getGuideList();
 		if (guideList.isEmpty())
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		return new ResponseEntity<>(guideList, HttpStatus.OK);
 	}
 	
 	//TODO Convey to front end this info
-	@PostMapping("/guides/register") 
+	@PostMapping(value = "/guides/register") 
 	ResponseEntity<?> registerGuides(@RequestBody RegisterGuideDTO guideUser){
-//		System.out.println(guideUser);
+		System.out.println(guideUser);
 		guideUser.getGuidedata().setRole(Role.GUIDE);
 		UserAccount registeredGuideAcct = userAcctService.registerUser(guideUser.getGuidedata());
 		List<String> technologies = guideUser.getTechnologylist();
@@ -112,8 +113,6 @@ public class AdminController {
 			for(Technology tobj:technologyDbList) {
 				if(technology.equals(tobj.getName()) ) {
 					guide.getTechnologies().add(tobj);
-					tobj.getGuides().add(guide);
-					technologyService.saveTechnology(tobj);
 					break;
 				}		
 			}
@@ -122,7 +121,7 @@ public class AdminController {
 		return new ResponseEntity<>(new ResponseMessage("Guide "+guide.getUserAccount().getFirstName()+" "+guide.getUserAccount().getLastName()+" registered successfully"), HttpStatus.CREATED);
 }
 	//TODO remaining to test
-	@GetMapping("/projects/list")
+	@GetMapping(value = "/projects/list")
 	public ResponseEntity<?> getProjectList(){
 		List<Project> projectList = projectService.getAllProjectList();
 		if (projectList.isEmpty())
@@ -130,7 +129,7 @@ public class AdminController {
 		return new ResponseEntity<>(projectList, HttpStatus.OK);
 	}
 	
-	@GetMapping("/{userid}/teamsize")
+	@GetMapping(value = "/{userid}/teamsize")
 	public ResponseEntity<?> getTeamsize(@PathVariable int userid) {
 		Optional<Admin> adminAcct = adminService.getAdminByUserAccount(new UserAccount(userid));
 		if(adminAcct.isPresent()) {
@@ -140,7 +139,7 @@ public class AdminController {
 
 	}
 	
-	@PutMapping("/{userid}/setsize") 
+	@PutMapping(value = "/{userid}/setsize") 
 	public ResponseEntity<?> setTeamSize(@PathVariable Integer userid, @RequestParam(name = "size") int projectMinSize){
 		Optional<Admin> adminAcct = adminService.getAdminByUserAccount(new UserAccount(userid));
 		if(adminAcct.isPresent()){
