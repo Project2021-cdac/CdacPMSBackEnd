@@ -63,7 +63,7 @@ public class Guide {
 	public String toString() {
 		return "Guide [id= " + id + ", inSession= " + inSession + ", user= " + userAccount + "]";
 	}
-	
+	 
 	@JsonIgnore
 	public Set<Technology> getTechnologies() {
 		return this.technologies;
