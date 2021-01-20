@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -47,5 +49,23 @@ public class Session {
 	
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn( name = "project_id")
-	private Project project;	
+	private Project project;
+
+	public Session(Timestamp startTime, Timestamp endTime, Guide guide, Project project) {
+		super();
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.guide = guide;
+		this.project = project;
+	}
+	
+	@JsonIgnore
+	public Guide getGuide() {
+		return this.guide;
+	}
+	
+	@JsonIgnore
+	public Project getProject() {
+		return this.project;
+	}
 }
