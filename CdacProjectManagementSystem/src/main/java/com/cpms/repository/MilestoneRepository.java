@@ -10,6 +10,5 @@ import com.cpms.pojos.Project;
 
 @Repository
 public interface MilestoneRepository extends JpaRepository<Milestone, Integer>{
-	List<Milestone> findByProjectId(Project project);
 }
 

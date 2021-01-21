@@ -44,7 +44,7 @@ public class StudentController {
 		System.out.println(projectDTO);
 		Project project = studentService.registerProject(projectDTO);
 		if (project == null)
-			return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
 		studentService.saveProjectCreationActivity(project);
 		return new ResponseEntity<>(project, HttpStatus.CREATED);

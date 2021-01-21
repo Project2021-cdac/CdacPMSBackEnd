@@ -1,19 +1,10 @@
 package com.cpms.pojos;
 
-import java.time.LocalDate;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import org.springframework.format.annotation.DateTimeFormat;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -39,28 +30,16 @@ public class Milestone {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)	
 	private Integer id;
 	
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@JsonFormat(pattern = "yyyy-MM-dd")
-	private LocalDate startDate;
+//	@DateTimeFormat(pattern = "yyyy-MM-dd")
+//	@JsonFormat(pattern = "yyyy-MM-dd")
+//	private LocalDate startDate;
+//	
+//	@DateTimeFormat(pattern = "yyyy-MM-dd")
+//	@JsonFormat(pattern = "yyyy-MM-dd")
+//	private LocalDate endDate;
 	
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@JsonFormat(pattern = "yyyy-MM-dd")
-	private LocalDate endDate;
+	private String title;
+	private String description;
 	
-	private MilestoneCheckpoint milestoneCheckpoint;
-	
-	@ManyToOne
-	@JoinColumn( name="project_id")
-	private Project projectId;
-	
-	@Override
-	public String toString() {
-		return "Milestone [milestoneId=" + id + ", startDate=" + startDate + ", endDate=" + endDate
-				+ ", mileStoneCheckPoint=" + milestoneCheckpoint + "]";
-	}
-	
-	@JsonIgnore
-	public Project getProjectId() {
-		return this.projectId;
-	}
+	//private MilestoneCheckpoint milestoneCheckpoint;
 }
