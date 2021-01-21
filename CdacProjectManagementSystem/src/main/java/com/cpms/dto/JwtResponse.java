@@ -1,7 +1,5 @@
 package com.cpms.dto;
 
-import com.cpms.pojos.UserAccount;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,16 +9,16 @@ import lombok.Setter;
 public class JwtResponse {
 	private String token;
 	private String type = "Bearer";
-	private UserAccount userAccount;
+	private Object user;
 
 	public JwtResponse() {
 		this.token = null;
-		this.userAccount = null;
+		//this.userAccount = null;
 	}
 	
-	public JwtResponse(String token, UserAccount userAccount) {
+	public JwtResponse(String token,Object user) {
 		this.token = token;
-		this.userAccount = userAccount;
+		this.user = user;
 	}
-
+	
 }

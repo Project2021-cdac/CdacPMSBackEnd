@@ -76,7 +76,9 @@ public class UserController {
 		final String jwt = jwtUtils.generateToken(userDetails);
 
 		UserDetailsImpl user = (UserDetailsImpl) userDetails;		
-		return ResponseEntity.status(HttpStatus.OK).body(new JwtResponse(jwt, user.getUserAccount()));
+		//return ResponseEntity.status(HttpStatus.OK).body(new JwtResponse(jwt, user.getUserAccount()));
+		return ResponseEntity.status(HttpStatus.OK).body(new JwtResponse(jwt, user.getUser()));
+		//return ResponseEntity.status(HttpStatus.OK).body(new JwtResponse(jwt,  user.getGuide()));
     }
 	
 	

@@ -7,6 +7,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cpms.pojos.Admin;
+import com.cpms.pojos.Guide;
+import com.cpms.pojos.Role;
+import com.cpms.pojos.Student;
 import com.cpms.pojos.UserAccount;
 import com.cpms.repository.UserRepository;
 
@@ -18,11 +22,29 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	@Override
 	 @Transactional(readOnly = true)
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		UserAccount user = userRepo.findByEmail(email)
+		Admin admin = null;
+		Guide guide = null;
+		Student student = null;
+		Object user = null;
+		UserAccount userAccount = userRepo.findByEmail(email)
 				.orElseThrow(() -> new UsernameNotFoundException(String.format("%s User Not Found ", email)));
 		
-		//System.out.println("UserDetailsServiceImpl: " + user);
-		return UserDetailsImpl.build(user);
+		System.out.println("UserDetailsServiceImpl: USER" + user);
+		if(userAccount.getRole().equals(Role.ROLE_ADMIN)) {
+			admin = userRepo.findAdminByUserId(userAccount.getId());
+			user = admin;
+			System.out.println("UserDetailsServiceImpl: ADMIN" + userAccount);
+		}else if(userAccount.getRole().equals(Role.ROLE_GUIDE)) {
+			guide = userRepo.findGuideByUserId(userAccount.getId());
+			user = guide;
+			System.out.println("UserDetailsServiceImpl: GUIDE" + userAccount);
+		}else {
+			student = userRepo.findStudentByUserId(userAccount.getId());
+			user = student;
+			System.out.println("UserDetailsServiceImpl: STUDENT" + userAccount);
+		}
+		
+		return UserDetailsImpl.build(userAccount, user);
 	}
 
 }

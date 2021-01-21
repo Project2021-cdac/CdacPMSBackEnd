@@ -17,6 +17,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.cpms.exception_handler.CustomException;
 import com.cpms.services.UserDetailsServiceImpl;
 
 @Component
@@ -31,19 +32,22 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-			throws ServletException, IOException {	
+			throws ServletException, IOException, CustomException {	
 		
 		try {
 			String jwt = parseJwt(request);
-			String email = jwtUtils.extractUsername(jwt);
+//			if(jwt == null) {
+//				throw new CustomException("JWT String argument cannot be null.");
+//			}
+			String email = jwtUtils.extractEmail(jwt);
 			
-			System.out.println("UserDetailsServiceImpl:::doFilterInternal::: JWT - " + jwt);
-			System.out.println("Email From Token: " + email);
+//			System.out.println("UserDetailsServiceImpl:::doFilterInternal::: JWT - " + jwt);
+//			System.out.println("Email From Token: " + email);
 			
 			if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
 				UserDetails userDetails = this.userDetailsService.loadUserByUsername(email);
-				System.out.println("USERDETAILS:: " + userDetails);
+				//System.out.println("USERDETAILS:: " + userDetails);
 				if (jwtUtils.validateToken(jwt, userDetails)) {
 					UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = 
 							new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
@@ -52,7 +56,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 				}
 			}
 		} catch (Exception e) {
-			System.out.printf("Cannot set user authentication: {}", e.getMessage());
+			e.getMessage();
 			logger.error("Cannot set user authentication: {}", e);
 		}
 

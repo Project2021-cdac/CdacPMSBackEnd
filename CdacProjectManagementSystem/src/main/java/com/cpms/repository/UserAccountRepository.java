@@ -15,6 +15,7 @@ public interface UserAccountRepository extends JpaRepository<UserAccount, Intege
 //	@Query("select s from Student")
 //	List<Student> getStudentUserAccountforRegistration();
 		
+	//TODO In case change of package from pojos to models, change this query too
 	@Query("select new com.cpms.pojos.UserAccount(firstName, lastName, email, phoneNumber, dateOfBirth, courseName) "
 	+ "from UserAccount u where role='ROLE_GUIDE'")
 	List<UserAccount> getUserAccountofGuides();
