@@ -26,10 +26,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * @author dev2000
- *	Guide Class stores basic details of guide. 
- * Many projects can be lead by One Guide.
- * Multiple technologies can be professed by Many Guide.
+ * @author dev2000 Guide Class stores basic details of guide. Many projects can
+ *         be lead by One Guide. Multiple technologies can be professed by Many
+ *         Guide.
  */
 
 @NoArgsConstructor
@@ -42,33 +41,31 @@ public class Guide {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	private boolean inSession;
-	
+
 	@OneToOne(orphanRemoval = true)
 	@JoinColumn(name = "user_id")
 	private UserAccount userAccount;
-	
+
 	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.LAZY)
-	@JoinTable(name = "guide_technology_table", 
-	joinColumns = @JoinColumn(name = "guide_id"),
-	inverseJoinColumns = @JoinColumn(name = "technology_id"))
+	@JoinTable(name = "guide_technology_table", joinColumns = @JoinColumn(name = "guide_id"), inverseJoinColumns = @JoinColumn(name = "technology_id"))
 //	@JsonIgnoreProperties("guides")
-	@JsonSerialize(as=HashSet.class)
+	@JsonSerialize(as = HashSet.class)
 	private Set<Technology> technologies = new HashSet<>();
 
 	public Guide(Integer id) {
 		this.id = id;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Guide [id= " + id + ", inSession= " + inSession + ", user= " + userAccount + "]";
 	}
-	
+
 	@JsonIgnore
 	public Set<Technology> getTechnologies() {
 		return this.technologies;
 	}
-	
+
 }
