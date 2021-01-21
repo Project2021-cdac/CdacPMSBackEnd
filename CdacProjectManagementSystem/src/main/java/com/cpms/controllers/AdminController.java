@@ -98,17 +98,20 @@ public class AdminController {
 	//TODO Convey to front end this info
 	@PostMapping(value = "/guides/register") 
 	ResponseEntity<?> registerGuides(@RequestBody RegisterGuideDTO guideUser){
-//		System.out.println(guideUser);
-		guideUser.getGuidedata().setRole(Role.ROLE_GUIDE);
-		UserAccount registeredGuideAcct = userAcctService.registerUser(guideUser.getGuidedata());
-		List<Integer> technologies = guideUser.getTechnologylist();
-		List<Technology> technologyDbList = technologyService.findTechnologiesById(technologies); 
-		Guide guide = new Guide();
-		guide.setInSession(false);
-		guide.setUserAccount(registeredGuideAcct);
-		guide.getTechnologies().addAll(technologyDbList);
-		guide = guideService.registerGuide(guide);
-		return new ResponseEntity<>(guide, HttpStatus.CREATED);
+//		System.out.println(guideUsers);
+		if(null != guideUser || !guideUser.getTechnologylist().isEmpty()) {
+			guideUser.getGuidedata().setRole(Role.ROLE_GUIDE);
+			UserAccount registeredGuideAcct = userAcctService.registerUser(guideUser.getGuidedata());
+			List<Integer> technologies = guideUser.getTechnologylist();
+			List<Technology> technologyDbList = technologyService.findTechnologiesById(technologies); 
+			Guide guide = new Guide();
+			guide.setInSession(false);
+			guide.setUserAccount(registeredGuideAcct);
+			guide.getTechnologies().addAll(technologyDbList);
+			guide = guideService.registerGuide(guide);
+			return new ResponseEntity<>(guide, HttpStatus.CREATED);
+		}
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 }
 	//TODO remaining to test
 	@GetMapping(value = "/projects/list")
