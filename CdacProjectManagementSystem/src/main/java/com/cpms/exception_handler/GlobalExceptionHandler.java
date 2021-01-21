@@ -32,11 +32,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	}
 
 	@ExceptionHandler(CustomException.class)								//400
-	public ResponseEntity<ErrorResponse> customException(CustomException ex) {
+	public ResponseEntity<String> customException(CustomException ex) {
 		String details = ex.getMessage();
 		ErrorResponse exception = new ErrorResponse("Bad Request", details);
 
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception);
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
 	}
 
 	@ExceptionHandler(UnauthorizedException.class)						//401

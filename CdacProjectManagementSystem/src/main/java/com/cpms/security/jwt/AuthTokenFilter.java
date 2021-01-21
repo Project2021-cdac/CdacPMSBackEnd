@@ -17,6 +17,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.cpms.exception_handler.CustomException;
 import com.cpms.services.UserDetailsServiceImpl;
 
 @Component
@@ -31,10 +32,13 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-			throws ServletException, IOException {	
+			throws ServletException, IOException, CustomException {	
 		
 		try {
 			String jwt = parseJwt(request);
+//			if(jwt == null) {
+//				throw new CustomException("JWT String argument cannot be null.");
+//			}
 			String email = jwtUtils.extractEmail(jwt);
 			
 //			System.out.println("UserDetailsServiceImpl:::doFilterInternal::: JWT - " + jwt);

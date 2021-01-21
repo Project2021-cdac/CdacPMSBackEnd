@@ -6,5 +6,5 @@ package com.cpms.pojos;
  *	Type of Users that can have their account with Admin having highest access rights
  */
 public enum Role {
-	ROLE_ADMIN, ROLE_GUIDE, ROLE_STUDENT 
+	ROLE_ADMIN, ROLE_GUIDE, ROLE_STUDENT;
 }
