@@ -16,6 +16,8 @@ import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -54,13 +56,20 @@ public class Task {
 	@Column(length = 150)
 	private String description;
 	
+
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="milestone_id")
 	private Milestone milestone;
 	
+	@JsonIgnore
+	@ManyToOne
+	@JoinColumn(name="project_id")
+	private Project project;
+	
 	@Override
 	public String toString() {
-		return "Task [Task Id=" + id + ", milestone=" + milestone + ", status=" + status + ", createdOn=" + createdOn
+		return "Task [Task Id=" + id + ", project=" + project + ", status=" + status + ", createdOn=" + createdOn
 				+ ", createdBy=" + createdBy + ", description=" + description + "]";
 	}
 }

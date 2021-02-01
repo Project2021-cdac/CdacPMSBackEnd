@@ -17,19 +17,25 @@ public class UserDetailsImpl  implements UserDetails {
 	private static final long serialVersionUID = 1L;
 
 	UserAccount userAccount;
+	Object user;
 	private Collection<? extends GrantedAuthority> authorities;
 	
-	public UserDetailsImpl(UserAccount userAccount, Collection<? extends GrantedAuthority> authorities) {
+	public UserDetailsImpl() {
+		
+	}
+	
+	public UserDetailsImpl(UserAccount userAccount, Object user, Collection<? extends GrantedAuthority> authorities) {
 		this.userAccount = userAccount;
+		this.user = user;
 		this.authorities = authorities;
 	}
 	
-	public static UserDetailsImpl build(UserAccount user) {
+	public static UserDetailsImpl build(UserAccount userAccount, Object user) {
 		System.out.println("UserDetailsImpl: build");
-		System.out.println(user);
+		//System.out.println(userAccount);
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 		//List<Role> rl =  Arrays.asList(user.getRole());
-		List<Role> roles = Arrays.asList(user.getRole());
+		List<Role> roles = Arrays.asList(userAccount.getRole());
 //		Role role = user.getRole();
 //		 authorities.add(new SimpleGrantedAuthority(role.toString()));
 	    for (Role role: roles) {
@@ -38,8 +44,9 @@ public class UserDetailsImpl  implements UserDetails {
 //		List<GrantedAuthority> authorities = user.getRoles().stream()
 //				.map(role -> new SimpleGrantedAuthority(role.getName().name()))
 //				.collect(Collectors.toList());
+
 	    System.out.println("UserDetailsImpl_1: build");
-	    return new UserDetailsImpl(user, authorities);
+	    return new UserDetailsImpl(userAccount, user, authorities);
 	}
 
 	public UserAccount getUserAccount() {
@@ -48,6 +55,14 @@ public class UserDetailsImpl  implements UserDetails {
 
 	public void setUserAccount(UserAccount userAccount) {
 		this.userAccount = userAccount;
+	}
+
+	public Object getUser() {
+		return user;
+	}
+
+	public void setUser(Object user) {
+		this.user = user;
 	}
 
 	@Override
@@ -116,7 +131,7 @@ public class UserDetailsImpl  implements UserDetails {
 
 	@Override
 	public String toString() {
-		return "UserDetailsImpl [userAccount=" + userAccount + ", authorities=" + authorities + "]";
+		return "UserDetailsImpl [userAccount=" + userAccount + ", user=" + user + ", authorities=" + authorities + "]";
 	}
 	
 }

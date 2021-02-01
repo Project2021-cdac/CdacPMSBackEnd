@@ -10,6 +10,7 @@ import javax.validation.ConstraintViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -23,7 +24,13 @@ import com.cpms.dto.ResponseDTO;
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-	@ExceptionHandler(ResourceAlreadyExists.class)
+//	@ResponseStatus(HttpStatus.UNAUTHORIZED)  // 401
+//    @ExceptionHandler(BadCredentialsException.class)
+//    public void handleConflict() {
+//        // Nothing to do
+//    }
+	
+	@ExceptionHandler(ResourceAlreadyExists.class)					// 409
 	public ResponseEntity<ErrorResponse> resourceAlreadyExists(ResourceAlreadyExists ex) {
 		String details = ex.getMessage();
 		ErrorResponse exception = new ErrorResponse("Conflict", details);
@@ -31,16 +38,17 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		return ResponseEntity.status(HttpStatus.CONFLICT).body(exception);  
 	}
 
-	@ExceptionHandler(CustomException.class)
-	public ResponseEntity<ErrorResponse> customException(CustomException ex) {
+	@ExceptionHandler(CustomException.class)								//400
+	public ResponseEntity<String> customException(CustomException ex) {
 		String details = ex.getMessage();
 		ErrorResponse exception = new ErrorResponse("Bad Request", details);
 
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception);
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
 	}
 
-	@ExceptionHandler(UnauthorizedException.class)
-	public ResponseEntity<ErrorResponse> unauthorizedException(UnauthorizedException ex) {
+	//@ExceptionHandler(UnauthorizedException.class)						//401
+	 @ExceptionHandler(BadCredentialsException.class)
+	public ResponseEntity<ErrorResponse> unauthorizedException(BadCredentialsException ex) {
 		String details = ex.getMessage();
 		ErrorResponse exception = new ErrorResponse("Unauthorized", details);
 
@@ -53,7 +61,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	 * @param request
 	 * @return - Returns Response Entity with error message along with Status code set to 404 ie., Not Found to FrontEnd Angular.
 	 */
-	@ExceptionHandler(RecordNotFoundException.class)
+	@ExceptionHandler(RecordNotFoundException.class)					//404
 	public final ResponseEntity<ErrorResponse> handleUserNotFoundException(RecordNotFoundException ex,
 			WebRequest request) {
 		String details = ex.getMessage();

@@ -102,7 +102,7 @@ public class StudentService implements IStudentService {
 	@Override
 	public List<ProjectStatusDTO> getProjectMilstonesAndTaskdetails(int projectId){
 		List<ProjectStatusDTO> projectStatus = new ArrayList<>();
-		List<Milestone> milestones =  milestoneRepository.findByProjectId(new Project(projectId));
+		List<Milestone> milestones =  milestoneRepository.findAll();
 		for(Milestone m : milestones) {
 			List<Task> tasklist = taskRepository.findByMilestone(m);
 //			if(!tasklist.isEmpty())

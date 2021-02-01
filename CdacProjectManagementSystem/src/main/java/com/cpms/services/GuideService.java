@@ -83,7 +83,7 @@ public class GuideService implements IGuideService {
 		if (optionalProject.isPresent()) {
 			Project project = optionalProject.get();
 			List<Activity> activities = activityRepository.findByProjectId(project);
-			List<Milestone> milestones = milestoneRepository.findByProjectId(project);
+			List<Milestone> milestones = milestoneRepository.findAll();
 			// List<Student> students = studentRepository.findByProject(project);
 			List<Student> students = studentRepository.findByProject(project);
 			List<String> studentNames = new ArrayList<>();
