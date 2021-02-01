@@ -63,7 +63,7 @@ public class AdminController {
 	private IProjectService projectService;
 	
 	
-	@GetMapping(value = "/students")
+	@GetMapping(value = "/students/:coursename")
 	public ResponseEntity<?> getStudentList() {
 		List<Student> studentListOrderedByPrn = adminService.getStudentListOrderedByPrn();
 		if (studentListOrderedByPrn.isEmpty())
@@ -77,7 +77,7 @@ public class AdminController {
 		System.out.println(file.isEmpty());
 		if (ExcelFileParser.hasExcelFormat(file)) {
 				List<UserAccount> studentUserAccounts = excelFileHelperService.saveToDatabase(file);
-//				emailService.sendEmail(studentUserAccounts);
+				emailService.sendEmail(studentUserAccounts);
 		}else {
 			
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Upload an ExcelFile!!");
@@ -96,7 +96,7 @@ public class AdminController {
 	}
 	
 	//TODO Convey to front end this info
-	@PostMapping(value = "/guides/register") 
+	@PostMapping(value = "/guides/register/:coursename") 
 	ResponseEntity<?> registerGuides(@RequestBody RegisterGuideDTO guideUser){
 //		System.out.println(guideUsers);
 		if(null != guideUser || !guideUser.getTechnologylist().isEmpty()) {
@@ -114,7 +114,7 @@ public class AdminController {
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 }
 	//TODO remaining to test
-	@GetMapping(value = "/projects/list")
+	@GetMapping(value = "/projects/list/:coursename")
 	public ResponseEntity<?> getProjectList(){
 		List<Project> projectList = projectService.getAllProjectList();
 		if (projectList.isEmpty())
@@ -122,7 +122,7 @@ public class AdminController {
 		return new ResponseEntity<>(projectList, HttpStatus.OK);
 	}
 	
-	@GetMapping(value = "/{userid}/teamsize")
+	@GetMapping(value = "/{userid}/teamsize/:coursename")
 	public ResponseEntity<?> getTeamsize(@PathVariable int userid) {
 		Optional<Admin> adminAcct = adminService.getAdminByUserAccount(new UserAccount(userid));
 		if(adminAcct.isPresent()) {

@@ -12,8 +12,8 @@
 	<artifactId>CdacPojectManagementSystem</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>CdacPojectManagementSystem</name>
-	<description>Web Application</description>
-
+	<description>Rest Application</description>
+	<developers></developers>
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
