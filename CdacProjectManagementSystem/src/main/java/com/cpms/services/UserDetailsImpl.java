@@ -9,7 +9,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.cpms.pojos.Guide;
 import com.cpms.pojos.Role;
 import com.cpms.pojos.UserAccount;
 
@@ -21,6 +20,10 @@ public class UserDetailsImpl  implements UserDetails {
 	Object user;
 	private Collection<? extends GrantedAuthority> authorities;
 	
+	public UserDetailsImpl() {
+		
+	}
+	
 	public UserDetailsImpl(UserAccount userAccount, Object user, Collection<? extends GrantedAuthority> authorities) {
 		this.userAccount = userAccount;
 		this.user = user;
@@ -29,7 +32,7 @@ public class UserDetailsImpl  implements UserDetails {
 	
 	public static UserDetailsImpl build(UserAccount userAccount, Object user) {
 		System.out.println("UserDetailsImpl: build");
-		System.out.println(userAccount);
+		//System.out.println(userAccount);
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 		//List<Role> rl =  Arrays.asList(user.getRole());
 		List<Role> roles = Arrays.asList(userAccount.getRole());

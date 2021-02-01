@@ -10,6 +10,7 @@ import javax.validation.ConstraintViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -23,6 +24,12 @@ import com.cpms.dto.ResponseDTO;
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
+//	@ResponseStatus(HttpStatus.UNAUTHORIZED)  // 401
+//    @ExceptionHandler(BadCredentialsException.class)
+//    public void handleConflict() {
+//        // Nothing to do
+//    }
+	
 	@ExceptionHandler(ResourceAlreadyExists.class)					// 409
 	public ResponseEntity<ErrorResponse> resourceAlreadyExists(ResourceAlreadyExists ex) {
 		String details = ex.getMessage();
@@ -39,8 +46,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
 	}
 
-	@ExceptionHandler(UnauthorizedException.class)						//401
-	public ResponseEntity<ErrorResponse> unauthorizedException(UnauthorizedException ex) {
+	//@ExceptionHandler(UnauthorizedException.class)						//401
+	 @ExceptionHandler(BadCredentialsException.class)
+	public ResponseEntity<ErrorResponse> unauthorizedException(BadCredentialsException ex) {
 		String details = ex.getMessage();
 		ErrorResponse exception = new ErrorResponse("Unauthorized", details);
 
