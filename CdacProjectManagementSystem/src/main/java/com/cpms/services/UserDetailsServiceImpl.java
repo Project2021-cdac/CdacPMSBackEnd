@@ -17,7 +17,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	UserRepository userRepo;
 
 	@Override
-	 @Transactional(readOnly = true)
+	@Transactional(readOnly = true)
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 //		Admin admin = null;
 //		Guide guide = null;

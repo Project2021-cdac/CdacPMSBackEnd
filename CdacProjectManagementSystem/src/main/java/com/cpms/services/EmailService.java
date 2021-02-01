@@ -80,7 +80,9 @@ public class EmailService implements IEmailService {
 			helper.setText(html, true);
 			helper.setSubject("Welcome to Cdac PMS");
 //			helper.setFrom("cdacgroup10.project@gmail.com");
+			long currenttime = System.currentTimeMillis() ;
 			sender.send(message);
+			System.out.println(System.currentTimeMillis() - currenttime);
 //			res.emailSuccessCount();
 		}
 	}

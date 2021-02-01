@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cpms.pojos.Admin;
+import com.cpms.pojos.Course;
 import com.cpms.pojos.Student;
 import com.cpms.pojos.UserAccount;
 import com.cpms.repository.AdminRepository;
@@ -26,8 +27,8 @@ public class AdminService implements IAdminService {
 	private AdminRepository adminRepository;
 	
 	@Override
-	public List<Student> getStudentListOrderedByPrn() {
-		 List<Student> findAllByOrderByPrn = studentRepository.findAllByOrderByPrn();		
+	public List<Student> getStudentListOrderedByPrn(Course coursename) {
+		 List<Student> findAllByOrderByPrn = studentRepository.findAllByOrderByPrn(coursename);		
 //		 for (Student student : findAllByOrderByPrn) {
 //			System.out.println(student);
 //		}

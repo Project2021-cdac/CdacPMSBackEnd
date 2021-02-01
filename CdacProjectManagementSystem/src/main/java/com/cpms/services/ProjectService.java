@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cpms.pojos.Course;
 import com.cpms.pojos.Project;
 import com.cpms.repository.ProjectRepository;
 
@@ -23,8 +24,8 @@ public class ProjectService implements IProjectService {
 	}
 
 	@Override
-	public List<Project> getAllProjectList() {
-		return repository.findAllByOrderById();
+	public List<Project> getAllProjectList(Course course) {
+		return repository.findAllByOrderById(course);
 	}
 
 	@Override
