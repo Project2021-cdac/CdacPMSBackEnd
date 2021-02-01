@@ -40,8 +40,6 @@ import com.cpms.services.IUserAccountService;
 @RestController
 @RequestMapping(value = "/admin")
 public class AdminController {
-
-//	private static List<Technology> technologylist;
 	
 	@Autowired
 	private IAdminService adminService;
@@ -90,8 +88,6 @@ public class AdminController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 	
-	// TODO Complete List of data
-	// TODO remaining to test
 	@GetMapping(value = "/guides/{coursename}")
 	public ResponseEntity<?> getGuideList(@PathVariable(name="coursename") String coursename){
 		List<Guide> guideList = guideService.getGuideList(Course.valueOf(coursename.toUpperCase()));
@@ -100,7 +96,6 @@ public class AdminController {
 		return new ResponseEntity<>(guideList, HttpStatus.OK);
 	}
 	
-	//TODO Convey to front end this info
 	@PostMapping(value = "/guides/register") 
 	ResponseEntity<?> registerGuides(@RequestBody RegisterGuideDTO guideUser){
 		if(null != guideUser && !guideUser.getTechnologylist().isEmpty()) {
@@ -116,11 +111,11 @@ public class AdminController {
 			return new ResponseEntity<>(guide, HttpStatus.CREATED);
 		}
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-}
-	//TODO remaining to test
+	}
+	
 	@GetMapping(value = "/projects/list/{coursename}")
-	public ResponseEntity<?> getProjectList(@PathVariable String course){
-		List<Project> projectList = projectService.getAllProjectList(Course.valueOf(course.toUpperCase()));
+	public ResponseEntity<?> getProjectList(@PathVariable String coursename){
+		List<Project> projectList = projectService.getAllProjectList(Course.valueOf(coursename.toUpperCase()));
 		if (projectList.isEmpty())
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		return new ResponseEntity<>(projectList, HttpStatus.OK);
