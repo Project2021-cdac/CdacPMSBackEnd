@@ -12,7 +12,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,67 +36,54 @@ public class UserController {
 
 	@Autowired
 	private UserDetailsServiceImpl userDetailsService;
-	
+
 	@Autowired
 	private JwtUtils jwtUtils;
-	
+
 	@Autowired
 	private IUserService userService;
-	
-//	@PostMapping("/register")
-//	 private ResponseEntity<?> registerUser(@RequestBody UserAccountDto user) {
-//		 
-//		 //TODO Need to receive token from frontend for specific user??????????????????????
-//		 //jwtUtils.validateJwtToken(/*authToken*/);
-//		 
-//		 	System.out.println("Register User");
-//		 	UserAccount addedUser = userService.registerUser(user);
-//		 	System.out.println("Register User Done");
-//		 	if(addedUser != null)
-//	        	return ResponseEntity.status(HttpStatus.OK).body(addedUser);
-//		 	else	
-//		 		return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("Registration encountered an error!!!");
-//	    }
-	
+
 	@PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
-		
+	public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) throws Exception {
+
 		Authentication authentication;
 		try {
 			authentication = authenticationManager.authenticate(
 					new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 		} catch(BadCredentialsException ex) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Email or Password Invalid");
+			throw new Exception("INVALID_CREDENTIALS", ex);
+			//return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Email or Password Invalid");
 		}
 
-
-		final UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequest.getEmail());
 		SecurityContextHolder.getContext().setAuthentication(authentication);
-		final String jwt = jwtUtils.generateToken(userDetails);
+		final UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequest.getEmail());
 
+		//final String jwt = jwtUtils.generateToken(userDetails);
+		final String jwt = jwtUtils.generateToken(authentication);
 		UserDetailsImpl user = (UserDetailsImpl) userDetails;		
 		//return ResponseEntity.status(HttpStatus.OK).body(new JwtResponse(jwt, user.getUserAccount()));
+		System.out.println("User Verification before Sending to Frontend:::: " + user.getUser());
 		return ResponseEntity.status(HttpStatus.OK).body(new JwtResponse(jwt, user.getUser()));
 		//return ResponseEntity.status(HttpStatus.OK).body(new JwtResponse(jwt,  user.getGuide()));
-    }
-	
-	
-	//TODO Work in progress ---> Keep on hold for testing
-	 @PutMapping("/changepassword")
-	 public ResponseEntity<?> changePassword(@RequestHeader (value = "Authorization") String headerAuth, 
-			 @RequestParam("password") String updatePassword, @RequestParam("userId") int userId) {
-		 UserAccount user =  userService.changePassword(headerAuth, updatePassword, userId);  
-		 if(user != null)
-				return ResponseEntity.status(HttpStatus.OK).body(user);
-			else
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Password Updation Failed");  
-	 }
+	}
 
-    @PostMapping("/logout")
-    public ResponseEntity<?> logout(@RequestHeader (value = "Authorization") String headerAuth) {
-    	if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {
-    		return ResponseEntity.status(HttpStatus.OK).body("Logged Out");  			//Redirect to /login page
+
+	//TODO Work in progress ---> Keep on hold for testing
+	@PostMapping("/changepassword")
+	public ResponseEntity<?> changePassword(@RequestHeader (value = "Authorization") String headerAuth, 
+			@RequestParam("password") String updatePassword, @RequestParam("userId") int userId) {
+		UserAccount user =  userService.changePassword(headerAuth, updatePassword, userId);  
+		if(user != null)
+			return ResponseEntity.status(HttpStatus.OK).body(user);
+		else
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Password Updation Failed");  
+	}
+
+	@PostMapping("/logout")
+	public ResponseEntity<?> logout(@RequestHeader (value = "Authorization") String headerAuth) {
+		if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {
+			return ResponseEntity.status(HttpStatus.OK).body("Logged Out");  			//Redirect to /login page
 		}
-    	return ResponseEntity.status(HttpStatus.OK).body("Already Logged Out!!!");
-    }
+		return ResponseEntity.status(HttpStatus.OK).body("Already Logged Out!!!");
+	}
 }
