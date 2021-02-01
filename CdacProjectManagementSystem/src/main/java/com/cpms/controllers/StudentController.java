@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cpms.dto.ProjectDTO;
 import com.cpms.dto.ProjectStatusDTO;
+import com.cpms.pojos.Course;
 import com.cpms.pojos.Project;
 import com.cpms.pojos.Student;
 import com.cpms.pojos.Task;
@@ -39,39 +40,42 @@ public class StudentController {
 		}
 	}
 
+	/**
+	 * @param projectDTO a wrapper around project details, technologies and students
+	 *                   associated with project.
+	 * @see ProjectDTO
+	 * @return ResponseEntity object with Project instance and HttpStatus.CREATED
+	 *         status in case of success.
+	 */
 	@PostMapping("/createproject")
 	public ResponseEntity<?> createProject(@RequestBody ProjectDTO projectDTO) {
 		System.out.println(projectDTO);
 		Project project = studentService.registerProject(projectDTO);
-		if (project == null)
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-
 		studentService.saveProjectCreationActivity(project);
 		return new ResponseEntity<>(project, HttpStatus.CREATED);
 	}
 
 	@GetMapping("/noproject")
 	public ResponseEntity<?> getStudentsWithoutProject() {
-		List<Student> students = studentService.getStudentsWithoutProject();
+		List<Student> students = studentService.getStudentsWithoutProject(/*Course.valueOf(course.toUpperCase())*/);
 		if (students.isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} else {
 			return new ResponseEntity<>(students, HttpStatus.OK);
 		}
 	}
-	
+
 	@PostMapping("/createtask/{projectid}")
-	public ResponseEntity<?> createTask(@RequestBody Task newtask){
-		//TODO should guide be assigned before creating any task?
+	public ResponseEntity<?> createTask(@RequestBody Task newtask) {
 		Task createdTask = studentService.createTask(newtask);
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
-	
+
 	@GetMapping("/milestones/:projectid")
-	public ResponseEntity<?> getProjectMilstonesAndTaskdetails(@PathVariable Integer projectId){
+	public ResponseEntity<?> getProjectMilstonesAndTaskdetails(@PathVariable Integer projectId) {
 		List<ProjectStatusDTO> projectStatus = studentService.getProjectMilstonesAndTaskdetails(projectId);
 		if(!projectStatus.isEmpty())
 			return new ResponseEntity<>(projectStatus, HttpStatus.OK);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);		
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

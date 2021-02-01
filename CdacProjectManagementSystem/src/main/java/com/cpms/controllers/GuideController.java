@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cpms.dto.GuideProjectDTO;
+import com.cpms.pojos.Course;
 import com.cpms.pojos.Guide;
 import com.cpms.pojos.Project;
 import com.cpms.pojos.Session;
@@ -29,9 +30,9 @@ public class GuideController {
 	@Autowired
 	IProjectService projectService;
 
-	@GetMapping("/availableprojects")
-	public ResponseEntity<?> fetchAvailableProjects() {
-		List<Project> projects = projectService.getProjectsWithNoGuide();
+	@GetMapping("/availableprojects/{courseName}")
+	public ResponseEntity<?> fetchAvailableProjects(@PathVariable("courseName") String courseName) {
+		List<Project> projects = projectService.getProjectsWithNoGuide(/*Course.valueOf(courseName.toUpperCase())*/);
 		if (!projects.isEmpty()) {
 			return new ResponseEntity<>(projects, HttpStatus.OK);
 		}
