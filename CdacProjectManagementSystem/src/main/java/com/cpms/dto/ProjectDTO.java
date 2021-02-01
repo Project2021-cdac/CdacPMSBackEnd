@@ -16,16 +16,22 @@ import lombok.ToString;
 @AllArgsConstructor
 @Getter
 @Setter
+/**
+ * A class which wraps around various project parameters needed to save project
+ * details as well as the students who are to be linked to that particular
+ * project instance
+ */
+
 @ToString
-public class ProjectDTO {	
+public class ProjectDTO {
 	private String projectTitle;
 	private String projectDescription;
 	private LocalDate startDate;
 	private LocalDate endDate;
 	private Long teamLead;
 	private List<Integer> technologies;
-	private List <Long> studentPrns;
-	
+	private List<Long> studentPrns;
+
 	public Project getProject() {
 		return new Project(projectTitle, projectDescription, startDate, endDate, new Student(teamLead));
 	}

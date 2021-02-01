@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.cpms.dto.ProjectDTO;
 import com.cpms.dto.ProjectStatusDTO;
 import com.cpms.pojos.Activity;
+import com.cpms.pojos.Course;
 import com.cpms.pojos.Milestone;
 import com.cpms.pojos.Project;
 import com.cpms.pojos.Student;
@@ -44,8 +45,8 @@ public class StudentService implements IStudentService {
 	}
 
 	@Override
-	public List<Student> getStudentsWithoutProject() {
-		return studentRepository.findByProjectIsNull();
+	public List<Student> getStudentsWithoutProject(Course course) {
+		return studentRepository.findStudentsWithoutProject(course);
 	}
 
 	@Override
