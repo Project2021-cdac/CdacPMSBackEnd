@@ -32,11 +32,15 @@ public class GuideController {
 
 	@GetMapping("/availableprojects/{courseName}")
 	public ResponseEntity<?> fetchAvailableProjects(@PathVariable("courseName") String courseName) {
-		List<Project> projects = projectService.getProjectsWithNoGuide(/*Course.valueOf(courseName.toUpperCase())*/);
+		try {
+		List<Project> projects = projectService.getProjectsWithNoGuide(Course.valueOf(courseName.toUpperCase()));
 		if (!projects.isEmpty()) {
 			return new ResponseEntity<>(projects, HttpStatus.OK);
 		}
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} catch (IllegalArgumentException | NullPointerException exception) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
 	}
 
 	@PostMapping("/select")

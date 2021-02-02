@@ -45,8 +45,8 @@ public class StudentService implements IStudentService {
 	}
 
 	@Override
-	public List<Student> getStudentsWithoutProject(/*Course course*/) {
-		return studentRepository.findByProjectIsNull();
+	public List<Student> getStudentsWithoutProject(Course courseName) {
+		return studentRepository.findStudentsWithoutProject(courseName);
 	}
 
 	@Override

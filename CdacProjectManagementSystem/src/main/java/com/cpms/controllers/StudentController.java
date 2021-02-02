@@ -62,9 +62,9 @@ public class StudentController {
 		return new ResponseEntity<>(project, HttpStatus.CREATED);
 	}
 
-	@GetMapping("/noproject")
-	public ResponseEntity<?> getStudentsWithoutProject() {
-		List<Student> students = studentService.getStudentsWithoutProject(/*Course.valueOf(course.toUpperCase())*/);
+	@GetMapping("/noproject/{courseName}")
+	public ResponseEntity<?> getStudentsWithoutProject(@PathVariable("courseName") String courseName) {
+		List<Student> students = studentService.getStudentsWithoutProject(Course.valueOf(courseName.toUpperCase()));
 		if (students.isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} else {

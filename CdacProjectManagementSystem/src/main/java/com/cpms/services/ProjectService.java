@@ -29,8 +29,8 @@ public class ProjectService implements IProjectService {
 	}
 
 	@Override
-	public List<Project> getProjectsWithNoGuide(/*Course courseName*/) {
-		return repository.findAllByGuideIsNull();
+	public List<Project> getProjectsWithNoGuide(Course courseName) {
+		return repository.findAllWithNoGuide(courseName);
 	}
 
 }

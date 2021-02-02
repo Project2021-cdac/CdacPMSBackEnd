@@ -13,7 +13,7 @@ import com.cpms.pojos.UserAccount;
 
 public interface IStudentService {
 	public Student getStudentByUserAccount(UserAccount userAccount);
-	public List<Student> getStudentsWithoutProject(/*Course course*/);
+	public List<Student> getStudentsWithoutProject(Course course);
 	Project registerProject(ProjectDTO projectDTO);
 	Activity saveProjectCreationActivity(Project project);
 	Task createTask(Task newtask);

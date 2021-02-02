@@ -10,5 +10,5 @@ public interface IProjectService {
 	Project registerProject(Project project);
 	List<Project> getAllProjectList();
 	//List<Project> getProjectsWithNoGuide();
-	List<Project> getProjectsWithNoGuide(/*Course courseName*/);
+	List<Project> getProjectsWithNoGuide(Course courseName);
 }
