@@ -111,7 +111,7 @@ public class AdminController {
 		}
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
-	
+	//TODO student list corresponding to project
 	@GetMapping(value = "/projects/list/{coursename}")
 	public ResponseEntity<?> getProjectList(@PathVariable String coursename){
 		List<Project> projectList = projectService.getAllProjectList(Course.valueOf(coursename.toUpperCase()));
