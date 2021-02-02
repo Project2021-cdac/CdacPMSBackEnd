@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cpms.dto.ProjectDTO;
 import com.cpms.dto.ProjectStatusDTO;
-import com.cpms.pojos.Course;
 import com.cpms.pojos.Project;
 import com.cpms.pojos.Student;
 import com.cpms.pojos.Task;
@@ -64,13 +63,15 @@ public class StudentController {
 			return new ResponseEntity<>(students, HttpStatus.OK);
 		}
 	}
-
+	
+	//TODO remaining
 	@PostMapping("/createtask/{projectid}")
 	public ResponseEntity<?> createTask(@RequestBody Task newtask) {
 		Task createdTask = studentService.createTask(newtask);
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
-
+	
+	//TODO remaining
 	@GetMapping("/milestones/:projectid")
 	public ResponseEntity<?> getProjectMilstonesAndTaskdetails(@PathVariable Integer projectId) {
 		List<ProjectStatusDTO> projectStatus = studentService.getProjectMilstonesAndTaskdetails(projectId);

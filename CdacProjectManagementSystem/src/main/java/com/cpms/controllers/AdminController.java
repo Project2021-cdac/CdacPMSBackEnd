@@ -65,7 +65,6 @@ public class AdminController {
 	
 	@GetMapping(value = "/students/{coursename}")
 	public ResponseEntity<?> getStudentList(@PathVariable(name="coursename") String coursename) {
-//		System.out.println();
 		List<Student> studentListOrderedByPrn = adminService.getStudentListOrderedByPrn(Course.valueOf(coursename.toUpperCase()));
 		if (studentListOrderedByPrn.isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -121,9 +120,9 @@ public class AdminController {
 		return new ResponseEntity<>(projectList, HttpStatus.OK);
 	}
 	
-	@GetMapping(value = "/teamsize/{userid}")
-	public ResponseEntity<?> getTeamsize(@PathVariable int userid) {
-		Optional<Admin> adminAcct = adminService.getAdminByUserAccount(new UserAccount(userid));
+	@GetMapping(value = "/teamsize/{coursename}")
+	public ResponseEntity<?> getTeamsize(@PathVariable(name="coursename") String coursename) {
+		Optional<Admin> adminAcct = adminService.getAdminByCourse(Course.valueOf(coursename));
 		if(adminAcct.isPresent()) {
 			return new ResponseEntity<> (adminAcct.get().getProjectMinSize(), HttpStatus.OK);
 		}
@@ -131,9 +130,9 @@ public class AdminController {
 
 	}
 	
-	@PutMapping(value = "/{userid}/setsize") 
-	public ResponseEntity<?> setTeamSize(@PathVariable Integer userid, @RequestParam(name = "size") int projectMinSize){
-		Optional<Admin> adminAcct = adminService.getAdminByUserAccount(new UserAccount(userid));
+	@PutMapping(value = "/{coursename}/setsize") 
+	public ResponseEntity<?> setTeamSize(@PathVariable(name="coursename") String coursename, @RequestParam(name = "size") int projectMinSize){
+		Optional<Admin> adminAcct = adminService.getAdminByCourse(Course.valueOf(coursename));
 		if(adminAcct.isPresent()){
 			Admin admin = adminAcct.get();
 			if(admin.getProjectMinSize() != projectMinSize) {

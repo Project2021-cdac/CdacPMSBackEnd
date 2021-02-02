@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.cpms.pojos.Admin;
 import com.cpms.pojos.Course;
 import com.cpms.pojos.Student;
-import com.cpms.pojos.UserAccount;
 import com.cpms.repository.AdminRepository;
 import com.cpms.repository.StudentRepository;
 import com.cpms.repository.UserAccountRepository;
@@ -47,8 +46,8 @@ public class AdminService implements IAdminService {
 	}
 
 	@Override
-	public Optional<Admin> getAdminByUserAccount(UserAccount userAccount) {
-		return adminRepository.findByUserAccount(userAccount);
+	public Optional<Admin> getAdminByCourse(Course course) {
+		return adminRepository.findByCourse(course);
 	}
 	
 	

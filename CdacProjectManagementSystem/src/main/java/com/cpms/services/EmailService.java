@@ -40,8 +40,6 @@ public class EmailService implements IEmailService {
 	@Override
 	public void sendEmail(List<UserAccount> studentUsers) throws MessagingException, IOException, TemplateException, MailSendException 
 	{
-//		sender.setProtocol(emailcnfg.getProtocol());
-//		sender.setDefaultEncoding(emailcnfg.getEncoding());
 		Properties mailProps = new Properties();
 		mailProps.put("mail.smtp.host", emailcnfg.getHost());
 		mailProps.put("mail.smtp.port", emailcnfg.getPort());
@@ -69,6 +67,7 @@ public class EmailService implements IEmailService {
 
 		Template t = configuration.getTemplate("email-template.ftl");
 		HashMap<String, String> map = new HashMap<>();
+//		long currenttime = System.currentTimeMillis() ;
 		for (UserAccount studentAcct : studentUsers) {
 			map.put("firstname", studentAcct.getFirstName());
 			map.put("lastname", studentAcct.getLastName());
@@ -79,12 +78,11 @@ public class EmailService implements IEmailService {
 			helper.setTo(studentAcct.getEmail());
 			helper.setText(html, true);
 			helper.setSubject("Welcome to Cdac PMS");
-//			helper.setFrom("cdacgroup10.project@gmail.com");
-			long currenttime = System.currentTimeMillis() ;
+//			long currenttime = System.currentTimeMillis() ;
 			sender.send(message);
-			System.out.println(System.currentTimeMillis() - currenttime);
-//			res.emailSuccessCount();
+//			System.out.println(System.currentTimeMillis() - currenttime);
 		}
+//		System.out.println(System.currentTimeMillis() - currenttime);
 	}
 }
 
