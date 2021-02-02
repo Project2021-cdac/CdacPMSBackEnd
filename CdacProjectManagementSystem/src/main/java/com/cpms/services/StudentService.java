@@ -3,6 +3,7 @@ package com.cpms.services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.cpms.dto.ProjectDTO;
 import com.cpms.dto.ProjectStatusDTO;
+import com.cpms.dto.ProjectStudentResponseDTO;
 import com.cpms.pojos.Activity;
 import com.cpms.pojos.Course;
 import com.cpms.pojos.Milestone;
@@ -50,7 +52,7 @@ public class StudentService implements IStudentService {
 	}
 
 	@Override
-	public Project registerProject(ProjectDTO projectDTO) {
+	public ProjectStudentResponseDTO registerProject(ProjectDTO projectDTO) {
 		Optional<Student> optional = studentRepository.findById(projectDTO.getTeamLead());
 		Student teamLead = null;
 		if (optional.isPresent()) {
@@ -73,7 +75,7 @@ public class StudentService implements IStudentService {
 			student.setProject(project);
 		}
 
-		return project;
+		return new ProjectStudentResponseDTO(project, students);
 	}
 
 	public List<Student> getAllStudents() {

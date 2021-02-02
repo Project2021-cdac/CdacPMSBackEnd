@@ -78,7 +78,6 @@ public class Project {
 	@Max(100)						//		Math.floor((total tasks/ total completed task)*100)
 	private int progress;
 
-	@JsonIgnore
 	@OneToOne
 	@JoinColumn(name = "teamlead_prn")
 	private Student teamLead;
