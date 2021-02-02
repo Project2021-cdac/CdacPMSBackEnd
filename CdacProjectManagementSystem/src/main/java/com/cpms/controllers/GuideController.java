@@ -33,11 +33,11 @@ public class GuideController {
 	@GetMapping("/availableprojects/{courseName}")
 	public ResponseEntity<?> fetchAvailableProjects(@PathVariable("courseName") String courseName) {
 		try {
-		List<Project> projects = projectService.getProjectsWithNoGuide(Course.valueOf(courseName.toUpperCase()));
-		if (!projects.isEmpty()) {
-			return new ResponseEntity<>(projects, HttpStatus.OK);
-		}
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			List<Project> projects = projectService.getProjectsWithNoGuide(Course.valueOf(courseName.toUpperCase()));
+			if (!projects.isEmpty()) {
+				return new ResponseEntity<>(projects, HttpStatus.OK);
+			}
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (IllegalArgumentException | NullPointerException exception) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
@@ -88,7 +88,7 @@ public class GuideController {
 		}
 		return new ResponseEntity<>("No session is active as of now", HttpStatus.BAD_REQUEST);
 	}
-	
+
 	@GetMapping("/{userId}")
 	public ResponseEntity<?> getGuide(@PathVariable Integer userId) {
 		Guide guide = service.getGuideByUserId(new UserAccount(userId));

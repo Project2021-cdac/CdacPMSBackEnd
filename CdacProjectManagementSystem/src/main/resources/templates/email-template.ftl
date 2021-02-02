@@ -1,7 +1,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>CPMS Registration Email</title>
 <style>
 	h2{
     	text-align: center;
@@ -64,7 +63,7 @@
 	
 	.redirect-button{
 	    position: absolute;
-	    top: 45%;
+	    top: 50%;
 	    left: 51%;
 	    transform: translate(-50%, -50%);
 	}
@@ -78,7 +77,7 @@
 	    <p id="msg">Here are your login signature to CPMS</p> 
 	    <div id="user" class="center-aligner">
 	        <p><span class="cred-text">User Name: ${username}</span></p>
-	        <p><span class="cred-text">Signature: ${password}</span></p>
+	        <p><span class="cred-text">Signature: Last 4 digits of PRN</span></p>
 	    </div>
 	    <div id="cpms" class="redirect-button">
 	        <p><a id="link-address" href="https://www.google.com" target="_blank">Take me to CPMS</a></p>

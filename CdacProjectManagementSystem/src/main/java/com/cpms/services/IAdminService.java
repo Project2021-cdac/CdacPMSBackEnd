@@ -6,12 +6,11 @@ import java.util.Optional;
 import com.cpms.pojos.Admin;
 import com.cpms.pojos.Course;
 import com.cpms.pojos.Student;
-import com.cpms.pojos.UserAccount;
 
 public interface IAdminService {
 
 	List<Student> getStudentListOrderedByPrn(Course coursename);
 //	List<UserAccount> getGuideList();
-	Optional<Admin> getAdminByUserAccount(UserAccount account);
+	Optional<Admin> getAdminByCourse(Course course);
 	Admin save(Admin admin);
 }
