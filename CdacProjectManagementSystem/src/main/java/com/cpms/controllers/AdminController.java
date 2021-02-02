@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cpms.dto.RegisterGuideDTO;
+import com.cpms.dto.ResponseMessage;
 import com.cpms.fileutils.excelfilehelper.ExcelFileParser;
 import com.cpms.pojos.Admin;
+import com.cpms.pojos.Course;
 import com.cpms.pojos.Guide;
 import com.cpms.pojos.Project;
 import com.cpms.pojos.Role;
@@ -38,8 +40,6 @@ import com.cpms.services.IUserAccountService;
 @RestController
 @RequestMapping(value = "/admin")
 public class AdminController {
-
-//	private static List<Technology> technologylist;
 	
 	@Autowired
 	private IAdminService adminService;
@@ -63,63 +63,65 @@ public class AdminController {
 	private IProjectService projectService;
 	
 	
-	@GetMapping(value = "/students")
-	public ResponseEntity<?> getStudentList() {
-		List<Student> studentListOrderedByPrn = adminService.getStudentListOrderedByPrn();
-		if (studentListOrderedByPrn.isEmpty())
+	@GetMapping(value = "/students/{coursename}")
+	public ResponseEntity<?> getStudentList(@PathVariable(name="coursename") String coursename) {
+//		System.out.println();
+		List<Student> studentListOrderedByPrn = adminService.getStudentListOrderedByPrn(Course.valueOf(coursename.toUpperCase()));
+		if (studentListOrderedByPrn.isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
 		return new ResponseEntity<>(studentListOrderedByPrn, HttpStatus.OK);
 	}
 
-	//TODO how to avoid multiple registeration. FrontEnd Perhaps?
+	//TODO how to avoid multiple registration. FrontEnd Perhaps?
 	@PostMapping(value = "/students/register")
 	public ResponseEntity<?> registerStudent(@RequestBody MultipartFile file) throws Exception {
-		System.out.println(file.isEmpty());
-		if (ExcelFileParser.hasExcelFormat(file)) {
+		ResponseMessage response = new ResponseMessage();
+		if (!file.isEmpty() &&  ExcelFileParser.hasExcelFormat(file)) {
 				List<UserAccount> studentUserAccounts = excelFileHelperService.saveToDatabase(file);
 //				emailService.sendEmail(studentUserAccounts);
+				response.setResponseMessage("All Students registered successfully");
 		}else {
-			
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Upload an ExcelFile!!");
+			response.setResponseMessage("Upload an ExcelFile!!");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		}
-		return ResponseEntity.status(HttpStatus.CREATED).body("All Students registered successfully");
+		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 	
-	// TODO Complete List of data
-	// TODO remaining to test
-	@GetMapping(value = "/guides")
-	public ResponseEntity<?> getGuideList(){
-		List<Guide> guideList = guideService.getGuideList();
+	@GetMapping(value = "/guides/{coursename}")
+	public ResponseEntity<?> getGuideList(@PathVariable(name="coursename") String coursename){
+		List<Guide> guideList = guideService.getGuideList(Course.valueOf(coursename.toUpperCase()));
 		if (guideList.isEmpty())
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		return new ResponseEntity<>(guideList, HttpStatus.OK);
 	}
 	
-	//TODO Convey to front end this info
 	@PostMapping(value = "/guides/register") 
 	ResponseEntity<?> registerGuides(@RequestBody RegisterGuideDTO guideUser){
-//		System.out.println(guideUser);
-		guideUser.getGuidedata().setRole(Role.ROLE_GUIDE);
-		UserAccount registeredGuideAcct = userAcctService.registerUser(guideUser.getGuidedata());
-		List<Integer> technologies = guideUser.getTechnologylist();
-		List<Technology> technologyDbList = technologyService.findTechnologiesById(technologies); 
-		Guide guide = new Guide();
-		guide.setInSession(false);
-		guide.setUserAccount(registeredGuideAcct);
-		guide.getTechnologies().addAll(technologyDbList);
-		guide = guideService.registerGuide(guide);
-		return new ResponseEntity<>(guide, HttpStatus.CREATED);
-}
-	//TODO remaining to test
-	@GetMapping(value = "/projects/list")
-	public ResponseEntity<?> getProjectList(){
-		List<Project> projectList = projectService.getAllProjectList();
+		if(null != guideUser && !guideUser.getTechnologylist().isEmpty()) {
+			guideUser.getGuidedata().setRole(Role.ROLE_GUIDE);
+			UserAccount registeredGuideAcct = userAcctService.registerUser(guideUser.getGuidedata());
+			List<Integer> technologies = guideUser.getTechnologylist();
+			List<Technology> technologyDbList = technologyService.findTechnologiesById(technologies); 
+			Guide guide = new Guide();
+			guide.setInSession(false);
+			guide.setUserAccount(registeredGuideAcct);
+			guide.getTechnologies().addAll(technologyDbList);
+			guide = guideService.registerGuide(guide);
+			return new ResponseEntity<>(guide, HttpStatus.CREATED);
+		}
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	}
+	
+	@GetMapping(value = "/projects/list/{coursename}")
+	public ResponseEntity<?> getProjectList(@PathVariable String coursename){
+		List<Project> projectList = projectService.getAllProjectList(Course.valueOf(coursename.toUpperCase()));
 		if (projectList.isEmpty())
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		return new ResponseEntity<>(projectList, HttpStatus.OK);
 	}
 	
-	@GetMapping(value = "/{userid}/teamsize")
+	@GetMapping(value = "/teamsize/{userid}")
 	public ResponseEntity<?> getTeamsize(@PathVariable int userid) {
 		Optional<Admin> adminAcct = adminService.getAdminByUserAccount(new UserAccount(userid));
 		if(adminAcct.isPresent()) {

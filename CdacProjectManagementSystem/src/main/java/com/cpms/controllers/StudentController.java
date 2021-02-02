@@ -30,13 +30,6 @@ public class StudentController {
 	@Autowired
 	IStudentService studentService;
 
-	/**
-	 * @param id id of the student to be found
-	 * @return ResponseEntity instance encapsulating student instance and
-	 *         HttpStatus.OK status code in case of success. ResponseEntity instance
-	 *         encapsulating HttpStatus.NOT_FOUND in case student with id doesn't
-	 *         exist
-	 */
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getStudentById(@PathVariable Integer id) {
 		Student student = studentService.getStudentByUserAccount(new UserAccount(id));
@@ -85,5 +78,4 @@ public class StudentController {
 			return new ResponseEntity<>(projectStatus, HttpStatus.OK);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
-
 }

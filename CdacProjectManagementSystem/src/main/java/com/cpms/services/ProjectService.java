@@ -24,8 +24,8 @@ public class ProjectService implements IProjectService {
 	}
 
 	@Override
-	public List<Project> getAllProjectList() {
-		return repository.findAllByOrderById();
+	public List<Project> getAllProjectList(Course course) {
+		return repository.findAllByOrderById(course);
 	}
 
 	@Override

@@ -14,9 +14,10 @@ import com.cpms.pojos.Project;
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Integer> {
 
-	List<Project> findAllByOrderById();
-	//List<Project> findAllByGuideIsNull();
-	List<Project> findAllByGuideNotNull();
+	@Query("select p from Project p join fetch p.teamLead t join fetch t.userAccount u "
+			+ "where u.courseName = :course order by p.id")
+	List<Project> findAllByOrderById(Course course);
+	List<Project> findAllByGuideIsNull();
 	List<Project> findByGuide(Guide guide);
 	@Query("SELECT project FROM Project project WHERE project.teamLead.userAccount.courseName = :courseName")
 	List<Project> findAllWithNoGuide(@Param("courseName") Course courseName);

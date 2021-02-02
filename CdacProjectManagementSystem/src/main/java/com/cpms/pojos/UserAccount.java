@@ -12,7 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -102,6 +101,7 @@ public class UserAccount {
 	}
 
 	// TODO setPassword with BCrypt encoded one.
+	// TODO need a getter for student registration
 	public void setPassword(String password) {
 		this.password = passwordEncoder().encode(password);
 	}

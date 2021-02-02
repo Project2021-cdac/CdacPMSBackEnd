@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.cpms.dto.GuideProjectDTO;
 import com.cpms.pojos.Activity;
+import com.cpms.pojos.Course;
 import com.cpms.pojos.Guide;
 import com.cpms.pojos.Milestone;
 import com.cpms.pojos.Project;
@@ -98,8 +99,8 @@ public class GuideService implements IGuideService {
 		return null;
 	}
 
-	public List<Guide> getGuideList() {
-		return guideRepository.findAll();
+	public List<Guide> getGuideList(Course course) {
+		return guideRepository.findByCourse(course);
 	}
 
 	@Override
