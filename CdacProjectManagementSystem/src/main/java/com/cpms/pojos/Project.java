@@ -30,6 +30,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -88,7 +89,7 @@ public class Project {
 
 	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.LAZY)
 	@JoinTable(name = "project_technology_table", joinColumns = @JoinColumn(name = "project_id"), inverseJoinColumns = @JoinColumn(name = "technology_id"))
-	@JsonIgnoreProperties("projects")
+	@JsonSerialize(as = HashSet.class)
 	private Set<Technology> technologies = new HashSet<>();
 
 	public Project(
