@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cpms.dto.GuideProjectDTO;
+import com.cpms.pojos.Course;
 import com.cpms.pojos.Guide;
 import com.cpms.pojos.Project;
 import com.cpms.pojos.Session;
@@ -31,11 +32,15 @@ public class GuideController {
 
 	@GetMapping("/availableprojects/{courseName}")
 	public ResponseEntity<?> fetchAvailableProjects(@PathVariable("courseName") String courseName) {
-		List<Project> projects = projectService.getProjectsWithNoGuide(/*Course.valueOf(courseName.toUpperCase())*/);
-		if (!projects.isEmpty()) {
-			return new ResponseEntity<>(projects, HttpStatus.OK);
+		try {
+			List<Project> projects = projectService.getProjectsWithNoGuide(Course.valueOf(courseName.toUpperCase()));
+			if (!projects.isEmpty()) {
+				return new ResponseEntity<>(projects, HttpStatus.OK);
+			}
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} catch (IllegalArgumentException | NullPointerException exception) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
 	@PostMapping("/select")
@@ -83,7 +88,7 @@ public class GuideController {
 		}
 		return new ResponseEntity<>("No session is active as of now", HttpStatus.BAD_REQUEST);
 	}
-	
+
 	@GetMapping("/{userId}")
 	public ResponseEntity<?> getGuide(@PathVariable Integer userId) {
 		Guide guide = service.getGuideByUserId(new UserAccount(userId));

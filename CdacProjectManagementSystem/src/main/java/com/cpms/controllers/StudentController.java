@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cpms.dto.ProjectDTO;
 import com.cpms.dto.ProjectStatusDTO;
-import com.cpms.pojos.Project;
+import com.cpms.dto.ProjectStudentResponseDTO;
+import com.cpms.pojos.Course;
 import com.cpms.pojos.Student;
 import com.cpms.pojos.Task;
 import com.cpms.pojos.UserAccount;
@@ -49,14 +50,14 @@ public class StudentController {
 	@PostMapping("/createproject")
 	public ResponseEntity<?> createProject(@RequestBody ProjectDTO projectDTO) {
 		System.out.println(projectDTO);
-		Project project = studentService.registerProject(projectDTO);
-		studentService.saveProjectCreationActivity(project);
-		return new ResponseEntity<>(project, HttpStatus.CREATED);
+		ProjectStudentResponseDTO projectResponseDTO = studentService.registerProject(projectDTO);
+		studentService.saveProjectCreationActivity(projectResponseDTO.getProject());
+		return new ResponseEntity<>(projectResponseDTO, HttpStatus.CREATED);
 	}
 
-	@GetMapping("/noproject")
-	public ResponseEntity<?> getStudentsWithoutProject() {
-		List<Student> students = studentService.getStudentsWithoutProject(/*Course.valueOf(course.toUpperCase())*/);
+	@GetMapping("/noproject/{courseName}")
+	public ResponseEntity<?> getStudentsWithoutProject(@PathVariable("courseName") String courseName) {
+		List<Student> students = studentService.getStudentsWithoutProject(Course.valueOf(courseName.toUpperCase()));
 		if (students.isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} else {
@@ -75,7 +76,7 @@ public class StudentController {
 	@GetMapping("/milestones/:projectid")
 	public ResponseEntity<?> getProjectMilstonesAndTaskdetails(@PathVariable Integer projectId) {
 		List<ProjectStatusDTO> projectStatus = studentService.getProjectMilstonesAndTaskdetails(projectId);
-		if(!projectStatus.isEmpty())
+		if (!projectStatus.isEmpty())
 			return new ResponseEntity<>(projectStatus, HttpStatus.OK);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}

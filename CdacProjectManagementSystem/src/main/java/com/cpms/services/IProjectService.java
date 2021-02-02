@@ -8,6 +8,6 @@ import com.cpms.pojos.Project;
 public interface IProjectService {
 	
 	Project registerProject(Project project);
+	List<Project> getProjectsWithNoGuide(Course courseName);
 	List<Project> getAllProjectList(Course course);
-	List<Project> getProjectsWithNoGuide(/*Course courseName*/);
 }

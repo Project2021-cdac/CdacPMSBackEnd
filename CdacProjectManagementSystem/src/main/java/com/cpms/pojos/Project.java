@@ -49,6 +49,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "project_table")
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class Project {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -78,7 +79,6 @@ public class Project {
 	@Max(100)						//		Math.floor((total tasks/ total completed task)*100)
 	private int progress;
 
-	@JsonIgnore
 	@OneToOne
 	@JoinColumn(name = "teamlead_prn")
 	private Student teamLead;
