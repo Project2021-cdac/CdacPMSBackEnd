@@ -34,7 +34,7 @@ public class Admin{
 	@Column(updatable = true)
 	private Integer id;
 	
-	@Column(length = 10)
+	@Column(columnDefinition = "INTEGER DEFAULT 0")
 	private int projectMinSize;
 	
 	@OneToOne(orphanRemoval = true)

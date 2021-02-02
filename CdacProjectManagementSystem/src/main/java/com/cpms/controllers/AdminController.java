@@ -1,5 +1,6 @@
 package com.cpms.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.cpms.dto.ProjectStudentResponseDTO;
 import com.cpms.dto.RegisterGuideDTO;
 import com.cpms.dto.ResponseMessage;
 import com.cpms.fileutils.excelfilehelper.ExcelFileParser;
@@ -33,6 +35,7 @@ import com.cpms.services.IEmailService;
 import com.cpms.services.IExcelFileHelperService;
 import com.cpms.services.IGuideService;
 import com.cpms.services.IProjectService;
+import com.cpms.services.IStudentService;
 import com.cpms.services.ITechnologyService;
 import com.cpms.services.IUserAccountService;
 
@@ -55,6 +58,9 @@ public class AdminController {
 
 	@Autowired
 	private IGuideService guideService;
+	
+	@Autowired
+	private IStudentService studentService;
 	
 	@Autowired 
 	private ITechnologyService technologyService;
@@ -115,9 +121,16 @@ public class AdminController {
 	@GetMapping(value = "/projects/list/{coursename}")
 	public ResponseEntity<?> getProjectList(@PathVariable String coursename){
 		List<Project> projectList = projectService.getAllProjectList(Course.valueOf(coursename.toUpperCase()));
-		if (projectList.isEmpty())
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		return new ResponseEntity<>(projectList, HttpStatus.OK);
+		if(!projectList.isEmpty()) {
+			List<ProjectStudentResponseDTO> projectResponse = new ArrayList<>();
+			for(Project project: projectList) {
+				List<Student> teamMembers = studentService.getStudentListByProject(new Project(project.getId()));
+				ProjectStudentResponseDTO response = new ProjectStudentResponseDTO(project, teamMembers);			
+				projectResponse.add(response);
+			}
+			return new ResponseEntity<>(projectResponse, HttpStatus.OK);
+		}
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
 	@GetMapping(value = "/teamsize/{coursename}")

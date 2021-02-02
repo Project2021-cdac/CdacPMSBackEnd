@@ -6,31 +6,27 @@
     	text-align: center;
 	}
 	
-	.center-aligner{
+	img{
 	    display: block;
-	    margin-left: auto;
-	    margin-right: auto;
+	    margin:0 auto;
 	}
 	
 	#welcome{	
 	    background:#03a9f4;
-	    padding-left:10px;
-	    padding-right:10px;
-	    padding-top:5px;
-	    padding-bottom: 5px;
-	    font-family: cursive;
-	    font-size: x-large;
-	    font-weight: bold;
-	    border:1px solid #2196f3;
-	    border-radius: 35px;
+		padding:10px 5px; 
+		font-family: cursive;
+		font-size: x-large;
+		font-weight: bold;
+		border:1px solid #2196f3;
+		border-radius: 35px;
 	}
 	
 	#user{
+	    text-align: center;
+	    margin:0 auto;
+	    padding:20px;
 	    border-radius:50px;
 	    border: 1px solid #303f9f;
-	    width:500px;
-	    padding:20px;
-	    text-align: center;
 	    background: rgb(34,166,195);
 	    background: radial-gradient(circle, rgba(34,166,195,1) 0%, rgba(67,79,176,1) 78%);
 	}
@@ -41,13 +37,12 @@
 	}
 	
 	#cpms{
-	    background: #49aac4;
 	    width: 200px;
-	    padding:5px;
-	    margin:10px;
-	    border:2px solid #4340ff;
-	    border-radius: 20px;
+	    margin:10px auto;
 	    text-align: center;
+	    border-radius: 20px;
+	    border:2px solid #4340ff;
+	    background: #49aac4;
 	}
 	
 	#link-address{
@@ -58,28 +53,23 @@
 	
 	#content-area{
     	max-width:500px;
-    	margin:auto;
-	}
-	
-	.redirect-button{
-	    position: absolute;
-	    top: 50%;
-	    left: 51%;
-	    transform: translate(-50%, -50%);
+	    margin:0px auto;
+	    padding:10px;
+	    background-color: lightgrey;
 	}
 </style>
 </head>
 <body>
 	<div id="content-area">
-		<img class="center-aligner" src="cid:cdac-acts-logo.jpeg" alt="Cdac Acts Logo"/>
-		<h2>CDAC Project Managment System</h2>
+		<img src="cid:cdac-acts-logo.jpeg" alt="Cdac Acts Logo"/>
+		<h2>CDAC Project Management System</h2>
 		<p>Welcome <span id="welcome">${firstname} ${lastname}</span> to CPMS, </p>
 	    <p id="msg">Here are your login signature to CPMS</p> 
-	    <div id="user" class="center-aligner">
+	    <div id="user">
 	        <p><span class="cred-text">User Name: ${username}</span></p>
 	        <p><span class="cred-text">Signature: Last 4 digits of PRN</span></p>
 	    </div>
-	    <div id="cpms" class="redirect-button">
+	    <div id="cpms">
 	        <p><a id="link-address" href="https://www.google.com" target="_blank">Take me to CPMS</a></p>
 	    </div>
     </div>
