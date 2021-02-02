@@ -36,10 +36,13 @@ public class EmailService implements IEmailService {
 
 	@Autowired
 	private freemarker.template.Configuration configuration;
+	
+	private static MimeMessageHelper helper;
+	private static Template template; 
+	private static MimeMessage message;
 
 	@Override
-	public void sendEmail(List<UserAccount> studentUsers) throws MessagingException, IOException, TemplateException, MailSendException 
-	{
+	public void configureEmail() throws MessagingException, IOException {
 		Properties mailProps = new Properties();
 		mailProps.put("mail.smtp.host", emailcnfg.getHost());
 		mailProps.put("mail.smtp.port", emailcnfg.getPort());
@@ -58,29 +61,36 @@ public class EmailService implements IEmailService {
 
 		});
 		sender.setSession(mailSession);
-		MimeMessage message = sender.createMimeMessage();
-		MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
+		message = sender.createMimeMessage();
+		helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
 				StandardCharsets.UTF_8.name());
 
-		// add attachment
-//			helper.addAttachment("cdac_logo.jpeg", new ClassPathResource("cdac_logo.jpeg"));
+//		 add attachment
+//		helper.addAttachment("cdac_logo.jpeg", new ClassPathResource("cdac_logo.jpeg"));
+		template= configuration.getTemplate("email-template.ftl");
+	}
 
-		Template t = configuration.getTemplate("email-template.ftl");
+	@Override
+	public void sendEmail(List<UserAccount> studentUsers) throws MessagingException, IOException, TemplateException, MailSendException 
+	{
+		
+		if(null != template) {
 		HashMap<String, String> map = new HashMap<>();
 //		long currenttime = System.currentTimeMillis() ;
-		for (UserAccount studentAcct : studentUsers) {
-			map.put("firstname", studentAcct.getFirstName());
-			map.put("lastname", studentAcct.getLastName());
-			map.put("username", studentAcct.getEmail());
-			map.put("password", studentAcct.getPassword());
-			String html = FreeMarkerTemplateUtils.processTemplateIntoString(t, map);
-
-			helper.setTo(studentAcct.getEmail());
-			helper.setText(html, true);
-			helper.setSubject("Welcome to Cdac PMS");
-//			long currenttime = System.currentTimeMillis() ;
-			sender.send(message);
-//			System.out.println(System.currentTimeMillis() - currenttime);
+			for (UserAccount studentAcct : studentUsers) {
+				map.put("firstname", studentAcct.getFirstName());
+				map.put("lastname", studentAcct.getLastName());
+				map.put("username", studentAcct.getEmail());
+				map.put("password", studentAcct.getPassword());
+				String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, map);
+	
+				helper.setTo(studentAcct.getEmail());
+				helper.setText(html, true);
+				helper.setSubject("Welcome to Cdac PMS");
+	//			long currenttime = System.currentTimeMillis() ;
+				sender.send(message);
+	//			System.out.println(System.currentTimeMillis() - currenttime);
+			}
 		}
 //		System.out.println(System.currentTimeMillis() - currenttime);
 	}
