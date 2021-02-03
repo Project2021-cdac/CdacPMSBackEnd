@@ -51,17 +51,23 @@ public class StudentController {
 	public ResponseEntity<?> createProject(@RequestBody ProjectDTO projectDTO) {
 		System.out.println(projectDTO);
 		ProjectStudentResponseDTO projectResponseDTO = studentService.registerProject(projectDTO);
+		System.out.println("teamLead userAccount" + projectResponseDTO.getProject().getTeamLead().getProject());
 		studentService.saveProjectCreationActivity(projectResponseDTO.getProject());
 		return new ResponseEntity<>(projectResponseDTO, HttpStatus.CREATED);
 	}
 
 	@GetMapping("/noproject/{courseName}")
 	public ResponseEntity<?> getStudentsWithoutProject(@PathVariable("courseName") String courseName) {
-		List<Student> students = studentService.getStudentsWithoutProject(Course.valueOf(courseName.toUpperCase()));
-		if (students.isEmpty()) {
-			return new ResponseEntity<>(students, HttpStatus.NO_CONTENT);
-		} else {
-			return new ResponseEntity<>(students, HttpStatus.OK);
+		try {
+			List<Student> students = studentService.getStudentsWithoutProject(Course.valueOf(courseName.toUpperCase()));
+			if (students.isEmpty()) {
+				return new ResponseEntity<>(students, HttpStatus.NO_CONTENT);
+			} else {
+				return new ResponseEntity<>(students, HttpStatus.OK);
+			}
+		} catch (IllegalArgumentException | NullPointerException exception) {
+			exception.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
 	

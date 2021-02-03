@@ -24,6 +24,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
 	public List<Student> findByProject(Project project);
 
-	@Query("SELECT student FROM Student student JOIN FETCH student.userAccount userAccount WHERE userAccount.courseName = :courseName")
+	//@Query("SELECT student FROM Student student JOIN FETCH student.userAccount userAccount WHERE student.userAccount.courseName = :courseName and student.project = null")
+	@Query("SELECT student FROM Student student JOIN FETCH student.userAccount userAccount WHERE student.project = null and student.userAccount.courseName = :courseName")
 	List<Student> findStudentsWithoutProject(@Param("courseName") Course courseName);
 }
