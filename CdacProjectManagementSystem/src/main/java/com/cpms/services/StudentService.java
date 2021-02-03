@@ -70,10 +70,13 @@ public class StudentService implements IStudentService {
 		}
 
 		teamLead.setProject(project);
+		
 		List<Student> students = studentRepository.findAllById(projectDTO.getStudentPrns());
 		for (Student student : students) {
 			student.setProject(project);
 		}
+
+		students.remove(teamLead);
 
 		return new ProjectStudentResponseDTO(project, students);
 	}

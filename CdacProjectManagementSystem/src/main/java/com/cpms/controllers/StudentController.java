@@ -49,7 +49,6 @@ public class StudentController {
 	 */
 	@PostMapping("/createproject")
 	public ResponseEntity<?> createProject(@RequestBody ProjectDTO projectDTO) {
-		System.out.println(projectDTO);
 		ProjectStudentResponseDTO projectResponseDTO = studentService.registerProject(projectDTO);
 		System.out.println("teamLead userAccount" + projectResponseDTO.getProject().getTeamLead().getProject());
 		studentService.saveProjectCreationActivity(projectResponseDTO.getProject());

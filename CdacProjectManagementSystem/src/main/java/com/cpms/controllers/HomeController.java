@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cpms.pojos.Course;
+import com.cpms.pojos.Milestone;
 import com.cpms.pojos.Technology;
+import com.cpms.repository.MilestoneRepository;
 import com.cpms.services.ITechnologyService;
 
 /**
@@ -26,6 +28,8 @@ public class HomeController {
 
 	@Autowired
 	ITechnologyService service;
+	@Autowired
+	MilestoneRepository milestoneRepository;
 
 	@GetMapping("course/list")
 	public ResponseEntity<?>  listCourses() {
@@ -44,5 +48,11 @@ public class HomeController {
 		} else {
 			return new ResponseEntity<>(technologies, HttpStatus.OK);
 		}
+	}
+	
+	
+	@GetMapping("milestone/list")
+	public ResponseEntity<?> getAllMilestones() {
+		return new ResponseEntity<>(milestoneRepository.findAll(), HttpStatus.OK);
 	}
 }
