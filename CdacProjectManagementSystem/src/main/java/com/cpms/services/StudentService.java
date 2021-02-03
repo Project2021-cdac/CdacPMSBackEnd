@@ -61,6 +61,7 @@ public class StudentService implements IStudentService {
 		}
 
 		Project project = projectDTO.getProject();
+		project.setTeamLead(teamLead);
 		projectService.registerProject(project);
 		//why not addAll?
 		List<Technology> technologies = technologyService.findTechnologiesById(projectDTO.getTechnologies());

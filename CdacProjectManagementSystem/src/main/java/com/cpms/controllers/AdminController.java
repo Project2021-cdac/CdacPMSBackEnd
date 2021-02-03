@@ -41,7 +41,7 @@ import com.cpms.services.IUserAccountService;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping(value = "/admin")
+@RequestMapping(value = "/admin")	
 public class AdminController {
 	
 	@Autowired
@@ -117,7 +117,7 @@ public class AdminController {
 		}
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
-	//TODO student list corresponding to project
+	
 	@GetMapping(value = "/projects/list/{coursename}")
 	public ResponseEntity<?> getProjectList(@PathVariable String coursename){
 		List<Project> projectList = projectService.getAllProjectList(Course.valueOf(coursename.toUpperCase()));

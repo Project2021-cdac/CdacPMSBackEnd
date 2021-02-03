@@ -92,16 +92,29 @@ public class Project {
 	@JsonSerialize(as = HashSet.class)
 	private Set<Technology> technologies = new HashSet<>();
 
+//	public Project(
+//			@NotBlank(message = "Project Title can't be blank") @Size(max = 100, message = "Project Title must be less than 100 characters") String title,
+//			@NotBlank(message = "Project Description can't be blank") @Size(min = 30, max = 300, message = "Project Description must be between 10 and 300 characters") String description,
+//			LocalDate startDate, @Future(message = "Project End Date must be in future") LocalDate endDate,
+//			Student teamLead) {
+//		this.title = title;
+//		this.description = description;
+//		this.startDate = startDate;
+//		this.endDate = endDate;
+//		this.teamLead = teamLead;
+//	}
+	
+	
 	public Project(
 			@NotBlank(message = "Project Title can't be blank") @Size(max = 100, message = "Project Title must be less than 100 characters") String title,
-			@NotBlank(message = "Project Description can't be blank") @Size(min = 30, max = 300, message = "Project Description must be between 10 and 300 characters") String description,
-			LocalDate startDate, @Future(message = "Project End Date must be in future") LocalDate endDate,
-			Student teamLead) {
+			@NotBlank(message = "Project Description can't be blank") @Size(min = 10, max = 300, message = "Project Description must be between 10 and 300 characters") String description,
+			LocalDate startDate, @Future(message = "Project End Date must be in future") LocalDate endDate) {
+		super();
 		this.title = title;
 		this.description = description;
 		this.startDate = startDate;
 		this.endDate = endDate;
-		this.teamLead = teamLead;
+		this.progress = 0;
 	}
 
 	public Project(int id) {
@@ -126,4 +139,6 @@ public class Project {
 	public Set<Technology> getTechnologies() {
 		return this.technologies;
 	}
+
+
 }
