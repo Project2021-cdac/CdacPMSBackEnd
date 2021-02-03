@@ -117,5 +117,10 @@ public class StudentService implements IStudentService {
 		}
 		return projectStatus;
 	}
-
+	
+	@Override 
+	public List<Student> getStudentListByProject(Project project){
+		return studentRepository.findByProject(project);
+	}
+	
 }

@@ -19,4 +19,5 @@ public interface IStudentService {
 	Activity saveProjectCreationActivity(Project project);
 	Task createTask(Task newtask);
 	List<ProjectStatusDTO> getProjectMilstonesAndTaskdetails(int projId);
+	public List<Student> getStudentListByProject(Project project);
 }
