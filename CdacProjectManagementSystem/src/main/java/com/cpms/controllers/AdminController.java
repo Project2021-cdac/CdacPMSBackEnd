@@ -143,7 +143,7 @@ public class AdminController {
 
 	}
 	
-	@PutMapping(value = "/{coursename}/setsize") 
+	@PostMapping(value = "/{coursename}/setsize") 
 	public ResponseEntity<?> setTeamSize(@PathVariable(name="coursename") String coursename, @RequestParam(name = "size") int projectMinSize){
 		Optional<Admin> adminAcct = adminService.getAdminByCourse(Course.valueOf(coursename));
 		if(adminAcct.isPresent()){
