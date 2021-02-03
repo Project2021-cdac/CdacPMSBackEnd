@@ -19,10 +19,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	@Override
 	@Transactional(readOnly = true)
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-//		Admin admin = null;
-//		Guide guide = null;
-//		Student student = null;
-		
 		Object user = null;
 		UserAccount userAccount = userRepo.findByEmail(email)
 				.orElseThrow(() -> new UsernameNotFoundException(String.format("%s User Not Found ", email)));

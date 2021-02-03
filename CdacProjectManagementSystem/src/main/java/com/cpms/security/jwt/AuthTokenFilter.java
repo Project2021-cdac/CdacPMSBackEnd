@@ -43,9 +43,9 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 		
 		try {
 			String jwt = parseJwt(request);
-			if(jwt == null) {
-				throw new CustomException("JWT String argument cannot be null.");
-			}
+//			if(jwt == null) {
+//				throw new CustomException("JWT String argument cannot be null.");
+//			}
 			String email = jwtUtils.extractEmail(jwt);
 			
 			System.out.println("UserDetailsServiceImpl:::doFilterInternal::: JWT - " + jwt);
