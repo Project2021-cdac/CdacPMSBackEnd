@@ -20,6 +20,8 @@ import com.cpms.pojos.Course;
 import com.cpms.pojos.Student;
 import com.cpms.pojos.Task;
 import com.cpms.pojos.UserAccount;
+import com.cpms.services.IAdminService;
+import com.cpms.services.IProjectService;
 import com.cpms.services.IStudentService;
 
 @CrossOrigin(origins = "*")
@@ -29,7 +31,9 @@ public class StudentController {
 
 	@Autowired
 	IStudentService studentService;
-
+	@Autowired
+	IProjectService projectService;
+	
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getStudentById(@PathVariable Integer id) {
 		Student student = studentService.getStudentByUserAccount(new UserAccount(id));
@@ -47,12 +51,16 @@ public class StudentController {
 	 * @return ResponseEntity object with Project instance and HttpStatus.CREATED
 	 *         status in case of success.
 	 */
-	@PostMapping("/createproject")
-	public ResponseEntity<?> createProject(@RequestBody ProjectDTO projectDTO) {
-		ProjectStudentResponseDTO projectResponseDTO = studentService.registerProject(projectDTO);
-		System.out.println("teamLead userAccount" + projectResponseDTO.getProject().getTeamLead().getProject());
-		studentService.saveProjectCreationActivity(projectResponseDTO.getProject());
-		return new ResponseEntity<>(projectResponseDTO, HttpStatus.CREATED);
+	@PostMapping("/createproject/{courseName}")
+	public ResponseEntity<?> createProject(@RequestBody ProjectDTO projectDTO, @PathVariable("courseName") String courseName) {
+		if(projectService.projectTeamSizeisValid(Course.valueOf(courseName), projectDTO.getStudentPrns().size() + 1 )) {
+			ProjectStudentResponseDTO projectResponseDTO = studentService.registerProject(projectDTO);
+			System.out.println("teamLead userAccount" + projectResponseDTO.getProject().getTeamLead().getProject());
+			studentService.saveProjectCreationActivity(projectResponseDTO.getProject());
+			return new ResponseEntity<>(projectResponseDTO, HttpStatus.CREATED);
+		} 
+		
+		return new ResponseEntity<>("Invalid team size", HttpStatus.BAD_REQUEST);
 	}
 
 	@GetMapping("/noproject/{courseName}")
