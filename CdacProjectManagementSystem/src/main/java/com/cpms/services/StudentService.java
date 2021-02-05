@@ -27,24 +27,36 @@ import com.cpms.repository.TaskRepository;
 @Service
 @Transactional
 public class StudentService implements IStudentService {
+	
 	@Autowired
 	StudentRepository studentRepository;
+	
 	@Autowired
 	IProjectService projectService;
+	
 	@Autowired
 	ITechnologyService technologyService;
+	
 	@Autowired
 	IActivityService activityService;
-	TaskRepository taskRepository;
+	
 	@Autowired
-	MilestoneRepository milestoneRepository;
-
+	TaskRepository taskRepository;
+	
+	@Autowired
+	MilestoneRepository milestoneRepository;	
+	
 	@Override
 	public Student getStudentByUserAccount(UserAccount userAccount) {
 		System.out.println(userAccount);
 		return studentRepository.findByUserAccount(userAccount);
 	}
 
+	@Override
+	public Optional<Student> getStudentByPRN(Long studentId){
+		return studentRepository.findByPrn(studentId);
+	}
+	
 	@Override
 	public List<Student> getStudentsWithoutProject(Course courseName) {
 		return studentRepository.findStudentsWithoutProject(courseName);
@@ -93,7 +105,6 @@ public class StudentService implements IStudentService {
 		for (Student eachStudent : students) {
 			activityDescription += eachStudent.getPrn() + " ";
 		}
-		
 		return activityService.createActivity(activityDescription, project.getId());
 	}
 	
@@ -123,4 +134,13 @@ public class StudentService implements IStudentService {
 		return studentRepository.findByProject(project);
 	}
 	
+	@Override
+	public List<Task> getTasksofStudent(Student student){
+		return taskRepository.findByCreatedBy(student);
+	}
+	
+	@Override
+	public Optional<Task> getTask(Integer id){
+		return taskRepository.findById(id);
+	}
 }

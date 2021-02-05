@@ -6,5 +6,5 @@ package com.cpms.pojos;
  *	Status Enum shows in which states can an Activity can be.
  */
 public enum Status {
-	COMPLETED, DELAYED, MODIFIED
+	COMPLETED, DELAYED, MODIFIED, STARTED
 }

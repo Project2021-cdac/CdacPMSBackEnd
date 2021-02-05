@@ -4,6 +4,8 @@ import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,7 +18,9 @@ import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -40,6 +44,7 @@ public class Task {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
+//	@Enumerated(EnumType.STRING)
 	private Status status;
 	
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -48,6 +53,7 @@ public class Task {
 	/**
 	 * 	PRN of Student who created the Task.
 	 */
+	@JsonIgnore
 	@OneToOne
 	private Student createdBy;
 	
@@ -57,7 +63,7 @@ public class Task {
 	private String description;
 	
 
-	@JsonIgnore
+//	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="milestone_id")
 	private Milestone milestone;

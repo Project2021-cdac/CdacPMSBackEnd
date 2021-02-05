@@ -1,6 +1,7 @@
 package com.cpms.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -33,5 +34,9 @@ public class ProjectService implements IProjectService {
 		return repository.findAllWithNoGuide(courseName);
 	}
 
+	@Override 
+	public Optional<Project> getProjectById(Integer projectid){
+		return repository.findById(projectid);
+	}
 	
 }
