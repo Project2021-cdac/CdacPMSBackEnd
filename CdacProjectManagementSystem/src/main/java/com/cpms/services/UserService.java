@@ -16,11 +16,9 @@ public class UserService implements IUserService{
 	@Autowired
 	private UserRepository userRepo;
 
-//	@Autowired
-//	private PasswordEncoder encoder;
-
 	public boolean changePassword(final String newPassword, final String email){
-		Optional<UserAccount> user = userRepo.findByEmail(email);
+//		if(isLoggedIn()) {
+			Optional<UserAccount> user = userRepo.findByEmail(email);
 			if(user.isPresent()) {
 				UserAccount userAccount = user.get();
 				System.out.println(userAccount.getPassword());
@@ -29,6 +27,7 @@ public class UserService implements IUserService{
 				userRepo.save(userAccount);
 				return true;
 			}
+		//}
 		return false;
 	}
 
