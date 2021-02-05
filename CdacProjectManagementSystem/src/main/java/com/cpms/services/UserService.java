@@ -1,10 +1,11 @@
 package com.cpms.services;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.cpms.pojos.UserAccount;
@@ -15,46 +16,25 @@ public class UserService implements IUserService{
 	@Autowired
 	private UserRepository userRepo;
 
-	@Autowired
-	private PasswordEncoder encoder;
-
-
-//	public UserAccount registerUser(UserAccountDto user) {
-//		System.out.println("Register User");
-//		UserAccount userAccount = new UserAccount();
-//		userAccount.setFirstName(user.getFirstName());
-//		userAccount.setLastName(user.getLastName());
-//		userAccount.setEmail(user.getEmail());
-//		userAccount.setPassword(user.getPassword());
-//		userAccount.setCourseName(user.getCourseName());
-//		userAccount.setRole(user.getRole());
-//		userAccount.setDateOfBirth(user.getDateOfBirth());
-//		userAccount.setPhoneNumber(user.getPhoneNumber());
-//		UserAccount addedUser = userRepo.save(userAccount);
-//		System.out.println("Register User Done");
-//
-////	     String token = generateVerificationToken(user);
-////	     mailService.sendMail(new NotificationEmail("Please Activate your Account",
-////	                user.getEmail(), "Thank you for signing up to CDAC Acts, " +
-////	                "please click on the below url to activate your account : " +
-////	                "http://localhost:8080/api/auth/accountVerification/" + token));
-//
-//		return addedUser;
-//
-//	}
-
-	public UserAccount changePassword(String headerAuth, String updatePassword, int userId){
-		UserAccount user = null;
-		if(isLoggedIn()) {
-			user =  userRepo.changePassword(encoder.encode(updatePassword), userId); 
-			return user;
-		}
-		return null;
+	public boolean changePassword(final String newPassword, final String email){
+//		if(isLoggedIn()) {
+			Optional<UserAccount> user = userRepo.findByEmail(email);
+			if(user.isPresent()) {
+				UserAccount userAccount = user.get();
+				System.out.println(userAccount.getPassword());
+				System.out.println(newPassword);
+				userAccount.setPassword(newPassword);
+				userRepo.save(userAccount);
+				return true;
+			}
+		//}
+		return false;
 	}
 
+	//Can be used by any api to verify if user is logged in or not
 	public boolean isLoggedIn() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		return !(authentication instanceof AnonymousAuthenticationToken) && authentication.isAuthenticated();
 	}
-	
+
 }

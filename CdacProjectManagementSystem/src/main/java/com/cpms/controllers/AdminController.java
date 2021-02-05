@@ -37,6 +37,8 @@ import com.cpms.services.IStudentService;
 import com.cpms.services.ITechnologyService;
 import com.cpms.services.IUserAccountService;
 
+import io.swagger.annotations.ApiOperation;
+
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping(value = "/admin")	
@@ -66,7 +68,7 @@ public class AdminController {
 	@Autowired
 	private IProjectService projectService;
 	
-	
+	@ApiOperation(value = "Returns List of Students according to course")
 	@GetMapping(value = "/students/{coursename}")
 	public ResponseEntity<?> getStudentList(@PathVariable(name="coursename") String coursename) {
 		List<Student> studentListOrderedByPrn = adminService.getStudentListOrderedByPrn(Course.valueOf(coursename.toUpperCase()));

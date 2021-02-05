@@ -1,6 +1,7 @@
 package com.cpms.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,7 +15,7 @@ import com.cpms.pojos.UserAccount;
 @Repository
 public interface GuideRepository extends JpaRepository<Guide, Integer> {
 
-	Guide findByUserAccount(UserAccount userAccount);
+	Optional<Guide> findByUserAccount(UserAccount userAccount);
 	
 	@Query("select g from Guide g join fetch g.userAccount u where u.courseName = :course")
 	List<Guide> findByCourse(@Param("course") Course course);

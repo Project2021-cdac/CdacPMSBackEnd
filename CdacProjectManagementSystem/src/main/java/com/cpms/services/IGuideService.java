@@ -1,6 +1,7 @@
 package com.cpms.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.cpms.dto.GuideProjectDTO;
 import com.cpms.pojos.Course;
@@ -12,12 +13,12 @@ import com.cpms.pojos.UserAccount;
 public interface IGuideService {
 	
 	Guide registerGuide(Guide guide);
-	Guide assignProject(Integer guideId, Integer projectId);
+	Optional<Guide> assignProject(Integer guideId, Integer projectId);
 	List<Project> getProjectsAssignedToGuide(Integer guideId);
 	GuideProjectDTO getProjectDetails(Integer projectId);
 	List<Guide> getGuideList(Course course);
 	Session saveSessionStart(Integer projectId);
-	Session saveSessionEnd(Integer sessionId);
+	Optional<Session> saveSessionEnd(Integer sessionId);
 	List<Session> getSessionListByProject(Integer projectId);
-	Guide getGuideByUserId(UserAccount userAccount);
+	Optional<Guide> getGuideByUserId(UserAccount userAccount);
 }

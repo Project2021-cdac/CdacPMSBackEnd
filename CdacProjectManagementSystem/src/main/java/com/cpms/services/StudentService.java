@@ -47,7 +47,7 @@ public class StudentService implements IStudentService {
 	MilestoneRepository milestoneRepository;	
 	
 	@Override
-	public Student getStudentByUserAccount(UserAccount userAccount) {
+	public Optional<Student> getStudentByUserAccount(UserAccount userAccount) {
 		System.out.println(userAccount);
 		return studentRepository.findByUserAccount(userAccount);
 	}
@@ -82,10 +82,13 @@ public class StudentService implements IStudentService {
 		}
 
 		teamLead.setProject(project);
+		
 		List<Student> students = studentRepository.findAllById(projectDTO.getStudentPrns());
 		for (Student student : students) {
 			student.setProject(project);
 		}
+
+		students.remove(teamLead);
 
 		return new ProjectStudentResponseDTO(project, students);
 	}

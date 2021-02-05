@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cpms.dto.ProjectDTO;
+import com.cpms.dto.ProjectStatusDTO;
 import com.cpms.dto.ProjectStudentResponseDTO;
 import com.cpms.pojos.Activity;
 import com.cpms.pojos.Course;
@@ -25,6 +26,7 @@ import com.cpms.pojos.Student;
 import com.cpms.pojos.Task;
 import com.cpms.pojos.UserAccount;
 import com.cpms.services.IActivityService;
+import com.cpms.services.IAdminService;
 import com.cpms.services.IProjectService;
 import com.cpms.services.IStudentService;
 
@@ -35,21 +37,22 @@ public class StudentController {
 
 	@Autowired
 	IStudentService studentService;
-	
+
 	@Autowired
 	IProjectService projectService;
 	
 	@Autowired
 	IActivityService activityService;
-	
 
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getStudentById(@PathVariable Integer id) {
-		Student student = studentService.getStudentByUserAccount(new UserAccount(id));
-		if (student == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		Optional<Student> student = studentService.getStudentByUserAccount(new UserAccount(id));
+		if (student.isPresent()) {
+			return new ResponseEntity<>(student.get(), HttpStatus.OK);
+			//return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} else {
-			return new ResponseEntity<>(student, HttpStatus.OK);
+			//return new ResponseEntity<>(student, HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
 
@@ -60,13 +63,16 @@ public class StudentController {
 	 * @return ResponseEntity object with Project instance and HttpStatus.CREATED
 	 *         status in case of success.
 	 */
-	@PostMapping("/createproject")
-	public ResponseEntity<?> createProject(@RequestBody ProjectDTO projectDTO) {
-		System.out.println(projectDTO);
-		ProjectStudentResponseDTO projectResponseDTO = studentService.registerProject(projectDTO);
-		System.out.println("teamLead userAccount" + projectResponseDTO.getProject().getTeamLead().getProject());
-		studentService.saveProjectCreationActivity(projectResponseDTO.getProject());
-		return new ResponseEntity<>(projectResponseDTO, HttpStatus.CREATED);
+	@PostMapping("/createproject/{courseName}")
+	public ResponseEntity<?> createProject(@RequestBody ProjectDTO projectDTO, @PathVariable("courseName") String courseName) {
+		if(projectService.projectTeamSizeisValid(Course.valueOf(courseName), projectDTO.getStudentPrns().size() + 1 )) {
+			ProjectStudentResponseDTO projectResponseDTO = studentService.registerProject(projectDTO);
+			System.out.println("teamLead userAccount" + projectResponseDTO.getProject().getTeamLead().getProject());
+			studentService.saveProjectCreationActivity(projectResponseDTO.getProject());
+			return new ResponseEntity<>(projectResponseDTO, HttpStatus.CREATED);
+		} 
+		
+		return new ResponseEntity<>("Invalid team size", HttpStatus.BAD_REQUEST);
 	}
 
 	@GetMapping("/noproject/{courseName}")

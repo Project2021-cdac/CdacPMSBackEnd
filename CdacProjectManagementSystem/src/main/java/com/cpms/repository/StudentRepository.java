@@ -19,7 +19,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 	@Query("select s from Student s join fetch s.userAccount u " + "where u.courseName = :coursename order by s.prn")
 	List<Student> findAllByOrderByPrn(@Param("coursename") Course coursename);
 
-	Student findByUserAccount(UserAccount userAccount);
+	Optional<Student> findByUserAccount(UserAccount userAccount);
 
 	Optional<Student> findByPrn(Long studentPrn);
 	

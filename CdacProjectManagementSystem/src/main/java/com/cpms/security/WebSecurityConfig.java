@@ -20,7 +20,7 @@ import com.cpms.services.UserDetailsServiceImpl;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)					//TODO Check this annotation
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private UserDetailsServiceImpl userDetailsService;
@@ -36,7 +36,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //	public AuthTokenFilter authenticationJwtTokenFilter() {
 //		return new AuthTokenFilter();
 //	}
-
+	
 	@Override
 	public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
 		authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
@@ -59,16 +59,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.cors().and().csrf().disable()
 			.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-			.authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN")
+			.authorizeRequests()
+			.antMatchers("/admin/teamsize/**").hasAnyRole("ADMIN", "STUDENT")
+			.antMatchers("/admin/**").hasRole("ADMIN")
 //			.antMatchers("/user/register").hasRole("ADMIN")
 			.antMatchers("/guide/**").hasAnyRole("GUIDE","ADMIN")
 	        .antMatchers("/student/**").hasAnyRole("STUDENT","ADMIN")
 			//.antMatchers("/student/**").permitAll()
 			.antMatchers("/user/**").permitAll()
-	        .antMatchers("/").permitAll();
+	        .antMatchers("/").hasAnyRole("ADMIN","GUIDE","STUDENT")
+	        .antMatchers("/v2/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**").permitAll().anyRequest().authenticated();
 //			.and()
 //			.formLogin().loginPage("/user/login").permitAll();
-
+		
+		 // If a user try to access a resource without having enough permissions
+//		http.exceptionHandling().accessDeniedPage("/user/login");
 		http.addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);
 	}
 }

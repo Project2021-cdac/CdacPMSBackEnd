@@ -14,8 +14,8 @@ import com.cpms.pojos.Task;
 import com.cpms.pojos.UserAccount;
 
 public interface IStudentService {
-	Student getStudentByUserAccount(UserAccount userAccount);
-	List<Student> getStudentsWithoutProject(Course course);
+	public Optional<Student> getStudentByUserAccount(UserAccount userAccount);
+	public List<Student> getStudentsWithoutProject(Course course);
 	ProjectStudentResponseDTO registerProject(ProjectDTO projectDTO);
 	Activity saveProjectCreationActivity(Project project);
 	List<ProjectStatusDTO> getProjectMilstonesAndTaskdetails(int projId);
@@ -24,5 +24,4 @@ public interface IStudentService {
 	Optional<Task> getTask(Integer id);
 	List<Task> getTasksofStudent(Student student);
 	Optional<Student> getStudentByPRN(Long studentId);
-
 }
