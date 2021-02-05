@@ -81,14 +81,14 @@ public class UserController {
 
 	//TODO Work in progress ---> Kept on hold for testing
 	@PostMapping("/changepassword")
-	public ResponseEntity<?> changePassword(HttpServletRequest request, @RequestParam("newPassword") final String newPassword, @RequestParam("email") final String email) {
+	public ResponseEntity<?> changePassword(HttpServletRequest request, @RequestBody LoginRequest loginRequest) {
 		String token = parseJwt(request);
 		boolean status = false;
 		if(token == null)
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Login Again For Safety Reasons!!!");
 		
-		if(jwtUtils.extractEmail(token).equals(email))
-			status = userService.changePassword(newPassword, email);  
+		if(jwtUtils.extractEmail(token).equals(loginRequest.getEmail()))
+			status = userService.changePassword(loginRequest.getPassword(), loginRequest.getEmail());  
 				if(status)
 				return ResponseEntity.status(HttpStatus.OK).body("Password Updation Successfull");
 			

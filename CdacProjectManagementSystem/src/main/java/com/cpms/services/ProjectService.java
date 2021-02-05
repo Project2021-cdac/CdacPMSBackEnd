@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import com.cpms.pojos.Admin;
 import com.cpms.pojos.Course;
 import com.cpms.pojos.Project;
-import com.cpms.pojos.Student;
 import com.cpms.repository.AdminRepository;
 import com.cpms.repository.ProjectRepository;
 
