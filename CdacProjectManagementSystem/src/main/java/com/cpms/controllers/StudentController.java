@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cpms.dto.ProjectDTO;
-import com.cpms.dto.ProjectStatusDTO;
 import com.cpms.dto.ProjectStudentResponseDTO;
 import com.cpms.pojos.Activity;
 import com.cpms.pojos.Course;
@@ -26,7 +25,6 @@ import com.cpms.pojos.Student;
 import com.cpms.pojos.Task;
 import com.cpms.pojos.UserAccount;
 import com.cpms.services.IActivityService;
-import com.cpms.services.IAdminService;
 import com.cpms.services.IProjectService;
 import com.cpms.services.IStudentService;
 
@@ -130,8 +128,8 @@ public class StudentController {
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
-	@GetMapping("/task/{studentPRN}")
-	public ResponseEntity<?> getTask(@PathVariable(name="studentPRN") Long studentprn){
+	@GetMapping("/task/{studentprn}")
+	public ResponseEntity<?> getTask(@PathVariable(name="studentprn") Long studentprn){
 		List<Task> studentTaskList = studentService.getTasksofStudent(new Student(studentprn));
 		if(studentTaskList.isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
