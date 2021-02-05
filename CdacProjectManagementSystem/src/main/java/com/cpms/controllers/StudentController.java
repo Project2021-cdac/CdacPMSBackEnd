@@ -1,6 +1,7 @@
 package com.cpms.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,11 +37,13 @@ public class StudentController {
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getStudentById(@PathVariable Integer id) {
-		Student student = studentService.getStudentByUserAccount(new UserAccount(id));
-		if (student == null) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		Optional<Student> student = studentService.getStudentByUserAccount(new UserAccount(id));
+		if (student.isPresent()) {
+			return new ResponseEntity<>(student.get(), HttpStatus.OK);
+			//return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} else {
-			return new ResponseEntity<>(student, HttpStatus.OK);
+			//return new ResponseEntity<>(student, HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
 

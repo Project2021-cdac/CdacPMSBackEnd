@@ -19,6 +19,6 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
 	List<Project> findAllByOrderById(Course course);
 	List<Project> findAllByGuideIsNull();
 	List<Project> findByGuide(Guide guide);
-	@Query("SELECT project FROM Project project WHERE project.teamLead.userAccount.courseName = :courseName")
+	@Query("SELECT project FROM Project project WHERE project.teamLead.userAccount.courseName = :courseName and project.guide=null")
 	List<Project> findAllWithNoGuide(@Param("courseName") Course courseName);
 }

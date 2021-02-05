@@ -1,6 +1,7 @@
 package com.cpms.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,7 +19,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 	@Query("select s from Student s join fetch s.userAccount u " + "where u.courseName = :coursename order by s.prn")
 	public List<Student> findAllByOrderByPrn(@Param("coursename") Course coursename);
 
-	Student findByUserAccount(UserAccount userAccount);
+	Optional<Student> findByUserAccount(UserAccount userAccount);
 
 	List<Student> findByProjectIsNull();
 

@@ -40,7 +40,7 @@ public class StudentService implements IStudentService {
 	MilestoneRepository milestoneRepository;
 
 	@Override
-	public Student getStudentByUserAccount(UserAccount userAccount) {
+	public Optional<Student> getStudentByUserAccount(UserAccount userAccount) {
 		System.out.println(userAccount);
 		return studentRepository.findByUserAccount(userAccount);
 	}

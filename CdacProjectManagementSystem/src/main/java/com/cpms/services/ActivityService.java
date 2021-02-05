@@ -22,6 +22,12 @@ public class ActivityService implements IActivityService {
 	ActivityRepository activityRespository;
 	@Autowired
 	ProjectRepository projectRepository;
+	
+	
+	/**
+	 *@param projectId the project for which activity is to be created
+	 *@return Activity
+	 */
 	@Override
 	public Activity createActivity(String activityDescription, Integer projectId) {
 		Timestamp createdOn = Timestamp.valueOf(LocalDateTime.now());

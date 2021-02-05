@@ -52,7 +52,7 @@ public class GuideService implements IGuideService {
 	}
 
 	@Override
-	public Guide assignProject(Integer guideId, Integer projectId) {
+	public Optional<Guide> assignProject(Integer guideId, Integer projectId) {
 
 		Optional<Guide> optionalGuide = guideRepository.findById(guideId);
 		Optional<Project> optionalProject = projectRepository.findById(projectId);
@@ -67,10 +67,9 @@ public class GuideService implements IGuideService {
 					+ project.getTitle();
 
 			activityService.createActivity(activityDescription, projectId);
-			return guide;
 		}
 
-		return null;
+		return optionalGuide;
 	}
 
 	@Override
@@ -94,7 +93,7 @@ public class GuideService implements IGuideService {
 						+ student.getUserAccount().getLastName();
 				studentNames.add(fullName);
 			}
-			return new GuideProjectDTO(/*project, */activities, milestones, studentNames);
+			return new GuideProjectDTO(/* project, */activities, milestones, studentNames);
 		}
 		return null;
 	}
@@ -127,31 +126,32 @@ public class GuideService implements IGuideService {
 	}
 
 	@Override
-	public Session saveSessionEnd(Integer sessionId) {
+	public Optional<Session> saveSessionEnd(Integer sessionId) {
 		Optional<Session> optionalSession = sessionRepository.findById(sessionId);
-		if(optionalSession.isPresent() == true && optionalSession.get().getGuide().isInSession() == true) {
+		if (optionalSession.isPresent() == true && optionalSession.get().getGuide().isInSession() == true) {
 			Session session = optionalSession.get();
 			session.setEndTime(Timestamp.valueOf(LocalDateTime.now()));
 			Guide guide = session.getGuide();
 			guide.setInSession(false);
 			guideRepository.save(guide);
+
+			// Saving activity for end end of session by guide
 			String activityDescription = "Guide " + guide.getUserAccount().getFirstName() + " "
-					+ guide.getUserAccount().getLastName() + " ended session for project " + session.getProject().getId()
-					+ ". " + session.getProject().getTitle();
+					+ guide.getUserAccount().getLastName() + " ended session for project "
+					+ session.getProject().getId() + ". " + session.getProject().getTitle();
 			activityService.createActivity(activityDescription, session.getProject().getId());
-			return session;
 		}
-		
-		return null;
+
+		return optionalSession;
 	}
-	
+
 	@Override
 	public List<Session> getSessionListByProject(Integer projectId) {
 		return sessionRepository.findByProject(new Project(projectId));
 	}
 
 	@Override
-	public Guide getGuideByUserId(UserAccount userAccount) {
+	public Optional<Guide> getGuideByUserId(UserAccount userAccount) {
 		return guideRepository.findByUserAccount(userAccount);
 	}
 }
