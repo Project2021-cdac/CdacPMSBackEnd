@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.cpms.pojos.Milestone;
+import com.cpms.pojos.Project;
 import com.cpms.pojos.Student;
 import com.cpms.pojos.Task;
 
@@ -15,4 +16,6 @@ public interface TaskRepository extends JpaRepository<Task, Integer> {
 	
 //	@Query("select t from Task t ")
 	List<Task> findByCreatedBy(Student prn);
+	
+	List<Task> findByProject(Project project);
 }

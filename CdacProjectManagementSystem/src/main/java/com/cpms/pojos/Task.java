@@ -62,8 +62,6 @@ public class Task {
 	@Column(length = 150)
 	private String description;
 	
-
-//	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name="milestone_id")
 	private Milestone milestone;

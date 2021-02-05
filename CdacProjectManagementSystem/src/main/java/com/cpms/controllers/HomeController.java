@@ -8,15 +8,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cpms.dto.GuideProjectDTO;
 import com.cpms.pojos.Course;
-import com.cpms.pojos.Milestone;
+import com.cpms.pojos.Project;
+import com.cpms.pojos.Task;
 import com.cpms.pojos.Technology;
 import com.cpms.repository.MilestoneRepository;
+import com.cpms.repository.TaskRepository;
 import com.cpms.services.IGuideService;
 import com.cpms.services.ITechnologyService;
 
@@ -30,11 +33,16 @@ import com.cpms.services.ITechnologyService;
 public class HomeController {
 
 	@Autowired
-	ITechnologyService service;
+	private ITechnologyService service;
 	@Autowired
-	MilestoneRepository milestoneRepository;
+	private IGuideService guideService;
+	
 	@Autowired
-	IGuideService guideService;
+	private MilestoneRepository milestoneRepository;
+
+	@Autowired
+	private TaskRepository taskRepository;
+
 
 	@GetMapping("course/list")
 	public ResponseEntity<?>  listCourses() {
@@ -68,5 +76,11 @@ public class HomeController {
 			return new ResponseEntity<>(guideProjectDTO, HttpStatus.OK);
 		}
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+	
+	@GetMapping("milestones/{projectid}")
+	public ResponseEntity<?> getMilestonesOfProject(@PathVariable(name="projectid")Integer projectid){
+		List<Task> tasklist = taskRepository.findByProject(new Project(projectid)); 
+		return new ResponseEntity<>(tasklist, HttpStatus.OK);
 	}
 }
