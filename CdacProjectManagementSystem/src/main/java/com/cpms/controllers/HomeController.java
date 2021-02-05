@@ -9,12 +9,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cpms.dto.GuideProjectDTO;
 import com.cpms.pojos.Course;
 import com.cpms.pojos.Milestone;
 import com.cpms.pojos.Technology;
 import com.cpms.repository.MilestoneRepository;
+import com.cpms.services.IGuideService;
 import com.cpms.services.ITechnologyService;
 
 /**
@@ -30,6 +33,8 @@ public class HomeController {
 	ITechnologyService service;
 	@Autowired
 	MilestoneRepository milestoneRepository;
+	@Autowired
+	IGuideService guideService;
 
 	@GetMapping("course/list")
 	public ResponseEntity<?>  listCourses() {
@@ -54,5 +59,14 @@ public class HomeController {
 	@GetMapping("milestone/list")
 	public ResponseEntity<?> getAllMilestones() {
 		return new ResponseEntity<>(milestoneRepository.findAll(), HttpStatus.OK);
+	}
+	
+	@GetMapping("project")
+	public ResponseEntity<?> fetchProjectDetails(@RequestParam Integer projectId) {
+		GuideProjectDTO guideProjectDTO = guideService.getProjectDetails(projectId);
+		if (guideProjectDTO != null) {
+			return new ResponseEntity<>(guideProjectDTO, HttpStatus.OK);
+		}
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 }

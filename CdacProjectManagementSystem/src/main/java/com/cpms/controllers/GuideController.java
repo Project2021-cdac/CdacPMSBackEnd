@@ -61,14 +61,14 @@ public class GuideController {
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
-	@GetMapping("/project")
-	public ResponseEntity<?> fetchProjectDetails(@RequestParam Integer projectId) {
-		GuideProjectDTO guideProjectDTO = service.getProjectDetails(projectId);
-		if (guideProjectDTO != null) {
-			return new ResponseEntity<>(guideProjectDTO, HttpStatus.OK);
-		}
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-	}
+//	@GetMapping("/project")
+//	public ResponseEntity<?> fetchProjectDetails(@RequestParam Integer projectId) {
+//		GuideProjectDTO guideProjectDTO = service.getProjectDetails(projectId);
+//		if (guideProjectDTO != null) {
+//			return new ResponseEntity<>(guideProjectDTO, HttpStatus.OK);
+//		}
+//		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//	}
 
 	@PostMapping("/startsession")
 	public ResponseEntity<?> startSession(@RequestParam Integer projectId) {

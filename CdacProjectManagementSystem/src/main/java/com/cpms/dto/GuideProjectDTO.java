@@ -16,8 +16,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class GuideProjectDTO {
-	private Project project;
+	//private Project project;
 	private List<Activity> activities;
 	private List<Milestone> milestones;
 	private List<String> studentNames;
 }
+
+

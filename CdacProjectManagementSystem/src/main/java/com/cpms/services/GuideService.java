@@ -94,7 +94,7 @@ public class GuideService implements IGuideService {
 						+ student.getUserAccount().getLastName();
 				studentNames.add(fullName);
 			}
-			return new GuideProjectDTO(project, activities, milestones, studentNames);
+			return new GuideProjectDTO(/*project, */activities, milestones, studentNames);
 		}
 		return null;
 	}
