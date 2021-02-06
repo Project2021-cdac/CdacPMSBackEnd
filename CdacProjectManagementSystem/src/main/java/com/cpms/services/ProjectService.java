@@ -52,5 +52,9 @@ public class ProjectService implements IProjectService {
 		return false;
 	}
 
+	@Override 
+	public Optional<Project> getProjectById(Integer projectid){
+		return repository.findById(projectid);
+	}
 	
 }

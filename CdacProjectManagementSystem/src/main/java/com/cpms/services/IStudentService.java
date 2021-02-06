@@ -8,7 +8,6 @@ import com.cpms.dto.ProjectStatusDTO;
 import com.cpms.dto.ProjectStudentResponseDTO;
 import com.cpms.pojos.Activity;
 import com.cpms.pojos.Course;
-import com.cpms.pojos.Milestone;
 import com.cpms.pojos.Project;
 import com.cpms.pojos.Student;
 import com.cpms.pojos.Task;
@@ -19,7 +18,10 @@ public interface IStudentService {
 	public List<Student> getStudentsWithoutProject(Course course);
 	ProjectStudentResponseDTO registerProject(ProjectDTO projectDTO);
 	Activity saveProjectCreationActivity(Project project);
-	Task createTask(Task newtask);
 	List<ProjectStatusDTO> getProjectMilstonesAndTaskdetails(int projId);
-	public List<Student> getStudentListByProject(Project project);
+	List<Student> getStudentListByProject(Project project);
+	Task createTask(Task newtask);
+	Optional<Task> getTask(Integer id);
+	List<Task> getTasksofStudent(Student student);
+	Optional<Student> getStudentByPRN(Long studentId);
 }

@@ -41,5 +41,9 @@ public class Milestone {
 	private String title;
 	private String description;
 	
+	public Milestone(Integer milestoneid) {
+		this.id=milestoneid;
+	}
+	
 	//private MilestoneCheckpoint milestoneCheckpoint;
 }
