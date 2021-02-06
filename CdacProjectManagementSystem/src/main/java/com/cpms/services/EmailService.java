@@ -5,8 +5,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
 import javax.annotation.PostConstruct;
 import javax.mail.Authenticator;
@@ -23,7 +21,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
-import com.cpms.emailconfig.EmailConfiguration;
+import com.cpms.config.EmailConfiguration;
 import com.cpms.pojos.UserAccount;
 
 import freemarker.template.Template;

@@ -1,4 +1,4 @@
-package com.cpms.emailconfig;
+package com.cpms.config;
 
 import java.util.concurrent.Executor;
 
