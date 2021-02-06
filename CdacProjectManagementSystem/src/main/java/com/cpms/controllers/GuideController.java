@@ -14,9 +14,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cpms.dto.ObjectMessageDTO;
+import com.cpms.dto.ResponseMessage;
 import com.cpms.pojos.Course;
 import com.cpms.pojos.Guide;
 import com.cpms.pojos.Project;
+import com.cpms.pojos.Session;
+import com.cpms.pojos.Student;
 import com.cpms.pojos.UserAccount;
 import com.cpms.services.IGuideService;
 import com.cpms.services.IProjectService;
@@ -73,13 +76,19 @@ public class GuideController {
 	@PostMapping("/startsession")
 	public ResponseEntity<?> startSession(@RequestParam Integer projectId) {
 			ObjectMessageDTO response = new ObjectMessageDTO(service.saveSessionStart(projectId), "session started");
+				if(response.getObject() == null) {
+					return new ResponseEntity<>(new ResponseMessage("failed to start session"), HttpStatus.BAD_REQUEST);
+				}
 			return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 	@PostMapping("/endsession")
 	public ResponseEntity<?> endSession(@RequestParam Integer sessionId) {
-		ObjectMessageDTO response = new ObjectMessageDTO(service.saveSessionEnd(sessionId), "session ended");
-		return new ResponseEntity<>(response, HttpStatus.OK);
+		Session session = service.saveSessionEnd(sessionId);
+		if(session != null) {
+			return new ResponseEntity<>(new ObjectMessageDTO(session, "session ended"), HttpStatus.OK);
+		}
+		return new ResponseEntity<>(new ResponseMessage("failed to end session"), HttpStatus.BAD_REQUEST);
 	}
 
 	@GetMapping("/{userId}")

@@ -126,13 +126,14 @@ public class GuideService implements IGuideService {
 	}
 
 	@Override
-	public Optional<Session> saveSessionEnd(Integer sessionId) {
+	public Session saveSessionEnd(Integer sessionId) {
 		Optional<Session> optionalSession = sessionRepository.findById(sessionId);
 		if (optionalSession.isPresent() == true && optionalSession.get().getGuide().isInSession() == true) {
 			Session session = optionalSession.get();
 			session.setEndTime(Timestamp.valueOf(LocalDateTime.now()));
 			Guide guide = session.getGuide();
 			guide.setInSession(false);
+			System.out.println("Guide is in session = " + guide.isInSession());
 			guideRepository.save(guide);
 
 			// Saving activity for end end of session by guide
@@ -140,9 +141,10 @@ public class GuideService implements IGuideService {
 					+ guide.getUserAccount().getLastName() + " ended session for project "
 					+ session.getProject().getId() + ". " + session.getProject().getTitle();
 			activityService.createActivity(activityDescription, session.getProject().getId());
+			return session;
+		} else {
+			return null;
 		}
-
-		return optionalSession;
 	}
 
 	@Override

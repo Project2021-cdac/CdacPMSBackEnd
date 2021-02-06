@@ -18,7 +18,7 @@ public interface IGuideService {
 	GuideProjectDTO getProjectDetails(Integer projectId);
 	List<Guide> getGuideList(Course course);
 	Session saveSessionStart(Integer projectId);
-	Optional<Session> saveSessionEnd(Integer sessionId);
+	Session saveSessionEnd(Integer sessionId);
 	List<Session> getSessionListByProject(Integer projectId);
 	Optional<Guide> getGuideByUserId(UserAccount userAccount);
 }
