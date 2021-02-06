@@ -91,14 +91,12 @@ public class EmailService implements IEmailService {
 				map.put("firstname", studentAcct.getFirstName());
 				map.put("lastname", studentAcct.getLastName());
 				map.put("username", studentAcct.getEmail());
-//				map.put("password", studentAcct.getPassword());
 				String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, map);
-	
 				helper.setTo(studentAcct.getEmail());
 				helper.setText(html, true);
+				sender.send(message);
 	//			long currenttime = System.currentTimeMillis() ;
 //				System.out.println(studentAcct);
-				sender.send(message);
 //				quickService.submit(new Runnable() {
 //					@Override
 //					public void run() {
