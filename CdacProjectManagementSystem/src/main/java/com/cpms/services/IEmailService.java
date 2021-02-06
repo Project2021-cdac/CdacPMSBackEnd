@@ -12,8 +12,6 @@ import com.cpms.pojos.UserAccount;
 import freemarker.template.TemplateException;
 
 public interface IEmailService {
-	
-	
-	void configureEmail() throws MessagingException, IOException;
+		
 	void sendEmail(List<UserAccount> studentusers) throws MessagingException, IOException, TemplateException, MailSendException;
 }
