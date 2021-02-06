@@ -103,15 +103,6 @@ public class StudentController {
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 	
-//	//TODO remaining
-//	@GetMapping("/milestones/{projectid}")
-//	public ResponseEntity<?> getProjectMilstonesAndTaskdetails(@PathVariable Integer projectId) {
-//		List<ProjectStatusDTO> projectStatus = studentService.getProjectMilstonesAndTaskdetails(projectId);
-//		if (!projectStatus.isEmpty())
-//			return new ResponseEntity<>(projectStatus, HttpStatus.OK);
-//		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//	}
-	
 	@PostMapping("/endtask/{taskid}")
 	public ResponseEntity<?> endTask(@PathVariable(name="taskid") Integer taskId){
 		Optional<Task> task = studentService.getTask(taskId);
