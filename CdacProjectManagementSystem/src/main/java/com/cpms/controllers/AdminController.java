@@ -84,7 +84,7 @@ public class AdminController {
 		ResponseMessage response = new ResponseMessage();
 		if (!file.isEmpty() &&  ExcelFileParser.hasExcelFormat(file)) {
 				List<UserAccount> studentUserAccounts = excelFileHelperService.saveToDatabase(file);
-//				emailService.sendEmail(studentUserAccounts);
+				emailService.sendEmail(studentUserAccounts);
 				response.setResponseMessage("All Students registered successfully");
 		}else {
 			response.setResponseMessage("Upload an ExcelFile!!");

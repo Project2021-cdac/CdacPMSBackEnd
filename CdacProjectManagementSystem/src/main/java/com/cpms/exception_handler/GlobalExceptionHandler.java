@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import javax.validation.ConstraintViolationException;
 
+import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -105,6 +106,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		return new ResponseEntity<>(new ResponseDTO(ex.getMessage()), status);
 	}
 	
+//	@ExceptionHandler(AsyncUncaughtExceptionHandler.class)
+//	public final ResponseEntity<?> handleAsyncExceptionHandler(AsyncUncaughtExceptionHandler ex, WebRequest request){
+//		return new ResponseEntity<>(new ResponseDTO(), HttpStatus.INTERNAL_SERVER_ERROR);
+//	}
+	
+	
 	/**
 	 * This method handles all sort of exception raised if a specific exception is not handled by above methods.
 	 * @param ex - This Exception Object stores raised exception details.
@@ -118,5 +125,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
 	}
+	
 
 }

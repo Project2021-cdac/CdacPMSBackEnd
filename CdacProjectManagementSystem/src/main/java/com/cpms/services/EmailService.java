@@ -5,7 +5,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
+import javax.annotation.PostConstruct;
 import javax.mail.Authenticator;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -16,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
@@ -36,10 +40,15 @@ public class EmailService implements IEmailService {
 
 	@Autowired
 	private freemarker.template.Configuration configuration;
+	
+	private static MimeMessageHelper helper;
+	private static Template template; 
+	private static MimeMessage message;
+//	public static int noOfQuickServiceThreads = 20;
+//	private ScheduledExecutorService quickService;
 
-	@Override
-	public void sendEmail(List<UserAccount> studentUsers) throws MessagingException, IOException, TemplateException, MailSendException 
-	{
+	@PostConstruct
+	public void configureEmail() throws MessagingException, IOException {
 		Properties mailProps = new Properties();
 		mailProps.put("mail.smtp.host", emailcnfg.getHost());
 		mailProps.put("mail.smtp.port", emailcnfg.getPort());
@@ -58,29 +67,50 @@ public class EmailService implements IEmailService {
 
 		});
 		sender.setSession(mailSession);
-		MimeMessage message = sender.createMimeMessage();
-		MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
+		message = sender.createMimeMessage();
+		helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
 				StandardCharsets.UTF_8.name());
 
-		// add attachment
-//			helper.addAttachment("cdac_logo.jpeg", new ClassPathResource("cdac_logo.jpeg"));
+//		 add attachment
+//		helper.addAttachment("cdac_logo.jpeg", new ClassPathResource("cdac_logo.jpeg"));
+		template= configuration.getTemplate("email-template.ftl");
+//		quickService = Executors.newScheduledThreadPool(noOfQuickServiceThreads);
+		System.out.println("Email configuration Intialization complete");
+	}
 
-		Template t = configuration.getTemplate("email-template.ftl");
+	@Override
+	@Async
+	public void sendEmail(List<UserAccount> studentUsers) throws MessagingException, IOException, TemplateException, MailSendException 
+	{
+		
+		if(null != template) {
+		helper.setSubject("Welcome to Cdac PMS");
 		HashMap<String, String> map = new HashMap<>();
 //		long currenttime = System.currentTimeMillis() ;
-		for (UserAccount studentAcct : studentUsers) {
-			map.put("firstname", studentAcct.getFirstName());
-			map.put("lastname", studentAcct.getLastName());
-			map.put("username", studentAcct.getEmail());
-			map.put("password", studentAcct.getPassword());
-			String html = FreeMarkerTemplateUtils.processTemplateIntoString(t, map);
-
-			helper.setTo(studentAcct.getEmail());
-			helper.setText(html, true);
-			helper.setSubject("Welcome to Cdac PMS");
-//			long currenttime = System.currentTimeMillis() ;
-			sender.send(message);
-//			System.out.println(System.currentTimeMillis() - currenttime);
+			for (UserAccount studentAcct : studentUsers) {
+				map.put("firstname", studentAcct.getFirstName());
+				map.put("lastname", studentAcct.getLastName());
+				map.put("username", studentAcct.getEmail());
+				String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, map);
+				helper.setTo(studentAcct.getEmail());
+				helper.setText(html, true);
+				sender.send(message);
+	//			long currenttime = System.currentTimeMillis() ;
+//				System.out.println(studentAcct);
+//				quickService.submit(new Runnable() {
+//					@Override
+//					public void run() {
+//						try{
+//						sender.send(message);
+//						}catch(Exception e){
+////							logger.error("Exception occur while send a mail : ",e);
+//							System.out.println(e);
+//						}
+//					}
+//				});
+				
+	//			System.out.println(System.currentTimeMillis() - currenttime);
+			}
 		}
 //		System.out.println(System.currentTimeMillis() - currenttime);
 	}
