@@ -49,7 +49,7 @@ public class GuideController {
 
 	@PostMapping("/select")
 	public ResponseEntity<?> chooseProject(@RequestParam int guideId, @RequestParam int projectId) {
-		Optional <Guide> guide = service.assignProject(guideId, projectId);
+		Optional<Guide> guide = service.assignProject(guideId, projectId);
 		if (guide.isPresent()) {
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
@@ -76,17 +76,17 @@ public class GuideController {
 
 	@PostMapping("/startsession")
 	public ResponseEntity<?> startSession(@RequestParam Integer projectId) {
-			ObjectMessageDTO response = new ObjectMessageDTO(service.saveSessionStart(projectId), "session started");
-				if(response.getObject() == null) {
-					return new ResponseEntity<>(new ResponseMessage("failed to start session"), HttpStatus.BAD_REQUEST);
-				}
-			return new ResponseEntity<>(response, HttpStatus.OK);
+		ObjectMessageDTO response = new ObjectMessageDTO(service.saveSessionStart(projectId), "session started");
+		if (response.getObject() == null) {
+			return new ResponseEntity<>(new ResponseMessage("failed to start session"), HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 	@PostMapping("/endsession")
 	public ResponseEntity<?> endSession(@RequestParam Integer sessionId) {
 		Session session = service.saveSessionEnd(sessionId);
-		if(session != null) {
+		if (session != null) {
 			return new ResponseEntity<>(new ObjectMessageDTO(session, "session ended"), HttpStatus.OK);
 		}
 		return new ResponseEntity<>(new ResponseMessage("failed to end session"), HttpStatus.BAD_REQUEST);

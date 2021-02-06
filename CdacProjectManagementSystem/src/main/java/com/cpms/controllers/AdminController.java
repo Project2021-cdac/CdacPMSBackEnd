@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +30,7 @@ import com.cpms.pojos.Role;
 import com.cpms.pojos.Student;
 import com.cpms.pojos.Technology;
 import com.cpms.pojos.UserAccount;
+import com.cpms.services.IActivityService;
 import com.cpms.services.IAdminService;
 import com.cpms.services.IEmailService;
 import com.cpms.services.IExcelFileHelperService;
@@ -43,6 +46,8 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping(value = "/admin")	
 public class AdminController {
+	
+	Logger logger = LoggerFactory.getLogger(AdminController.class);
 	
 	@Autowired
 	private IAdminService adminService;
@@ -67,12 +72,14 @@ public class AdminController {
 	
 	@Autowired
 	private IProjectService projectService;
+
 	
 	@ApiOperation(value = "Returns List of Students according to course")
 	@GetMapping(value = "/students/{coursename}")
 	public ResponseEntity<?> getStudentList(@PathVariable(name="coursename") String coursename) {
 		List<Student> studentListOrderedByPrn = adminService.getStudentListOrderedByPrn(Course.valueOf(coursename.toUpperCase()));
 		if (studentListOrderedByPrn.isEmpty()) {
+			logger.info("No student List found.");
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 		return new ResponseEntity<>(studentListOrderedByPrn, HttpStatus.OK);
@@ -87,6 +94,7 @@ public class AdminController {
 				emailService.sendEmail(studentUserAccounts);
 				response.setResponseMessage("All Students registered successfully");
 		}else {
+			logger.info("Either file was not an excel sheet or it was empty.");
 			response.setResponseMessage("Upload an ExcelFile!!");
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		}
@@ -96,8 +104,10 @@ public class AdminController {
 	@GetMapping(value = "/guides/{coursename}")
 	public ResponseEntity<?> getGuideList(@PathVariable(name="coursename") String coursename){
 		List<Guide> guideList = guideService.getGuideList(Course.valueOf(coursename.toUpperCase()));
-		if (guideList.isEmpty())
+		if (guideList.isEmpty()) {
+			logger.info("No guides present in the system while accessing guide list.");
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
 		return new ResponseEntity<>(guideList, HttpStatus.OK);
 	}
 	
@@ -115,6 +125,7 @@ public class AdminController {
 			guide = guideService.registerGuide(guide);
 			return new ResponseEntity<>(guide, HttpStatus.CREATED);
 		}
+		logger.error("Guide registration error: guide registration failed.");
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 	
@@ -130,6 +141,7 @@ public class AdminController {
 			}
 			return new ResponseEntity<>(projectResponse, HttpStatus.OK);
 		}
+		logger.info("No projects registered till now.");
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
@@ -139,8 +151,8 @@ public class AdminController {
 		if(adminAcct.isPresent()) {
 			return new ResponseEntity<> (adminAcct.get().getProjectMinSize(), HttpStatus.OK);
 		}
+		logger.info("Admin account for course: '"+coursename+"' doesn't exists.");
 		return new ResponseEntity<> (HttpStatus.NO_CONTENT);
-
 	}
 	
 	@PostMapping(value = "/{coursename}/setsize/{size}") 
@@ -154,6 +166,7 @@ public class AdminController {
 			}
 			return new ResponseEntity<> (adminAcct, HttpStatus.CONFLICT);
 		}
+		logger.error("No admin for given course: "+coursename+" found.");
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 

@@ -3,6 +3,8 @@ package com.cpms.controllers;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +34,8 @@ import com.cpms.services.ITechnologyService;
 @RequestMapping("/")
 public class HomeController {
 
+	Logger logger = LoggerFactory.getLogger(HomeController.class);
+ 
 	@Autowired
 	private ITechnologyService service;
 	@Autowired
@@ -57,6 +61,7 @@ public class HomeController {
 	public ResponseEntity<?> listTechnologies() {
 		List <Technology> technologies = service.listTechnologies();
 		if(technologies.isEmpty()) {
+			logger.info("Tecnhology list found empty");
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} else {
 			return new ResponseEntity<>(technologies, HttpStatus.OK);
@@ -75,6 +80,7 @@ public class HomeController {
 		if (guideProjectDTO != null) {
 			return new ResponseEntity<>(guideProjectDTO, HttpStatus.OK);
 		}
+		logger.info("Project details for the given project Id: "+projectId+ " doesnt exist");
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
