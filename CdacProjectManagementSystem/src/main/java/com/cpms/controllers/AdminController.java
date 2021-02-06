@@ -47,7 +47,7 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping(value = "/admin")	
 public class AdminController {
 	
-	Logger logger = LoggerFactory.getLogger(AdminController.class);
+	private Logger logger = LoggerFactory.getLogger(AdminController.class);
 	
 	@Autowired
 	private IAdminService adminService;

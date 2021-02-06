@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.cpms</groupId>
-	<artifactId>CdacPojectManagementSystem</artifactId>
+	<artifactId>CdacProjectManagementSystem</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>CdacPojectManagementSystem</name>
+	<name>CdacProjectManagementSystem</name>
 	<description>Rest Application</description>
 	<developers></developers>
 	<properties>

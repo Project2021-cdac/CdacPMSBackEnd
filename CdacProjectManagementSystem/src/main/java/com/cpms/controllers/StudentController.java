@@ -35,7 +35,7 @@ import com.cpms.services.IStudentService;
 @RequestMapping("/student")
 public class StudentController {
 
-	Logger logger = LoggerFactory.getLogger(StudentController.class);
+	private Logger logger = LoggerFactory.getLogger(StudentController.class);
 
 	@Autowired
 	IStudentService studentService;

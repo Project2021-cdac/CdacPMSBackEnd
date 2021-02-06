@@ -34,7 +34,7 @@ import com.cpms.services.ITechnologyService;
 @RequestMapping("/")
 public class HomeController {
 
-	Logger logger = LoggerFactory.getLogger(HomeController.class);
+	private Logger logger = LoggerFactory.getLogger(HomeController.class);
  
 	@Autowired
 	private ITechnologyService service;
