@@ -84,7 +84,6 @@ public class GuideService implements IGuideService {
 			Project project = optionalProject.get();
 			List<Activity> activities = activityRepository.findByProjectId(project);
 			List<Milestone> milestones = milestoneRepository.findAll();
-			// List<Student> students = studentRepository.findByProject(project);
 			List<Student> students = studentRepository.findByProject(project);
 			List<String> studentNames = new ArrayList<>();
 
@@ -93,7 +92,7 @@ public class GuideService implements IGuideService {
 						+ student.getUserAccount().getLastName();
 				studentNames.add(fullName);
 			}
-			return new GuideProjectDTO(/* project, */activities, milestones, studentNames);
+			return new GuideProjectDTO(activities, milestones, studentNames);
 		}
 		return null;
 	}

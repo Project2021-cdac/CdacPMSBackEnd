@@ -54,7 +54,7 @@ public class UserAccount {
 	@Pattern(regexp = "^[a-zA-Z]{1,50}$", message = "Last name must be alphabetic and should be between 1 and 50 characters long!!!")
 	private String lastName;
 
-	//TODO Add unique constraint once everything is final
+	// TODO Add unique constraint once everything is final
 	@Column(length = 100)
 	@Email
 	private String email;

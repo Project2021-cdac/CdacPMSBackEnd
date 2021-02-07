@@ -35,21 +35,20 @@ import com.cpms.services.ITechnologyService;
 public class HomeController {
 
 	private Logger logger = LoggerFactory.getLogger(HomeController.class);
- 
+
 	@Autowired
 	private ITechnologyService service;
 	@Autowired
 	private IGuideService guideService;
-	
+
 	@Autowired
 	private MilestoneRepository milestoneRepository;
 
 	@Autowired
 	private TaskRepository taskRepository;
 
-
 	@GetMapping("course/list")
-	public ResponseEntity<?>  listCourses() {
+	public ResponseEntity<?> listCourses() {
 		List<String> courses = new ArrayList<>();
 		for (Course course : Course.values()) {
 			courses.add(course.toString());
@@ -59,34 +58,33 @@ public class HomeController {
 
 	@GetMapping("technology/list")
 	public ResponseEntity<?> listTechnologies() {
-		List <Technology> technologies = service.listTechnologies();
-		if(technologies.isEmpty()) {
+		List<Technology> technologies = service.listTechnologies();
+		if (technologies.isEmpty()) {
 			logger.info("Tecnhology list found empty");
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} else {
 			return new ResponseEntity<>(technologies, HttpStatus.OK);
 		}
 	}
-	
-	
+
 	@GetMapping("milestone/list")
 	public ResponseEntity<?> getAllMilestones() {
 		return new ResponseEntity<>(milestoneRepository.findAll(), HttpStatus.OK);
 	}
-	
+
 	@GetMapping("project")
 	public ResponseEntity<?> fetchProjectDetails(@RequestParam Integer projectId) {
 		GuideProjectDTO guideProjectDTO = guideService.getProjectDetails(projectId);
 		if (guideProjectDTO != null) {
 			return new ResponseEntity<>(guideProjectDTO, HttpStatus.OK);
 		}
-		logger.info("Project details for the given project Id: "+projectId+ " doesnt exist");
+		logger.info("Project details for the given project Id: " + projectId + " doesnt exist");
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
-	
+
 	@GetMapping("milestones/{projectid}")
-	public ResponseEntity<?> getMilestonesOfProject(@PathVariable(name="projectid")Integer projectid){
-		List<Task> tasklist = taskRepository.findByProject(new Project(projectid)); 
+	public ResponseEntity<?> getMilestonesOfProject(@PathVariable(name = "projectid") Integer projectid) {
+		List<Task> tasklist = taskRepository.findByProject(new Project(projectid));
 		return new ResponseEntity<>(tasklist, HttpStatus.OK);
 	}
 }
