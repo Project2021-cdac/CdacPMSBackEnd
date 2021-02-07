@@ -13,6 +13,8 @@ import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.internet.MimeMessage;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -22,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import com.cpms.config.EmailConfiguration;
+import com.cpms.controllers.AdminController;
 import com.cpms.pojos.UserAccount;
 
 import freemarker.template.Template;
@@ -30,6 +33,7 @@ import freemarker.template.TemplateException;
 @Service
 public class EmailService implements IEmailService {
 
+	private Logger logger = LoggerFactory.getLogger(EmailService.class);
 	@Autowired
 	private JavaMailSenderImpl sender;
 
@@ -73,7 +77,7 @@ public class EmailService implements IEmailService {
 //		helper.addAttachment("cdac_logo.jpeg", new ClassPathResource("cdac_logo.jpeg"));
 		template= configuration.getTemplate("email-template.ftl");
 //		quickService = Executors.newScheduledThreadPool(noOfQuickServiceThreads);
-		System.out.println("Email configuration Intialization complete");
+		logger.info("Email configuration Intialization complete");
 	}
 
 	@Override
