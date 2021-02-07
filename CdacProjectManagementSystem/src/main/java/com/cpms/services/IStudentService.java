@@ -24,4 +24,5 @@ public interface IStudentService {
 	Optional<Task> getTask(Integer id);
 	List<Task> getTasksofStudent(Student student);
 	Optional<Student> getStudentByPRN(Long studentId);
+	List<Student> getAllStudents();
 }

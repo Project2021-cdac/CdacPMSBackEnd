@@ -44,7 +44,7 @@ public class Student {
 	public Student(Long prn) {
 		this.prn = prn;
 	}
-
+	
 	public Project getProject() {
 		return project;
 	}

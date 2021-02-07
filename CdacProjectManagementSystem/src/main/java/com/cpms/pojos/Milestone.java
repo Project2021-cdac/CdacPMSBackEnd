@@ -30,20 +30,10 @@ public class Milestone {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)	
 	private Integer id;
 	
-//	@DateTimeFormat(pattern = "yyyy-MM-dd")
-//	@JsonFormat(pattern = "yyyy-MM-dd")
-//	private LocalDate startDate;
-//	
-//	@DateTimeFormat(pattern = "yyyy-MM-dd")
-//	@JsonFormat(pattern = "yyyy-MM-dd")
-//	private LocalDate endDate;
-	
 	private String title;
 	private String description;
 	
 	public Milestone(Integer milestoneid) {
 		this.id=milestoneid;
 	}
-	
-	//private MilestoneCheckpoint milestoneCheckpoint;
 }

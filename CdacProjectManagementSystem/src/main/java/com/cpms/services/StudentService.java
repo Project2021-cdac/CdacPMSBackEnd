@@ -75,7 +75,7 @@ public class StudentService implements IStudentService {
 		Project project = projectDTO.getProject();
 		project.setTeamLead(teamLead);
 		projectService.registerProject(project);
-		//why not addAll?
+
 		List<Technology> technologies = technologyService.findTechnologiesById(projectDTO.getTechnologies());
 		for (Technology technology : technologies) {
 			project.addTechnology(technology);
@@ -92,7 +92,8 @@ public class StudentService implements IStudentService {
 
 		return new ProjectStudentResponseDTO(project, students);
 	}
-
+	
+	@Override
 	public List<Student> getAllStudents() {
 		return studentRepository.findAll();
 	}
@@ -111,13 +112,13 @@ public class StudentService implements IStudentService {
 		return activityService.createActivity(activityDescription, project.getId());
 	}
 	
-	//TODO Remaining
+
 	@Override
 	public Task createTask(Task newtask) {
 		return taskRepository.save(newtask);
 	}
 	
-	//TODO Remaining
+
 	@Override
 	public List<ProjectStatusDTO> getProjectMilstonesAndTaskdetails(int projectId){
 		List<ProjectStatusDTO> projectStatus = new ArrayList<>();

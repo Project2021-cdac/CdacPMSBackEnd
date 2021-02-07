@@ -51,9 +51,7 @@ public class StudentController {
 		Optional<Student> student = studentService.getStudentByUserAccount(new UserAccount(id));
 		if (student.isPresent()) {
 			return new ResponseEntity<>(student.get(), HttpStatus.OK);
-			//return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} else {
-			//return new ResponseEntity<>(student, HttpStatus.OK);
 			logger.info("Student with given user account id: "+id+" not found.");
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -94,7 +92,6 @@ public class StudentController {
 		}
 	}
 	
-	//TODO remaining
 	@PostMapping("/createtask/{projectid}/{studentid}")
 	public ResponseEntity<?> createTask(@RequestBody Task newtask, @PathVariable(name="studentid") Long studentId, @PathVariable(name="projectid") Integer projectId) {
 		Optional<Project> project = projectService.getProjectById(projectId);
