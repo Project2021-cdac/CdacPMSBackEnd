@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cpms.dto.GuideProjectDTO;
+import com.cpms.dto.SessionMessageDTO;
 import com.cpms.pojos.Activity;
 import com.cpms.pojos.Course;
 import com.cpms.pojos.Guide;
@@ -154,5 +155,16 @@ public class GuideService implements IGuideService {
 	@Override
 	public Optional<Guide> getGuideByUserId(UserAccount userAccount) {
 		return guideRepository.findByUserAccount(userAccount);
+	}
+
+	@Override
+	public SessionMessageDTO getActiveSession(Integer guideId) {
+		Optional<Guide> guide = guideRepository.findById(guideId);
+		if(guide.isPresent()) {
+			Session session = sessionRepository.findByGuideAndEndTimeIsNull(guide.get());
+			 session.getProject().getTechnologies();
+			return new  SessionMessageDTO(session, session.getProject(), "active session");
+		}
+		return null;
 	}
 }

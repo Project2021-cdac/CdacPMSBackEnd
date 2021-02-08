@@ -15,7 +15,10 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import lombok.AllArgsConstructor;
@@ -35,6 +38,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "guide_table")
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class Guide {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,6 +53,7 @@ public class Guide {
 	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.LAZY)
 	@JoinTable(name = "guide_technology_table", joinColumns = @JoinColumn(name = "guide_id"), inverseJoinColumns = @JoinColumn(name = "technology_id"))
 	@JsonSerialize(as = HashSet.class)
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private Set<Technology> technologies = new HashSet<>();
 
 	public Guide(Integer id) {
@@ -59,7 +64,8 @@ public class Guide {
 	public String toString() {
 		return "Guide [id= " + id + ", inSession= " + inSession + ", user= " + userAccount + "]";
 	}
-
+	
+	
 	@JsonIgnore
 	public Set<Technology> getTechnologies() {
 		return this.technologies;

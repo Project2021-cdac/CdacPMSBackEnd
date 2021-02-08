@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.cpms.dto.GuideProjectDTO;
+import com.cpms.dto.SessionMessageDTO;
 import com.cpms.pojos.Course;
 import com.cpms.pojos.Guide;
 import com.cpms.pojos.Project;
@@ -21,4 +22,5 @@ public interface IGuideService {
 	Session saveSessionEnd(Integer sessionId);
 	List<Session> getSessionListByProject(Integer projectId);
 	Optional<Guide> getGuideByUserId(UserAccount userAccount);
+	SessionMessageDTO getActiveSession(Integer guideId);
 }

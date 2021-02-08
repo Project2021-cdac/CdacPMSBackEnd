@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cpms.dto.ObjectMessageDTO;
 import com.cpms.dto.ResponseMessage;
+import com.cpms.dto.SessionMessageDTO;
 import com.cpms.pojos.Course;
 import com.cpms.pojos.Guide;
 import com.cpms.pojos.Project;
@@ -67,8 +68,9 @@ public class GuideController {
 
 	@PostMapping("/startsession")
 	public ResponseEntity<?> startSession(@RequestParam Integer projectId) {
-		ObjectMessageDTO response = new ObjectMessageDTO(service.saveSessionStart(projectId), "session started");
-		if (response.getObject() == null) {
+		Session session = service.saveSessionStart(projectId);
+		SessionMessageDTO response = new SessionMessageDTO(session, session.getProject(), "session started");
+		if (response.getSession() == null) {
 			return new ResponseEntity<>(new ResponseMessage("failed to start session"), HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<>(response, HttpStatus.OK);
@@ -78,11 +80,21 @@ public class GuideController {
 	public ResponseEntity<?> endSession(@RequestParam Integer sessionId) {
 		Session session = service.saveSessionEnd(sessionId);
 		if (session != null) {
-			return new ResponseEntity<>(new ObjectMessageDTO(session, "session ended"), HttpStatus.OK);
+			return new ResponseEntity<>(new ObjectMessageDTO(session, "session ended"),
+					HttpStatus.OK);
 		}
 		return new ResponseEntity<>(new ResponseMessage("failed to end session"), HttpStatus.BAD_REQUEST);
 	}
-
+	
+	@GetMapping("/getsession/{guideId}")
+	public ResponseEntity<?> getLatestSession(@PathVariable Integer guideId) {
+		SessionMessageDTO sessionDTO = service.getActiveSession(guideId);
+		if (sessionDTO != null) {
+			return new ResponseEntity<>(sessionDTO, HttpStatus.OK);
+		}
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	}
+	
 	@GetMapping("/{userId}")
 	public ResponseEntity<?> getGuide(@PathVariable Integer userId) {
 		Optional<Guide> guide = service.getGuideByUserId(new UserAccount(userId));
