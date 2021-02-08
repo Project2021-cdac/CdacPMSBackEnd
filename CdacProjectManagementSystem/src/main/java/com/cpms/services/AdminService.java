@@ -11,7 +11,6 @@ import com.cpms.pojos.Course;
 import com.cpms.pojos.Student;
 import com.cpms.repository.AdminRepository;
 import com.cpms.repository.StudentRepository;
-import com.cpms.repository.UserAccountRepository;
 
 @Service
 public class AdminService implements IAdminService {
@@ -19,26 +18,15 @@ public class AdminService implements IAdminService {
 	@Autowired
 	private StudentRepository studentRepository;
 	
-	@Autowired
-	private UserAccountRepository userAcctRepository;
-	
+
 	@Autowired
 	private AdminRepository adminRepository;
 	
 	@Override
 	public List<Student> getStudentListOrderedByPrn(Course coursename) {
-		 List<Student> findAllByOrderByPrn = studentRepository.findAllByOrderByPrn(coursename);		
-//		 for (Student student : findAllByOrderByPrn) {
-//			System.out.println(student);
-//		}
+		List<Student> findAllByOrderByPrn = studentRepository.findAllByOrderByPrn(coursename);		
 		return findAllByOrderByPrn;
 	}
-
-//	@Override
-//	public List<UserAccount> getGuideList() {
-//		return  userAcctRepository.getUserAccountofGuides();
-//	}
-
 	
 	@Override
 	public Admin save(Admin admin) {

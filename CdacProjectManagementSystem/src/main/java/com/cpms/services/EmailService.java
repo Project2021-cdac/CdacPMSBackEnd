@@ -60,7 +60,7 @@ public class EmailService implements IEmailService {
 		mailProps.setProperty("mail.smtp.socketFactory.port", "465");
         mailProps.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         mailProps.put("mail.smtp.socketFactory.fallback", "false");
-		Session mailSession = Session.getDefaultInstance(mailProps, new Authenticator() {
+		Session mailSession = Session.getInstance(mailProps, new Authenticator() {
 
 			@Override
 			protected PasswordAuthentication getPasswordAuthentication() {

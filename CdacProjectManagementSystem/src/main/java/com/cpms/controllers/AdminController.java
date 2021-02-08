@@ -30,7 +30,6 @@ import com.cpms.pojos.Role;
 import com.cpms.pojos.Student;
 import com.cpms.pojos.Technology;
 import com.cpms.pojos.UserAccount;
-import com.cpms.services.IActivityService;
 import com.cpms.services.IAdminService;
 import com.cpms.services.IEmailService;
 import com.cpms.services.IExcelFileHelperService;
@@ -94,8 +93,8 @@ public class AdminController {
 				emailService.sendEmail(studentUserAccounts);
 				response.setResponseMessage("All Students registered successfully");
 		}else {
-			logger.info("Either file was not an excel sheet or it was empty.");
-			response.setResponseMessage("Upload an ExcelFile!!");
+			logger.info("Either file was not an excel sheet or it was empty. File Content Type: "+file.getContentType());
+			response.setResponseMessage("Upload an ExcelFile!!"+file.getContentType());
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
 		}
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);

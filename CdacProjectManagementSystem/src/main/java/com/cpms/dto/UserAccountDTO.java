@@ -5,13 +5,12 @@ import java.time.LocalDate;
 import com.cpms.pojos.Course;
 import com.cpms.pojos.Role;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class UserAccountDto {
+public class UserAccountDTO {
 	
 	private String firstName;
 	
@@ -29,7 +28,7 @@ public class UserAccountDto {
 	
 	private String phoneNumber;
 
-	public UserAccountDto(String firstName, String lastName, String email, String password, Course courseName,
+	public UserAccountDTO(String firstName, String lastName, String email, String password, Course courseName,
 			Role role, LocalDate dateOfBirth, String phoneNumber) {
 		super();
 		this.firstName = firstName;

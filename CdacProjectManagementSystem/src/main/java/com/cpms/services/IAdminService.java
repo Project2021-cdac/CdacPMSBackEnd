@@ -10,7 +10,6 @@ import com.cpms.pojos.Student;
 public interface IAdminService {
 
 	List<Student> getStudentListOrderedByPrn(Course coursename);
-//	List<UserAccount> getGuideList();
 	Optional<Admin> getAdminByCourse(Course course);
 	Admin save(Admin admin);
 }

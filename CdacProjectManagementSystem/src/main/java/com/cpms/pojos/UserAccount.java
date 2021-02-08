@@ -22,6 +22,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -59,7 +61,7 @@ public class UserAccount {
 	@Email
 	private String email;
 
-	@JsonIgnore
+	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
 
 	@Column(length = 15, unique = true)
@@ -91,6 +93,11 @@ public class UserAccount {
 		this.dateOfBirth = dateOfBirth;
 		this.courseName = courseName;
 	}
+	
+	public UserAccount(Integer Id, Course course) {
+		this.id=Id;
+		this.courseName=course;
+	}
 
 	public void setFirstName(String firstName) {
 		this.firstName = firstName.toUpperCase();
@@ -105,6 +112,18 @@ public class UserAccount {
 	public void setPassword(String password) {
 		this.password = passwordEncoder().encode(password);
 	}
+	
+
+	/*@JsonIgnore
+	public String getPassword() {
+		return this.password;
+	}*/
+
+	@JsonIgnore
+	public String getPassword() {
+		return this.password;
+	}
+
 
 	@Bean
 	PasswordEncoder passwordEncoder() {

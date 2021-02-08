@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.cpms.pojos.Activity;
 import com.cpms.pojos.Milestone;
-import com.cpms.pojos.Project;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
