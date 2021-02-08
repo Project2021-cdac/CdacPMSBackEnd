@@ -93,6 +93,11 @@ public class UserAccount {
 		this.dateOfBirth = dateOfBirth;
 		this.courseName = courseName;
 	}
+	
+	public UserAccount(Integer Id, Course course) {
+		this.id=Id;
+		this.courseName=course;
+	}
 
 	public void setFirstName(String firstName) {
 		this.firstName = firstName.toUpperCase();
@@ -106,6 +111,11 @@ public class UserAccount {
 	// TODO need a getter for student registration
 	public void setPassword(String password) {
 		this.password = passwordEncoder().encode(password);
+	}
+	
+	@JsonIgnore
+	public String getPassword() {
+		return this.password;
 	}
 
 	@Bean
