@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import com.cpms.pojos.Course;
 import com.cpms.pojos.Role;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
