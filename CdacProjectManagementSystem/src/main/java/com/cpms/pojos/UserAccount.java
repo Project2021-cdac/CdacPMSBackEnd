@@ -113,17 +113,17 @@ public class UserAccount {
 		this.password = passwordEncoder().encode(password);
 	}
 	
-<<<<<<< Updated upstream
+
 	/*@JsonIgnore
 	public String getPassword() {
 		return this.password;
 	}*/
-=======
+
 	@JsonIgnore
 	public String getPassword() {
 		return this.password;
 	}
->>>>>>> Stashed changes
+
 
 	@Bean
 	PasswordEncoder passwordEncoder() {
