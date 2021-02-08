@@ -51,6 +51,11 @@ public class Session {
 	@JoinColumn( name = "project_id")
 	private Project project;
 
+	public Session(int id, Project project) {
+		this.id = id;
+		this.project = project;
+	}
+	
 	public Session(Timestamp startTime, Timestamp endTime, Guide guide, Project project) {
 		super();
 		this.startTime = startTime;
@@ -68,4 +73,6 @@ public class Session {
 	public Project getProject() {
 		return this.project;
 	}
+	
+	
 }
