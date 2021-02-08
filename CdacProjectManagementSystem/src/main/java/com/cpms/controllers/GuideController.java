@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cpms.dto.CurrentSessionDTO;
 import com.cpms.dto.ObjectMessageDTO;
 import com.cpms.dto.ResponseMessage;
 import com.cpms.dto.SessionMessageDTO;
@@ -88,7 +89,7 @@ public class GuideController {
 	
 	@GetMapping("/getsession/{guideId}")
 	public ResponseEntity<?> getLatestSession(@PathVariable Integer guideId) {
-		SessionMessageDTO sessionDTO = service.getActiveSession(guideId);
+		CurrentSessionDTO sessionDTO = service.getActiveSession(guideId);
 		if (sessionDTO != null) {
 			return new ResponseEntity<>(sessionDTO, HttpStatus.OK);
 		}

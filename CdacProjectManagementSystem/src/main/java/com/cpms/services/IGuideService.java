@@ -3,6 +3,7 @@ package com.cpms.services;
 import java.util.List;
 import java.util.Optional;
 
+import com.cpms.dto.CurrentSessionDTO;
 import com.cpms.dto.GuideProjectDTO;
 import com.cpms.dto.SessionMessageDTO;
 import com.cpms.pojos.Course;
@@ -22,5 +23,5 @@ public interface IGuideService {
 	Session saveSessionEnd(Integer sessionId);
 	List<Session> getSessionListByProject(Integer projectId);
 	Optional<Guide> getGuideByUserId(UserAccount userAccount);
-	SessionMessageDTO getActiveSession(Integer guideId);
+	CurrentSessionDTO getActiveSession(Integer guideId);
 }
