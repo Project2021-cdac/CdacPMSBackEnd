@@ -70,11 +70,15 @@ public class GuideController {
 	@PostMapping("/startsession")
 	public ResponseEntity<?> startSession(@RequestParam Integer projectId) {
 		Session session = service.saveSessionStart(projectId);
-		SessionMessageDTO response = new SessionMessageDTO(session, session.getProject(), "session started");
-		if (response.getSession() == null) {
+		System.out.println("Session object =  " + session);
+		
+		//SessionMessageDTO response = new SessionMessageDTO(session, session.getProject(), "session started");
+		if (session == null) {
 			return new ResponseEntity<>(new ResponseMessage("failed to start session"), HttpStatus.BAD_REQUEST);
+		} else {
+			SessionMessageDTO response = new SessionMessageDTO(session, session.getProject(), "session started");
+			return new ResponseEntity<>(response, HttpStatus.OK);
 		}
-		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 
 	@PostMapping("/endsession")

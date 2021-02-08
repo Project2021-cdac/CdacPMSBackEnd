@@ -109,6 +109,7 @@ public class GuideService implements IGuideService {
 		if (optionalProject.isPresent()) {
 			Project project = optionalProject.get();
 			if (project.getGuide().isInSession() == false) {
+				System.out.println("saveSessionWorks...............");
 				Guide guide = project.getGuide();
 				guide.setInSession(true);
 				guideRepository.save(guide);
@@ -119,6 +120,7 @@ public class GuideService implements IGuideService {
 						+ guide.getUserAccount().getLastName() + " started session for project " + project.getId()
 						+ ". " + project.getTitle();
 				activityService.createActivity(activityDescription, project.getId());
+				System.out.println("saveSessionWorks...............");
 				return session;
 			}
 		}
