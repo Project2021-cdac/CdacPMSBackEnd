@@ -113,10 +113,10 @@ public class UserAccount {
 		this.password = passwordEncoder().encode(password);
 	}
 	
-	@JsonIgnore
+	/*@JsonIgnore
 	public String getPassword() {
 		return this.password;
-	}
+	}*/
 
 	@Bean
 	PasswordEncoder passwordEncoder() {
