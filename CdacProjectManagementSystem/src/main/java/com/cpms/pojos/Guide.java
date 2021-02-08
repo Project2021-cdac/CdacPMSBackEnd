@@ -48,7 +48,6 @@ public class Guide {
 
 	@ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST }, fetch = FetchType.LAZY)
 	@JoinTable(name = "guide_technology_table", joinColumns = @JoinColumn(name = "guide_id"), inverseJoinColumns = @JoinColumn(name = "technology_id"))
-//	@JsonIgnoreProperties("guides")
 	@JsonSerialize(as = HashSet.class)
 	private Set<Technology> technologies = new HashSet<>();
 
@@ -66,4 +65,30 @@ public class Guide {
 		return this.technologies;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Guide other = (Guide) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+	
+	
 }
