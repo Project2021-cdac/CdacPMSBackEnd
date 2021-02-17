@@ -1,0 +1,16 @@
+# No excel #
+*.xls
+*.xlsx
+
+# No images #
+*.jpeg
+*.jpg
+*.png
+*.bmp
+
+# No .orig file #
+*.orig
+
+# No .metadata file #
+.metadata 
+.settings

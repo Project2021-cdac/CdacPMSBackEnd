@@ -1,0 +1,25 @@
+# mark down files #
+HELP.md
+
+# binary files #
+target/
+
+# maven files #
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# property files #
+src/**/application.properties
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### VS Code ###
+.vscode/
