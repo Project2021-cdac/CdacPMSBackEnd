@@ -27,6 +27,3 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file ./CdacProjectManagementSystem/pom.xml
 
-  publish:
-
-    needs: build
